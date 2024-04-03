@@ -381,7 +381,7 @@ distinct_spp <- knpr_main |>
 #| warning: false
 #| message: false
 #| echo: false
-#| eval: true
+#| eval: false
 #| include: true
 #| fig-align: center
 #| fig-width: 10
@@ -405,7 +405,7 @@ spp_rich_location |>
 ```{r}
 #| warning: false
 #| echo: false
-#| eval: true
+#| eval: false
 #| include: true
 #| results: hide
 
@@ -429,7 +429,7 @@ year_effort <- knpr_main |>
 ```{r}
 #| warning: false
 #| echo: false
-#| eval: true
+#| eval: false
 #| include: true
 #| fig-align: center
 #| fig-width: 10
@@ -472,7 +472,7 @@ kable(guilds)
 ```{r}
 #| warning: false
 #| echo: false
-#| eval: true
+#| eval: false
 #| message: false
 #| include: true
 #| results: hide
