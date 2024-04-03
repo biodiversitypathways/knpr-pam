@@ -1,0 +1,532 @@
+---
+title: "Report on the use of passive acoustic monitoring in Kluane National Park Reserve"
+format:
+  html:
+    grid:
+      margin-width: 300px
+  pdf: default
+navbar: right
+theme: cosmo
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Alex MacPhail"
+editor: visual
+bibliography: references.bib
+nocite: '@*'
+toc: true
+toc-depth: 3
+toc-expand: true
+toc-location: left
+styles: styles.css
+reference-location: margin
+citation-location: margin
+---
+
+![](kluane-banner.jpg){style="float:left`;" fig-alt="Photo of a glacier" fig-align="center"}
+
+```{r}
+#| label: load-packages and authenticate
+#| include: false
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(wildRtrax)
+library(unmarked)
+library(sf)
+library(terra)
+library(vctrs)
+library(ggridges)
+library(scales)
+library(kableExtra)
+library(plotly)
+library(DT)
+library(lme4)
+library(ggpubr)
+library(vegan)
+library(MuMIn)
+library(ggmagnify)
+library(AICcmodavg)
+
+wt_auth()
+
+load('knpr.RData')
+#save.image('knpr.RData')
+#cirrus_knpr_recs  <- readRDS('knprcirrus.RDS')
+```
+
+```{r Data download}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: false
+#| include: true
+
+knpr_main <-
+  map_dfr(
+    .x = 2317,
+    .f = ~ wildRtrax::wt_download_report(
+      project_id = .x,
+      sensor_id = "ARU",
+      weather_cols = T,
+      reports = "main"
+    )
+  )
+```
+
+# Abstract
+
+Passive acoustic monitoring has proven to be a valuable tool for monitoring vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations, participated in the national Prescribed Burn protocol. ARUs detected a total of `r nrow(distinct_spp)` species including birds, amphibians and mammals. Despite failures from 2 locations, the analysis revealed... 
+
+# Land Acknowledgement
+
+In the spirit of Reconciliation, we respectfully acknowledge that the lands of Kluane National Park Reserve where this study took place are the traditional territories of the Southern Tutchone people represented in the Kluane region by the Champagne and Aishihik First Nations and the Kluane First Nation. Champagne and Aishihik First Nations, Kluane First Nation and Parks Canada are jointly responsible for the management of Kluane's natural and cultural resources.
+
+# Introduction
+
+Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). In 2023, Kluane National Park Reserve initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring (PAM) of the Park's wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to ecological integrity metrics such as species richness, diversity, occupancy, and trends over time. This data aids decision-making and management within the Park. Given the rapid and ease of accumulating data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
+
+The objectives of this report are to:
+
+* Describe the data management and processing procedures for the acoustic data collected in 2023;
+* Utilize traditional human tagging to detect and count species heard on recordings;
+* Define straightforward methods for evaluating species presence, species richness, and species occupancy; 
+* Offer recommendations for ongoing monitoring approaches to contribute to the assessment of ecological integrity in forest ecosystems and prescribed burn management in the park;
+* Facilitate data publication to the public, resource managers, academic institutions, and any other relevant agencies
+
+# Methods
+
+## Data collection and management
+
+Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). Surveys were conducted on a rotational basis, as outlined in Table 1 (@tbl-loc-summary) and depicted in Figure 1 (@fig-locs). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawks, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established on May 24th. For Jarvis River, treatment stations (e.g. JR-T1) were deployed on June 5, while control stations (e.g. AC-C1) were set up on June 9.
+
+A total of `r count_recs` recordings were collected (see @fig-recs-collect). Data were transferred via hard drive to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated were processing were directly uploaded to WildTrax by Parks Canada staff and can be downloaded from the platform's Recording tab, accessible under Manage > Download list of recordings (see @fig-download-recs).
+
+![Downloading a list of recordings from WildTrax](download-recs.png){#fig-download-recs}
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+
+knpr_locs <- knpr_main |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, latitude, longitude, year) |>
+  distinct() |>
+  sf::st_as_sf(coords = c("longitude","latitude"), crs = 4326)
+
+repeats <- knpr_locs |>
+  st_drop_geometry() |>
+  group_by(location) |>
+  summarise(count = n_distinct(year)) |>
+  ungroup() |>
+  filter(count == 5) |>
+  select(location) |>
+  distinct() |>
+  pull()
+
+######## Define geospatial assets
+
+kluane_shp <- read_sf('assets/National_Parks_and_National_Park_Reserves_of_Canada_Legislative_Boundaries.shp') |>
+  filter(adminAreaN == 'KLUANE NATIONAL PARK OF CANADA')
+kluane_shp <- st_transform(kluane_shp, st_crs(knpr_locs)) |> st_make_valid()
+
+locs_summary <- knpr_locs |>
+  st_drop_geometry() |>
+  group_by(location, year) |>
+  mutate(value = row_number()) |>
+  ungroup() |>
+  arrange(year) |>
+  pivot_wider(names_from = year, values_from = value, values_fill = 0) |>
+  mutate(Site = case_when(grepl('AC-*',location) ~ "Alder Creek",
+                          grepl('JR-*',location) ~ "Jarvis River",
+                          TRUE ~ NA_character_),
+         Treatment = case_when(str_detect(location, '-T') ~ "Prescribed Burn",
+                               str_detect(location, '-C') ~ "Control",
+                               TRUE ~ NA_character_)) |>
+  rename('Location' = location)
+
+```
+
+```{r Location summary table}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-loc-summary
+#| tbl-cap: Locations surveyed across years. Ones indicated a deployment in that year for that location
+
+kable(locs_summary, caption = "Location summary for ARUs deployed")
+
+```
+
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+#| fig-cap: ARU monitoring locations surveyed each year as part of the songbird monitoring program.
+#| label: fig-locs
+#| cap-location: margin
+
+ggp <- ggplot() +
+  geom_sf(data = kluane_shp, fill = '#D0FFBC') +
+  #geom_sf(data = coast, fill = "darkblue") +
+  geom_point(data = knpr_locs %>% inner_join(., locs_summary %>% select(Location, Site, Treatment), by = c("location" = "Location")), 
+             aes(x = st_coordinates(geometry)[,1], y = st_coordinates(geometry)[,2], colour = Treatment, shape = Site)) +
+  scale_colour_viridis_d() +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  facet_wrap(~year) +
+  theme(
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "#A2C8EC")  # Change the background color here
+  ) +
+  xlim(-138.8,-137.0) +
+  ylim(60.0,61.0) 
+
+ggp + geom_magnify(aes(from = c(-138, -137, 60, 61), to = c(-139, -137, 58, 62)))
+
+```
+
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+
+all_recs <- cirrus_knpr_recs %>%
+  select(location, recording_date_time, length_seconds) %>%
+  distinct() %>%
+  drop_na() %>%
+  mutate(julian = yday(recording_date_time),
+         hour = hour(recording_date_time),
+         year = year(recording_date_time),
+         month= month(recording_date_time, label = T))
+
+count_recs <- nrow(all_recs)
+
+average_deployment <- all_recs |>
+  group_by(location, year) |>
+  summarise(count = n_distinct(julian)) |>
+  ungroup() |>
+  summarise(mean = round(mean(count),2),
+            sd = round(sd(count),2))
+
+recs_plot <- all_recs |>
+  rename("Location" = location) |>
+  rename("Day of Year" = julian) |>
+  ggplot(aes(x = `Day of Year`, y = Location, fill = Location)) +
+  geom_density_ridges() +
+  facet_wrap(~ year) +
+  theme_minimal() +
+  scale_fill_viridis_d()
+  #scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
+  
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: Ridgeplot of recordings collected for each location over each survey year
+#| label: fig-recs-collect
+#| cap-location: margin
+
+recs_plot
+
+```
+
+## Community data processing
+
+The principal goal for data processing was to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location surveyed, four randomly selected recordings were processed for 3-minutes during the morning hours of 4:00 AM - 7:59 AM ideally on four separate dates (see @tbl-loc-repl). Four recordings will ensure that we have the minimum number of samples for a simple occupancy analysis (@mackenzie2002estimating and @imperfect-occu). Tags are made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round(nrow(tmtt_tags)/nrow(knpr_main),2)*100`% of the total tags were TMTT but were subsequently converted to numeric using `wildRtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(2) |> pull()`%) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted on the recordings. After the data are processed in WildTrax, the [wildRtrax](https://abbiodiversity.github.io/wildRtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildRtrax APIs](https://abbiodiversity.github.io/wildRtrax/articles/apis.html)).
+
+```{r}
+#| warning: false
+#| echo: false
+#| message: false
+#| eval: true
+#| include: true
+#| label: tbl-verified
+#| tbl-cap: Proportion of tags verified
+
+all_tags <- knpr_main |> 
+  tally() |>
+  pull()
+
+verified_tags <- knpr_main |>
+  group_by(tag_is_verified) |>
+  tally() |>
+  mutate(Proportion = round(n / all_tags,4)*100) |>
+  rename("Count" = n) |>
+  rename("Tag is verified" = tag_is_verified)
+
+kable(verified_tags)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| message: false
+#| eval: true
+#| include: true
+#| label: tbl-tmtt
+#| tbl-cap: TMTT tags
+
+tmtt_tags <- knpr_main |>
+  select(location, recording_date_time, species_code, individual_count) |>
+  distinct() |>
+  filter(individual_count == "TMTT")
+
+kable(head(tmtt_tags))
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| include: true
+
+knpr_tasks <- knpr_main |>
+  as_tibble() |>
+  filter(aru_task_status %in% c("Transcribed","New")) |>
+  select(project_id, location, recording_date_time, task_duration, task_method, observer_id) |>
+  distinct() |>
+  mutate(hour = lubridate::hour(recording_date_time),
+         year = lubridate::year(recording_date_time),
+         typ = case_when(
+    hour >= 4 & hour <= 7 ~ "Dawn",
+    hour > 7 & hour < 20 ~ "Day",
+    hour >= 19 & hour < 21 ~ "Dusk",
+    TRUE ~ "Night"
+  )) |>
+  group_by(location, year, task_duration, typ) |>
+  tally() |>
+  ungroup()
+
+
+task_info <- fs::dir_ls('tasks', regexp = "*.csv") |>
+  map_dfr(~read_csv(., show_col_types = F)) |>
+  select(internal_task_id, rain:audioQuality) |>
+  distinct()
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-loc-repl
+#| tbl-cap: Example of tasks and unit replication for listening at PENP-4-1
+
+kable(knpr_tasks)
+```
+
+
+------------------------------------------------------------------------
+
+# Results
+
+Three locations (`AC-C1`, `AC-T3`, `JR-BAT`) failed and did not complete their intended recording schedule.
+
+A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location and survey year with @fig-spp-rich-annual showing the relationship between species richness and survey effort.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: false
+
+spp_rich_location <- knpr_main |>
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, year, species_code) |>
+  distinct() |>
+  group_by(location, year) |>
+  summarise(species_count = n_distinct(species_code)) |>
+  ungroup()
+
+distinct_spp <- knpr_main |>
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(species_code) |>
+  distinct() |>
+  arrange(species_code)
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: Species richness at forest monitoring locations across years
+#| label: fig-spp-rich-locs
+#| cap-location: margin
+
+spp_rich_location |>
+  ggplot(aes(x=year, y=species_count, colour=year)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~location) +
+  theme_bw() +
+  scale_colour_viridis_c() +
+  xlab('Year') + ylab('Species richness') +
+  ggtitle('Species richness at each location surveyed for each year')
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| include: true
+#| results: hide
+
+spp_rich_annual <- knpr_main |>
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, year, species_code) |>
+  distinct() |>
+  group_by(year) |>
+  summarise(effort = n_distinct(species_code) / n_distinct(location),
+            species_count = n_distinct(species_code)) |>
+  ungroup()
+
+year_effort <- knpr_main |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  group_by(year) |>
+  summarise(count_of_locs = n_distinct(location))
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| include: true
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: Species richness at forest monitoring locations across years considering sampling effort
+#| label: fig-spp-rich-annual
+#| cap-location: margin
+
+spp_rich_annual_plot <- spp_rich_annual |>
+  inner_join(year_effort) |>
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = species_count), size = 1) +
+  geom_bar(aes(y = count_of_locs * 5), alpha = 0.7, stat = "identity") +  # Adjust the multiplier for better visualization
+  scale_y_continuous(name = "Species Count", sec.axis = sec_axis(~./5, name = "Count of Locations")) +
+  labs(x = "Year") +
+  theme_bw()
+
+spp_rich_annual_plot
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| label: tbl-bird-guilds
+#| tbl-cap: Common bird forest species guilds. For nesting habitat; Ag = Agricultural, Be = Beach, Bo = Bog, CW = Coniferous Woodlands, ES = Early Successional, MW = Mixed Woodlands, OW = Open Woodlands, TSS = Treed/Shrubby Swamp, Ur = Urban. Species from CW, MW, OW, TSS were used for analysis.
+
+guilds <- read_csv("bird_guilds.csv") |>
+  select(species_common_name, habitat_nesting) |>
+  filter(habitat_nesting %in% c("CW","MW","OW","TSS")) 
+
+kable(guilds)
+
+```
+
+
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: Seasonal detection activity of most commonly detected forest species
+#| label: fig-spp-activity
+#| cap-location: margin
+
+knpr_main |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  select(location, recording_date_time, species_common_name, species_code, individual_count) |>
+  mutate(julian = lubridate::yday(recording_date_time),
+         month= month(recording_date_time),
+         year = factor(year(recording_date_time))) |>
+  inner_join(guilds |> select(species_common_name, habitat_nesting)) |>
+  arrange(species_code) |>
+  filter(habitat_nesting %in% c("CW","MW","OW","TSS")) |>
+  group_by(species_code) |>
+  add_tally() |>
+  ungroup() |>
+  mutate(habitat_nesting = case_when(
+    habitat_nesting == "CW" ~ "Coniferous Woodland",
+    habitat_nesting == "MW" ~ "Mixedwood",
+    habitat_nesting == "OW" ~ "Open Woodland",
+    habitat_nesting == "TSS" ~ "Tree Shrub / Swamp",
+    TRUE ~ as.character(habitat_nesting)
+  )) |>
+  rename("Nesting habitat" = habitat_nesting) |>
+  ggplot(aes(x = julian, y = species_common_name, fill = `Nesting habitat`)) + 
+  geom_density_ridges(scale = 3, rel_min_height = 0.005, alpha = 0.4) + 
+  scale_fill_viridis_d() +
+  facet_wrap(~year, nrow = 1) +
+  xlim(120,210) +
+  theme_bw() +
+  xlab("Day of Year") + 
+  ylab("Species")
+
+```
+
+
+# Discussion
+
+While this project has yielded promising results, there are several operational improvements necessary to fully realize its potential. Some key recommendations include:
+
+* **Extending survey window and recording schedule**: Initiating the survey window to encompass resident and early-migrant species and extending it into the post-breeding season (mid-July) will capture a comprehensive range of species. Given the diverse migration timing and breeding patterns among species, extending the window will help enrich the data set. Recording bird vocalizations throughout the deployment period at various times of the day—pre-dawn, dawn, post-dawn, pre-dusk, dusk, post-dusk, and night—enables a comprehensive assessment of bird diversity and activity patterns. Birds exhibit diverse diurnal and nocturnal behaviors, with some species being more vocal during specific times of the day or night. Continuous recording across different times allows ARUs to capture a broad spectrum of species, including those that are crepuscular or nocturnal, providing valuable insights into their behaviors and habitat preferences. This approach enhances the accuracy and completeness of bird surveys, offering valuable data for habitat planning and management efforts.
+
+* **Equipment maintenance and management**: Given that 3 locations failed during their deployment, ensuring that equipment is properly functioning, tested and maintained prior to deployment is crucial for ensuring the success of a long-term monitoring program. The ABMI provides [Equipment Protocols](https://ftp-public.abmi.ca/home/publications/documents/599_ABMI_2021_TerrestrialARUandRemoteCameraTrapProtocols_ABMI.pdf) to help assist in the maintenance and deployment of most [Wildlife Acoustics](https://www.wildlifeacoustics.com/) makes and models. Most importantly, ensure the units are cleaned and inspected for physical or mechanical damage, update the firmware and conduct tests to ensure functionality in a controlled environment.
+
+* **Localized Monitoring**: Consistently deploying ARUs in the same locations on the landscape year after year will help to establish robust monitoring sites. By continuously surveying specific areas, changes in bird distribution and abundance can be monitored. This approach facilitates the identification of long-term trends and enables the understanding of changes in bird populations and guilds over time, especially with planned changes with the prescribed burns. 
+* **ARU deployment in prescribed burns**: Deploying at least one ARU per 0.5 hectares burned ensures thorough monitoring of post-burn effects on bird populations. This density of ARU deployment generates detailed data on how bird populations respond to habitat changes following prescribed burns, facilitating the understanding of ecosystem resilience and recovery processes. By monitoring post-burn effects on bird populations, researchers can inform conservation strategies aimed at mitigating the impact of habitat disturbance.
+
+* **Bat monitoring enhancements**: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will optimize the total amount of data volume collected. Programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. Also ensuring the 
+
+
+
