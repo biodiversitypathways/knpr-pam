@@ -198,7 +198,7 @@ National Park Reserve}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, breakable, sharp corners, interior hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, interior hidden, boxrule=0pt, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -564,32 +564,10 @@ JR-T3 & 2023 & 300s & Dawn & 4\\
 Three locations (\texttt{AC-C1}, \texttt{AC-T3}, \texttt{JR-BAT}) failed
 and did not complete their intended recording schedule.
 
-A total of 16 species were found. Figure~\ref{fig-spp-rich-locs}
-describes the relationship of species richness across each location and
-survey year with Figure~\ref{fig-spp-rich-annual} showing the
-relationship between species richness and survey effort.
-
-\begin{figure}
-
-\sidecaption{\label{fig-spp-rich-locs}Species richness at forest
-monitoring locations across years}
-
-{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-rich-locs-1.pdf}
-
-}
-
-\end{figure}
-
-\begin{figure}
-
-\sidecaption{\label{fig-spp-rich-annual}Species richness at forest
-monitoring locations across years considering sampling effort}
-
-{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-rich-annual-1.pdf}
-
-}
-
-\end{figure}
+A total of 16 species were found. \textbf{?@fig-spp-rich-locs} describes
+the relationship of species richness across each location and survey
+year with \textbf{?@fig-spp-rich-annual} showing the relationship
+between species richness and survey effort.
 
 \hypertarget{tbl-bird-guilds}{}
 \begin{table}
@@ -702,17 +680,6 @@ Yellow-rumped Warbler & CW\\
 \hline
 \end{tabular}
 \end{table}
-
-\begin{figure}
-
-\sidecaption{\label{fig-spp-activity}Seasonal detection activity of most
-commonly detected forest species}
-
-{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-activity-1.pdf}
-
-}
-
-\end{figure}
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
