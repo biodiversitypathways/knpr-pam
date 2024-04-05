@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.6)  3 APR 2024 15:06
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.6)  4 APR 2024 12:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1252,11 +1252,6 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 299.
 
-Underfull \hbox (badness 2269) in paragraph at lines 244--312
-\TU/lmr/m/n/10.95 biodiversity, particularly in managed regions in Canada
- []
-
-
 LaTeX Warning: Marginpar on page 2 moved.
 
 
@@ -1281,50 +1276,50 @@ LaTeX Warning: Marginpar on page 2 moved.
 LaTeX Warning: Marginpar on page 2 moved.
 
 [2]
-Underfull \hbox (badness 2837) in paragraph at lines 327--331
+Underfull \hbox (badness 2837) in paragraph at lines 328--332
 []\TU/lmr/m/n/10.95 Offer recommendations for ongoing monitoring ap-
  []
 
 
-Underfull \hbox (badness 2452) in paragraph at lines 327--331
+Underfull \hbox (badness 2452) in paragraph at lines 328--332
 \TU/lmr/m/n/10.95 integrity in forest ecosystems and prescribed burn
  []
 
 
-LaTeX Warning: Reference `tbl-loc-summary' on page 3 undefined on input line 348.
+LaTeX Warning: Reference `tbl-loc-summary' on page 3 undefined on input line 349.
 
 
-LaTeX Warning: Reference `fig-locs' on page 3 undefined on input line 349.
+LaTeX Warning: Reference `fig-locs' on page 3 undefined on input line 350.
 
 [3]
 
 LaTeX Warning: Reference `fig-recs-collect' on page 4 undefined on input line 361.
 
 
-LaTeX Warning: Reference `fig-download-recs' on page 4 undefined on input line 369.
+LaTeX Warning: Reference `fig-download-recs' on page 4 undefined on input line 368.
 
 File: download-recs.png Graphic file (type bmp)
 <download-recs.png>
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.665pt on input line 388.
+(Font)              scaled to size 7.665pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.475pt on input line 388.
+(Font)              scaled to size 5.475pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.95099pt on input line 388.
+(Font)              scaled to size 10.95099pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.66568pt on input line 388.
+(Font)              scaled to size 7.66568pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.4755pt on input line 388.
+(Font)              scaled to size 5.4755pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 10.94882pt on input line 388.
+(Font)              scaled to size 10.94882pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 7.66417pt on input line 388.
+(Font)              scaled to size 7.66417pt on input line 387.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.47441pt on input line 388.
+(Font)              scaled to size 5.47441pt on input line 387.
 ! Extra }, or forgotten \endgroup.
 \@endfloatbox ...pagefalse \outer@nobreak \egroup 
                                                   \color@endbox 
-l.409 \end{table}
+l.408 \end{table}
                   
 Here is how much of TeX's memory you used:
  37041 strings out of 476884

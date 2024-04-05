@@ -4,7 +4,6 @@ format:
   html:
     grid:
       margin-width: 300px
-  pdf: default
 navbar: right
 theme: cosmo
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -77,7 +76,20 @@ knpr_main <-
 
 # Abstract
 
-Passive acoustic monitoring has proven to be a valuable tool for monitoring vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations, participated in the national Prescribed Burn protocol. ARUs detected a total of `r nrow(distinct_spp)` species including birds, amphibians and mammals. Despite failures from 2 locations, the analysis revealed...
+Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations, participating in the national Prescribed Burn protocol initiated in 2023. ARUs detected a total of `r nrow(distinct_spp)` species including birds and mammals. Sustained monitoring of these areas following prescribed burns, incorporating enhanced protocols for equipment functionality, as well as broader scope in recording and data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.
+
+<div style="background-color: #f4f4f4; padding: 20px;">
+This is a dynamic report. Results may change as new or more data is added, or analyses conducted. 
+
+To run the report locally:
+
+- Open RStudio or your preferred IDE
+- Create a new project and set up for version control using the GitHub repository
+- Pull from remote main
+- Set your WildTrax username and password either through `Sys.setenv` or using the `keyring` package; authorize into WildTrax
+- Load the `.RData` file in the first chunk
+- Render the document and review the results
+</div>
 
 # Land Acknowledgement
 
@@ -336,7 +348,7 @@ task_info <- fs::dir_ls('tasks', regexp = "*.csv") |>
 #| message: false
 #| include: true
 #| label: tbl-loc-repl
-#| tbl-cap: Example of tasks and unit replication for listening at PENP-4-1
+#| tbl-cap: Tasks and unit replication for listening
 
 kable(knpr_tasks)
 ```
@@ -513,14 +525,16 @@ knpr_main |>
 
 # Discussion
 
+Due to the deterioration of forest health in these areas, 
+
 While this project has yielded promising results, there are several operational improvements necessary to fully realize its potential moving into next season. Some key recommendations include:
 
--   **Extending survey window and recording schedule**: Initiating the survey window to encompass resident and early-migrant species (early May) and extending it into the post-breeding season (mid-July) will capture a comprehensive range of species. Given the diverse migration timing and breeding patterns among species, extending the window will help enrich the data set and may provide a  Recording bird vocalizations throughout the deployment period at various times of the day--pre-dawn, dawn, post-dawn, pre-dusk, dusk, post-dusk, and night--enables a comprehensive assessment of bird diversity and activity patterns. Birds exhibit diverse diurnal and nocturnal behaviors, with some species being more vocal during specific times of the day or night. Continuous recording across different times allows ARUs to capture a broad spectrum of species, including those that are crepuscular or nocturnal, providing valuable insights into their behaviors and habitat preferences. This approach enhances the accuracy and completeness of bird surveys, offering valuable data for planning and management efforts.
+-   **Extending survey window and recording schedule**: Initiating the survey window to encompass resident and early-migrant species (early May) and extending it into the post-breeding season (mid-July) will capture a comprehensive range of species. Given the diverse migration timing and breeding patterns among species, extending the window can help to add additional species whose detectability is lower. Recording bird vocalizations throughout the deployment period at various times of the day--pre-dawn, dawn, post-dawn, pre-dusk, dusk, post-dusk, and night--enables a comprehensive assessment of bird diversity and activity patterns. Birds exhibit diverse diurnal and nocturnal behaviors, with some species being more vocal during specific times of the day or night. Continuous recording across different times allows ARUs to capture a broad spectrum of species, including those that are crepuscular or nocturnal, providing valuable insights into their behaviors and habitat preferences. This approach enhances the accuracy and completeness of bird surveys, offering valuable data for planning and management efforts.
 
 -   **Equipment maintenance and management**: Given that 3 locations failed during their deployment, ensuring that equipment is properly functioning, tested and maintained prior to deployment is crucial for ensuring the success of a long-term monitoring program. The ABMI provides [Equipment Protocols](https://ftp-public.abmi.ca/home/publications/documents/599_ABMI_2021_TerrestrialARUandRemoteCameraTrapProtocols_ABMI.pdf) to help assist in the maintenance and deployment of most [Wildlife Acoustics](https://www.wildlifeacoustics.com/) makes and models. Most importantly, ensure the units are cleaned and inspected for physical or mechanical damage, update the firmware and conduct tests to ensure functionality in a controlled environment.
 
--   **Localized Monitoring**: Consistently deploying ARUs in the same locations on the landscape year after year will help to establish robust monitoring sites. By continuously surveying specific areas, changes in bird distribution and abundance can be monitored. This approach facilitates the identification of long-term trends and enables the understanding of changes in bird populations and guilds over time, especially with planned changes with the prescribed burns.
+-   **Localized monitoring**: Consistently deploying ARUs in the same locations on the landscape year after year will help to establish robust monitoring sites. By continuously surveying specific areas, changes in bird distribution and abundance can be monitored. This approach facilitates the identification of long-term trends and enables the understanding of changes in bird populations and guilds over time, especially with planned changes with the prescribed burns. Forest structure may be lost after a burn, however ARUs can be established in the same locations using different deployment methods (again see [Equipment Protocols](https://ftp-public.abmi.ca/home/publications/documents/599_ABMI_2021_TerrestrialARUandRemoteCameraTrapProtocols_ABMI.pdf)).
 
 -   **ARU deployment in prescribed burns**: Deploying at least one ARU per 0.5 hectares burned ensures thorough monitoring of post-burn effects on bird populations. This density of ARU deployment generates detailed data on how bird populations respond to habitat changes following prescribed burns, facilitating the understanding of ecosystem resilience and recovery processes. By monitoring post-burn effects on bird populations, researchers can inform conservation strategies aimed at mitigating the impact of habitat disturbance.
 
--   **Bat monitoring enhancements**: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will optimize the total amount of data volume collected. Programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The [North American Bat Monitoring Program](https://www.nabatmonitoring.org/) offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.
+-   **Bat monitoring enhancements**: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will also optimize the total amount of data volume collected and battery usage. It is also recommended to programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The [North American Bat Monitoring Program](https://www.nabatmonitoring.org/) offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.

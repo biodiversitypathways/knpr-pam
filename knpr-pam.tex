@@ -194,11 +194,11 @@
 \title{Report on the use of passive acoustic monitoring in Kluane
 National Park Reserve}
 \author{Alex MacPhail}
-\date{2024-04-03}
+\date{2024-04-04}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, interior hidden, boxrule=0pt, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, interior hidden, breakable, enhanced, boxrule=0pt, sharp corners, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -302,13 +302,14 @@ with minimal human interference. The subsequent data collected by these
 units contribute valuable information to ecological integrity metrics
 such as species richness, diversity, occupancy, and trends over time.
 This data aids decision-making and management within the Park. Given the
-rapid and ease of accumulating data from these units, maintaining a high
-standard of data integrity is paramount to ensure future data
-interoperability and sharing. \href{https://www.wildtrax.ca}{WildTrax}
-is an online platform developed by the \href{https://abmi.ca}{Alberta
-Biodiversity Monitoring Institute (\textbf{ABMI})} for users of
-environmental sensors to help addresses these big data challenges by
-providing solutions to standardize, harmonize, and share data.
+rapid and ease of accumulating large amounts of data from these units,
+maintaining a high standard of data integrity is paramount to ensure
+future data interoperability and sharing.
+\href{https://www.wildtrax.ca}{WildTrax} is an online platform developed
+by the \href{https://abmi.ca}{Alberta Biodiversity Monitoring Institute
+(\textbf{ABMI})} for users of environmental sensors to help addresses
+these big data challenges by providing solutions to standardize,
+harmonize, and share data.
 
 The objectives of this report are to:
 
@@ -353,20 +354,18 @@ retrieval in July-August. Each ARU recorded for an average of 6.27 +/-
 sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and
 23:45. Evening recordings targeted species such as Varied Thrush, Common
 Nighthawks, and owls. Station installations remained constant throughout
-the monitoring period, with Alder Creek stations established on May
-24th. For Jarvis River, treatment stations (e.g.~JR-T1) were deployed on
-June 5, while control stations (e.g.~AC-C1) were set up on June 9.
+the monitoring period, with Alder Creek stations established in late May
+and Jarvis River in June.
 
-A total of 2244 recordings were collected (see
-Figure~\ref{fig-recs-collect}). Data were transferred via hard drive to
+A total of 191 recordings were collected (see
+Figure~\ref{fig-recs-collect}). Data were transferred via SD cards to
 the University of Alberta in Edmonton, where they are redundantly stored
 on a server known as Cirrus. The recordings were standardized to ensure
 adherence to the naming convention of \texttt{LOCATION\_DATETIME}, such
-as \texttt{AC-T1\_20230625\_053500.wav}. All recordings designated were
-processing were directly uploaded to WildTrax by Parks Canada staff and
-can be downloaded from the platform's Recording tab, accessible under
-Manage \textgreater{} Download list of recordings (see
-Figure~\ref{fig-download-recs}).
+as \texttt{AC-T1\_20230625\_053500.wav}. All recordings designated for
+processing were directly uploaded to WildTrax and can be downloaded from
+the platform's Recording tab, accessible under Manage \textgreater{}
+Download list of recordings (see Figure~\ref{fig-download-recs}).
 
 \begin{figure}
 
@@ -437,7 +436,7 @@ The principal goal for data processing was to describe the acoustic
 community of species heard at locations while choosing a large enough
 subset of recordings for analyses. To ensure balanced replication, for
 each location surveyed, four randomly selected recordings were processed
-for 3-minutes during the morning hours of 4:00 AM - 7:59 AM ideally on
+for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on
 four separate dates (see Table~\ref{tbl-loc-repl}). Four recordings will
 ensure that we have the minimum number of samples for a simple occupancy
 analysis (Darryl I. MacKenzie et al.
@@ -564,10 +563,32 @@ JR-T3 & 2023 & 300s & Dawn & 4\\
 Three locations (\texttt{AC-C1}, \texttt{AC-T3}, \texttt{JR-BAT}) failed
 and did not complete their intended recording schedule.
 
-A total of 16 species were found. \textbf{?@fig-spp-rich-locs} describes
-the relationship of species richness across each location and survey
-year with \textbf{?@fig-spp-rich-annual} showing the relationship
-between species richness and survey effort.
+A total of 16 species were found. Figure~\ref{fig-spp-rich-locs}
+describes the relationship of species richness across each location and
+survey year with Figure~\ref{fig-spp-rich-annual} showing the
+relationship between species richness and survey effort.
+
+\begin{figure}
+
+\sidecaption{\label{fig-spp-rich-locs}Species richness at forest
+monitoring locations across years}
+
+{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-rich-locs-1.pdf}
+
+}
+
+\end{figure}
+
+\begin{figure}
+
+\sidecaption{\label{fig-spp-rich-annual}Species richness at forest
+monitoring locations across years considering sampling effort}
+
+{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-rich-annual-1.pdf}
+
+}
+
+\end{figure}
 
 \hypertarget{tbl-bird-guilds}{}
 \begin{table}
@@ -580,132 +601,86 @@ for analysis. }\tabularnewline
 \centering
 \begin{tabular}{l|l}
 \hline
-species\_common\_name & habitat\_nesting\\
+species\_code & species\_common\_name\\
 \hline
-Alder Flycatcher & TSS\\
+BOCH & Boreal Chickadee\\
 \hline
-American Redstart & MW\\
+CAJA & Canada Jay\\
 \hline
-Baltimore Oriole & OW\\
+CHSP & Chipping Sparrow\\
 \hline
-Bay-breasted Warbler & CW\\
+CORE & Common Redpoll\\
 \hline
-Black-and-white Warbler & MW\\
+DEJU & Dark-eyed Junco\\
 \hline
-Black-backed Woodpecker & CW\\
+GCKI & Golden-crowned Kinglet\\
 \hline
-Black-throated Blue Warbler & MW\\
+HETH & Hermit Thrush\\
 \hline
-Black-throated Green Warbler & CW\\
+LEYE & Lesser Yellowlegs\\
 \hline
-Blackburnian Warbler & CW\\
+NONE & NONE\\
 \hline
-Blackpoll Warbler & CW\\
+PIGR & Pine Grosbeak\\
 \hline
-Blue Jay & OW\\
+PISI & Pine Siskin\\
 \hline
-Blue-headed Vireo & MW\\
+RESQ & Red Squirrel\\
 \hline
-Boreal Chickadee & CW\\
+SWTH & Swainson's Thrush\\
 \hline
-Brown Creeper & CW\\
+UNPA & Unidentified Passerine\\
 \hline
-Canada Jay & CW\\
+UNTH & Unidentified Thrush\\
 \hline
-Canada Warbler & MW\\
+VATH & Varied Thrush\\
 \hline
-Cape May Warbler & CW\\
+WIWA & Wilson's Warbler\\
 \hline
-Chestnut-sided Warbler & MW\\
+WWCR & White-winged Crossbill\\
 \hline
-Chipping Sparrow & OW\\
-\hline
-Common Nighthawk & OW\\
-\hline
-Dark-eyed Junco & CW\\
-\hline
-Downy Woodpecker & MW\\
-\hline
-Eastern Wood-Pewee & OW\\
-\hline
-Fox Sparrow & OW\\
-\hline
-Golden-crowned Kinglet & CW\\
-\hline
-Gray Catbird & MW\\
-\hline
-Hairy Woodpecker & MW\\
-\hline
-Hermit Thrush & CW\\
-\hline
-Lincoln's Sparrow & TSS\\
-\hline
-Magnolia Warbler & MW\\
-\hline
-Mountain Bluebird & OW\\
-\hline
-Mourning Warbler & MW\\
-\hline
-Northern Flicker & MW\\
-\hline
-Northern Parula & OW\\
-\hline
-Orange-crowned Warbler & OW\\
-\hline
-Philadelphia Vireo & MW\\
-\hline
-Pileated Woodpecker & MW\\
-\hline
-Pine Warbler & CW\\
-\hline
-Red-eyed Vireo & MW\\
-\hline
-Ruby-crowned Kinglet & CW\\
-\hline
-Ruffed Grouse & MW\\
-\hline
-Rusty Blackbird & TSS\\
-\hline
-Swainson's Thrush & MW\\
-\hline
-Veery & MW\\
-\hline
-Warbling Vireo & MW\\
-\hline
-Western Wood-Pewee & OW\\
-\hline
-Yellow-bellied Sapsucker & MW\\
-\hline
-Yellow-rumped Warbler & CW\\
+YRWA & Yellow-rumped Warbler\\
 \hline
 \end{tabular}
 \end{table}
+
+\begin{figure}
+
+\sidecaption{\label{fig-spp-activity}Seasonal detection activity of most
+commonly detected forest species}
+
+{\centering \includegraphics{knpr-pam_files/figure-pdf/fig-spp-activity-1.pdf}
+
+}
+
+\end{figure}
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
 While this project has yielded promising results, there are several
-operational improvements necessary to fully realize its potential. Some
-key recommendations include:
+operational improvements necessary to fully realize its potential moving
+into next season. Some key recommendations include:
 
 \begin{itemize}
 \item
   \textbf{Extending survey window and recording schedule}: Initiating
-  the survey window to encompass resident and early-migrant species and
-  extending it into the post-breeding season (mid-July) will capture a
-  comprehensive range of species. Given the diverse migration timing and
-  breeding patterns among species, extending the window will help enrich
-  the data set. Recording bird vocalizations throughout the deployment
-  period at various times of the day---pre-dawn, dawn, post-dawn,
-  pre-dusk, dusk, post-dusk, and night---enables a comprehensive
-  assessment of bird diversity and activity patterns. Birds exhibit
-  diverse diurnal and nocturnal behaviors, with some species being more
-  vocal during specific times of the day or night. Continuous recording
-  across different times allows ARUs to capture a broad spectrum of
-  species, including those that are crepuscular or nocturnal, providing
-  valuable insights into their behaviors and habitat preferences. This
-  approach enhances the accuracy and completeness of bird surveys,
-  offering valuable data for habitat planning and management efforts.
+  the survey window to encompass resident and early-migrant species
+  (early May) and extending it into the post-breeding season (mid-July)
+  will capture a comprehensive range of species. Given the diverse
+  migration timing and breeding patterns among species, extending the
+  window will help enrich the data set and may provide a Recording bird
+  vocalizations throughout the deployment period at various times of the
+  day--pre-dawn, dawn, post-dawn, pre-dusk, dusk, post-dusk, and
+  night--enables a comprehensive assessment of bird diversity and
+  activity patterns. Birds exhibit diverse diurnal and nocturnal
+  behaviors, with some species being more vocal during specific times of
+  the day or night. Continuous recording across different times allows
+  ARUs to capture a broad spectrum of species, including those that are
+  crepuscular or nocturnal, providing valuable insights into their
+  behaviors and habitat preferences. This approach enhances the accuracy
+  and completeness of bird surveys, offering valuable data for planning
+  and management efforts.
 \item
   \textbf{Equipment maintenance and management}: Given that 3 locations
   failed during their deployment, ensuring that equipment is properly
@@ -741,7 +716,10 @@ key recommendations include:
   typically do not vocalize beyond this frequency range. The sampling
   rate will optimize the total amount of data volume collected.
   Programming the Max Time Between Calls (TBC) by adjusting the trigger
-  window from 3 to 2 seconds. Also ensuring the
+  window from 3 to 2 seconds. The
+  \href{https://www.nabatmonitoring.org/}{North American Bat Monitoring
+  Program} offers many additional recommendations for deployment,
+  processing and interpretation of ultrasonic data.
 \end{itemize}
 
 
