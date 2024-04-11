@@ -7,7 +7,9 @@ format:
 navbar: right
 theme: cosmo
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: "Alex MacPhail"
+author: 
+  - "Alex MacPhail"
+  - "Jeni Rudisill"
 editor: visual
 bibliography: references.bib
 nocite: '@*'
@@ -97,7 +99,11 @@ In the spirit of Reconciliation, we respectfully acknowledge that the lands of K
 
 # Introduction
 
-Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). In 2023, Kluane National Park Reserve initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring (PAM) of the Park's wildlife. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to ecological integrity metrics such as species richness, diversity, occupancy, and trends over time. This data aids decision-making and management within the Park. Given the rapid and ease of accumulating large amounts of data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
+Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state). 
+
+Forests of the Kluane National Park and Reserve are currently experiencing a severe fire deficit, with a 71% departure in the estimated area burned from the historic area burned (see 2017 Kluane National Park and Reserve State of the Park Technical Compendium). In contrast, the area saw a significant spruce bark beetle infestation over the 1990s to 2000s. It is estimated that over 49,000 ha were affected and, on average, almost half of the mature spruce trees were killed in affected forests. Given that climate change scenarios consistently indicate hotter temperatures and a longer growing season for Kluane forests, disturbance from wildfires and insect outbreaks are likely to experience major changes in the future.
+
+A project funded within the Conservation and Restoration (CoRe) program aimed to achieve measurable conservation gains towards the effective and enduring restoration of ecological integrity: *Dákeyi ukaanathį̀ jè: All of you watch over our country with your heart* is a 5-year project with objectives to increase the resilience of Kluane forests and restore fire to its ecosystems. Western and Indigenous knowledge systems will inform a long-term restoration plan, supported by the learnings from prescribed burn trials and alternate/complementary conservation activities. In 2023, Kluane National Park Reserve initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring (PAM) of bird populations in forest habitat, being an integral component of the forest health measures. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to ecological integrity metrics such as species richness, diversity, occupancy, and trends over time. This data aids decision-making and management within the Park. Given the rapid and ease of accumulating large amounts of data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data. 
 
 The objectives of this report are to:
 
@@ -236,13 +242,18 @@ average_deployment <- all_recs |>
             sd = round(sd(count),2))
 
 recs_plot <- all_recs |>
+  filter(!location == "AC-BAT") |>
   rename("Location" = location) |>
   rename("Day of Year" = julian) |>
-  ggplot(aes(x = `Day of Year`, y = Location, fill = Location)) +
-  geom_density_ridges() +
-  facet_wrap(~ year) +
-  theme_minimal() +
-  scale_fill_viridis_d()
+  group_by(Location, `Day of Year`) |>
+  add_tally() |>
+  ungroup() |>
+  ggplot(aes(x = `Day of Year`, y = n, fill = Location)) +
+  facet_wrap(~Location, scales = "free_y") +
+  geom_bar(stat = "identity", position = "stack") +
+  theme_bw() +
+  scale_fill_viridis_d() +
+  ylab('Count of recordings per day of year')
   #scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
   
 ```
