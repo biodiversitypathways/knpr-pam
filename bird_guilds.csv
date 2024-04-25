@@ -33,6 +33,7 @@ Common Grackle,,,,,,,
 Common Loon,,,,,,,
 Common Nighthawk,S,NM,In,Air,Scr,Gr,OW
 Common Raven,,,,,,,
+Common Redpoll,,,,,,,CW
 Common Tern,,,,,,,
 Common Yellowthroat,S,NM,In,LCS,Gl,Gr,Ma
 Dark-eyed Junco,G,SDM,Om,Gr,Fo,Gr,CW
@@ -74,7 +75,8 @@ Palm Warbler,S,SDM,In,Gr,Gl,Gr,Bo
 Philadelphia Vireo,,,,,,,MW
 Pied-billed Grebe,,,,,,,
 Pileated Woodpecker,S,R,In,Ba,Ex,Sn,MW
-Pine Siskin,,,,,,,
+Pine Grosbeak,,,,,,,CW
+Pine Siskin,,,,,,,CW
 Pine Warbler,,,,,,,CW
 Purple Finch,,,,,,,
 Red-breasted Nuthatch,,,,,,,
@@ -94,6 +96,7 @@ Swainson's Thrush,G,NM,Om,Gr,Fo,CT,MW
 Swamp Sparrow,G,SDM,Om,Gr,Fo,Gr,Ma
 Tennessee Warbler,S,NM,In,UC,Gl,Gr,Bo
 Tree Swallow,,,,,,,
+Varied Thrush,,,,,,,CW
 Veery,,,,,,,MW
 Vesper Sparrow,,,,,,,Ag
 Warbling Vireo,,,,,,,MW
@@ -101,11 +104,11 @@ Western Wood-Pewee,S,NM,In,Air,Sal,CT,OW
 White-breasted Nuthatch,,,,,,,
 White-crowned Sparrow,G,SDM,Om,Gr,Fo,Gr,Bo
 White-throated Sparrow,G,SDM,Om,Gr,Fo,Gr,ES
-White-winged Crossbill,,,,,,,
+White-winged Crossbill,,,,,,,CW
 Wilson's Snipe,,,,,,,
-Wilson's Warbler,,,,,,,
+Wilson's Warbler,,,,,,,TSS
 Winter Wren,,,,,,,
 Yellow Warbler,S,NM,In,LCS,Gl,Sh,ES
 Yellow-bellied Flycatcher,S,NM,In,Air,Sal,Gr,Bo
 Yellow-bellied Sapsucker,G,SDM,Om,Ba,Ex,DT,MW
-Yellow-rumped Warbler,S,SDM,In,LCS,Gl,CT,CW
+Yellow-rumped Warbler,S,SDM,In,LCS,Gl,CT,MW
