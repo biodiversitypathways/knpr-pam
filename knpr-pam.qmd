@@ -79,7 +79,7 @@ knpr_main <-
 
 # Abstract
 
-Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations in 2023, participating in the national Prescribed Burn protocol. ARUs detected a total of `r nrow(distinct_spp)` species including birds and mammals. Sustained monitoring of these areas following prescribed burns, incorporating enhanced protocols for equipment functionality, as well as broader scope in recording and data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.
+Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations in 2023, participating in the national prescribed Burn protocol. ARUs detected a total of `r nrow(distinct_spp)` species including birds and mammals. Sustained monitoring of these areas following prescribed burns, incorporating enhanced protocols for equipment functionality, as well as broader scope in recording and data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.
 
 ::: {style="background-color: #f4f4f4; padding: 20px;"}
 This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, feel free to reach out to the authors or refer to the publication date.
@@ -123,7 +123,8 @@ The objectives of this report are to:
 leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
   addMarkers(data = knpr_locs, popup = paste("Location:", knpr_locs$location, "<br>")) %>%
-  addMeasure()
+  addMeasure() %>%
+  addMiniMap(position = "bottomleft")
   
 ```
 
