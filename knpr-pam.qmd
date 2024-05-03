@@ -128,7 +128,6 @@ leaflet() %>%
   
 ```
 
-
 Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (treatment, e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARU were rotated across locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in Figure 1 (@fig-locs). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawk, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established in late May and Jarvis River in June.
 
 ![Downloading a list of recordings from WildTrax](download-recs.png){#fig-download-recs}
