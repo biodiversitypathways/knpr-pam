@@ -18,7 +18,6 @@ toc-depth: 3
 toc-expand: true
 toc-location: left
 styles: styles.css
-citation-location: margin
 github: https://github.com/ABbiodiversity/knpr-pam
 ---
 
@@ -94,7 +93,7 @@ In the spirit of Reconciliation, we respectfully acknowledge that the lands of K
 
 Human activities have been identified as key pressures and contributors to the global decline in forest wildlife (@allan2017recent). The repercussions of habitat fragmentation (@fahrig2003effects) and loss (@hanski2011habitat), climate change (@mantyka2012interactions, @sattar2021review, @abrahms2023climate), and increased access to sensitive areas exert direct and indirect pressures on forest biodiversity, particularly in managed regions in Canada (@lemieux2011state).
 
-Forests of the Kluane National Park and Reserve are currently experiencing a severe fire deficit, with a 71% departure in the estimated area burned from the historic area burned (see [2017 Kluane National Park and Reserve State of the Park Technical Compendium](https://parks.canada.ca/agence-agency/bib-lib/rapports-reports/~/media/4334d912b761468398c45fa006552cd1.ashx)). The area also saw a significant spruce bark beetle infestation over the 1990s to 2000s. It is estimated that over 49,000 ha were affected and, on average, almost half of the mature spruce trees were killed in affected forests [REF]. Given that climate change scenarios consistently indicate hotter temperatures and a longer growing season for Kluane forests, disturbance from wildfires, insect outbreaks, and other direct and indirect effects, are likely to cause major changes to the forest structure in the future. A project funded within the Conservation and Restoration (CoRe) program aimed to achieve measurable conservation gains towards the effective and enduring restoration of ecological integrity: *Dákeyi ukaanathį̀ jè: All of you watch over our country with your heart* is a 5-year project with objectives to increase the resilience of Kluane forests and restore fire to its ecosystems. Western and Indigenous knowledge systems will inform a long-term restoration plan, supported by the learnings from prescribed burn trials and alternate/complementary conservation activities. In 2023, Kluane National Park Reserve initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring (PAM) of bird populations in forest habitat, being an integral component of the forest health measures. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to ecological integrity metrics such as species richness, diversity, occupancy, and trends over time. This data aids decision-making and management within the Park. Given the rapid and ease of accumulating large amounts of data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
+Forests of the Kluane National Park and Reserve are currently experiencing a severe fire deficit, with a 71% departure in the estimated area burned from the historic area burned (see [2017 Kluane National Park and Reserve State of the Park Technical Compendium](https://parks.canada.ca/agence-agency/bib-lib/rapports-reports/~/media/4334d912b761468398c45fa006552cd1.ashx)). The area also saw a significant spruce bark beetle infestation over the 1990s to 2000s. It is estimated that over 49,000 ha were affected and, on average, almost half of the mature spruce trees were killed in affected forests. Given that climate change scenarios consistently indicate hotter temperatures and a longer growing season for Kluane forests, disturbance from wildfires, insect outbreaks, and other direct and indirect effects, are likely to cause major changes to the forest structure in the future. A project funded within the Conservation and Restoration (CoRe) program aimed to achieve measurable conservation gains towards the effective and enduring restoration of ecological integrity: *Dákeyi ukaanathį̀ jè: All of you watch over our country with your heart* is a 5-year project with objectives to increase the resilience of Kluane forests and restore fire to its ecosystems. Western and Indigenous knowledge systems will inform a long-term restoration plan, supported by the learnings from prescribed burn trials and alternate/complementary conservation activities. In 2023, Kluane National Park Reserve initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring (PAM) of bird populations in forest habitat, being an integral component of the forest health measures. ARUs are compact environmental sensors that are designed to passively record the environment (@aru-overview), capturing vocalizing species like birds and amphibians, which is growing in use across the globe (@lots-of-pam). This technology enables resource managers to conduct prolonged surveys with minimal human interference. The subsequent data collected by these units contribute valuable information to ecological integrity metrics such as species richness, diversity, occupancy, and trends over time. This data aids decision-making and management within the Park. Given the rapid and ease of accumulating large amounts of data from these units, maintaining a high standard of data integrity is paramount to ensure future data interoperability and sharing. [WildTrax](https://www.wildtrax.ca) is an online platform developed by the [Alberta Biodiversity Monitoring Institute (**ABMI**)](https://abmi.ca) for users of environmental sensors to help addresses these big data challenges by providing solutions to standardize, harmonize, and share data.
 
 The objectives of this report are to:
 
@@ -128,11 +127,11 @@ leaflet() %>%
   
 ```
 
-Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (treatment, e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARU were rotated across locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in Figure 1 (@fig-locs). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawk, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established in late May and Jarvis River in June.
+Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (treatment, e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). 3 locations were within the area being considered for a prescribed fire in future seasons. ARU were deployed across locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in Figure 1 (@fig-locs). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawk, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established in late May and Jarvis River in June.
 
 ![Downloading a list of recordings from WildTrax](download-recs.png){#fig-download-recs}
 
-A total of `r count_recs` recordings were collected (see @fig-recs-collect). Data were transferred via SD cards to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
+A total of `r count_recs` recordings were collected. Data were transferred via SD cards to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
 
 ```{r}
 #| warning: false
@@ -227,15 +226,14 @@ recs_plot <- all_recs |>
   rename("Day of Year" = julian) |>
   group_by(Location, `Day of Year`) |>
   add_tally() |>
-  ungroup() |>
-  ggplot(aes(x = recording_date_time, y = n, colour = Location)) +
-  geom_point(size = 2) +
-  geom_jitter() +
-  theme_bw() +
-  scale_x_datetime(labels = date_format("%b %Y")) +
-  scale_colour_viridis_d() +
-  ylab('Count of recordings per day of year') +
-  xlab('Date')
+  ungroup()
+  # filter(!`Day of Year` < 150) |>
+  # ggplot(aes(x = recording_date_time, y = n, colour = Location)) +
+  # geom_point(size = 2) +
+  # theme_bw() +
+  # scale_colour_viridis_d() +
+  # ylab('Count of recordings per day of year') +
+  # xlab('Date')
   #scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
   
 ```
@@ -247,12 +245,10 @@ recs_plot <- all_recs |>
 #| message: false
 #| include: true
 #| results: hide
-#| fig-align: center
-#| fig-cap: Recordings collected for each location over each survey year
-#| label: fig-recs-collect
-#| cap-location: margin
+#| label: recs-plot
+#| tbl-cap: Recordings collected
 
-recs_plot
+kable(recs_plot)
 
 ```
 
@@ -348,7 +344,7 @@ kable(knpr_tasks)
 
 # Results
 
-Three locations (`AC-C1`, `AC-T3`, `JR-BAT`) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware. See the {@discussion} for more information. A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
+Three locations (`AC-C1`, `AC-T3`, `JR-BAT`) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see #discussion). A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
 
 ```{r}
 #| warning: false
@@ -510,7 +506,8 @@ knpr_main |>
   add_tally() |>
   ungroup() |>
   filter(!n < 3) |>
-  ggplot(aes(x = as.POSIXct(recording_date_time), y = species_code, fill = `Nesting habitat`)) + 
+  mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
+  ggplot(aes(x = recording_date_time, y = species_code, fill = `Nesting habitat`)) + 
   geom_density_ridges(alpha = 0.2) +
   scale_fill_viridis_d() +
   theme_bw() +
