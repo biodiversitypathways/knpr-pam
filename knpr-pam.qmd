@@ -9,6 +9,7 @@ theme: cosmo
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: 
   - "Alex MacPhail"
+  - "Camila Hurtado"
   - "Jeni Rudisill"
 editor: visual
 bibliography: references.bib
@@ -33,7 +34,7 @@ github: https://github.com/ABbiodiversity/knpr-pam
 
 library(tidyverse)
 library(leaflet)
-library(wildRtrax)
+library(wildrtrax)
 library(unmarked)
 library(sf)
 library(terra)
@@ -64,10 +65,15 @@ load('knpr.RData')
 #| eval: false
 #| include: true
 
+knpr_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
+  filter(grepl('Kluane', project)) |>
+  select(project_id) |>
+  pull()
+
 knpr_main <-
   map_dfr(
-    .x = 2317,
-    .f = ~ wildRtrax::wt_download_report(
+    .x = knpr_projects,
+    .f = ~ wildrtrax::wt_download_report(
       project_id = .x,
       sensor_id = "ARU",
       weather_cols = T,
@@ -82,7 +88,6 @@ Passive acoustic monitoring has proven to be a valuable tool for studying vocali
 
 ::: {style="background-color: #f4f4f4; padding: 20px;"}
 This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, feel free to reach out to the authors or refer to the publication date.
-
 :::
 
 # Land Acknowledgement
@@ -119,9 +124,16 @@ The objectives of this report are to:
 #| fig-cap: ARU survey locations
 #| label: fig-locs
 
+palette <- colorFactor(palette = "viridis", domain = knpr_locs$type)
+
 leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(data = knpr_locs, popup = paste("Location:", knpr_locs$location, "<br>")) %>%
+  addCircleMarkers(
+    data = knpr_locs,
+    color = ~palette(type),  # Color based on "type"
+    popup = ~paste("Location:", knpr_locs$location, "<br>"),
+    radius = 5  # Adjust marker size
+  ) %>%
   addMeasure() %>%
   addMiniMap(position = "bottomleft")
   
@@ -145,6 +157,7 @@ knpr_locs <- knpr_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(location, latitude, longitude, year) |>
   distinct() |>
+  mutate(type = case_when(grepl('BAT',location) ~ "Bat", TRUE ~ "Bird")) |>
   sf::st_as_sf(coords = c("longitude","latitude"), crs = 4326)
 
 repeats <- knpr_locs |>
@@ -152,7 +165,6 @@ repeats <- knpr_locs |>
   group_by(location) |>
   summarise(count = n_distinct(year)) |>
   ungroup() |>
-  filter(count == 5) |>
   select(location) |>
   distinct() |>
   pull()
@@ -172,10 +184,14 @@ locs_summary <- knpr_locs |>
   pivot_wider(names_from = year, values_from = value, values_fill = 0) |>
   mutate(Site = case_when(grepl('AC-*',location) ~ "Alder Creek",
                           grepl('JR-*',location) ~ "Jarvis River",
+                          grepl('BAT',location) ~ "Bat Monitoring",
+                          grepl('^Q',location) ~ "Quill Creek",
+                          grepl('^A[0-9]+',location) ~ "Auriol Trail",
                           TRUE ~ NA_character_),
          Treatment = case_when(str_detect(location, '-T') ~ "Prescribed Burn",
                                str_detect(location, '-C') ~ "Control",
-                               TRUE ~ NA_character_)) |>
+                               grepl('BAT',location) ~ "Bat Monitoring",
+                               TRUE ~ "Ecological Integrity")) |>
   rename('Location' = location)
 
 ```
@@ -201,8 +217,10 @@ kable(locs_summary, caption = "Location summary for ARUs deployed")
 #| include: true
 #| results: hide
 
+#cirrus_knpr_recs <- wt_audio_scanner("/Volumes/BUpublic/KNPR/2023/V1/NOTBATS", file_type = "all", extra_cols = F)
+
 all_recs <- cirrus_knpr_recs %>%
-  select(location, recording_date_time, length_seconds) %>%
+  select(location, recording_date_time) %>%
   distinct() %>%
   drop_na() %>%
   mutate(julian = yday(recording_date_time),
@@ -265,13 +283,16 @@ Data processing took place in [WildTrax](https://wildtrax.ca) with the goal to d
 #| label: tbl-verified
 #| tbl-cap: Proportion of tags verified
 
-all_tags <- knpr_main |> 
+all_tags <- knpr_main |>
+  filter(project_id %in% c(3163,3178,2317)) |>
   tally() |>
   pull()
 
 verified_tags <- knpr_main |>
+  filter(project_id %in% c(3163,3178,2317)) |>
   group_by(tag_is_verified) |>
   tally() |>
+  ungroup() |>
   mutate(Proportion = round(n / all_tags,4)*100) |>
   rename("Count" = n) |>
   rename("Tag is verified" = tag_is_verified)
@@ -337,14 +358,20 @@ task_info <- fs::dir_ls('tasks', regexp = "*.csv") |>
 #| label: tbl-loc-repl
 #| tbl-cap: Tasks and unit replication for listening
 
-kable(knpr_tasks)
+#kable(knpr_tasks)
 ```
 
-------------------------------------------------------------------------
+## Ultrasonic Methods
+
+Full-spectrum recordings were collected at each station and processed using two automatic classifiers: Kaleidoscope's Bats of North America 5.4.0 classifier and Sonobat 3.0's Northwestern British Columbia classifier. The classifier settings are detailed in Appendix A. Based on species ranges and prior detections (Slough et al., 2022), manual identification using Kaleidoscope results was limited to Big Brown Bats (*Eptesicus fuscus*), Eastern Red Bats (*Lasiurus borealis*), Silver-haired Bats (*Lasionycteris noctivagans*), and Little Brown Bats (*Myotis lucifugus*).
+
+All recordings assigned a species by Kaleidoscope or Sonobat were further reviewed and manually vetted. Species identifications were compared against call parameters described by Slough et al. (2022), Solick (2022), and Szewczak (2018) and adhered to NABat vetting standards (Reichert et al., 2018).
 
 # Results
 
-Three locations (`AC-C1`, `AC-T3`, `JR-BAT`) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see #discussion). A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
+### Birds
+
+In 2023, three locations (`AC-C1`, `AC-T3`) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see #discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
 
 ```{r}
 #| warning: false
@@ -359,7 +386,8 @@ spp_rich_location <- knpr_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(location, year, species_code) |>
   distinct() |>
-  group_by(location, year) |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
+  group_by(Site, year) |>
   summarise(species_count = n_distinct(species_code)) |>
   ungroup()
 
@@ -384,15 +412,15 @@ distinct_spp <- knpr_main |>
 #| cap-location: margin
 
 spp_rich_location |>
-  filter(!is.na(location)) |>
-  ggplot(aes(x=reorder(location,-species_count), y=species_count, fill=location)) +
+  ggplot(aes(x=reorder(Site,-species_count), y=species_count, fill=Site)) +
   geom_line() +
   geom_bar(stat = "identity") +
   theme_bw() +
   scale_fill_viridis_d() +
   scale_y_continuous(breaks = pretty_breaks()) +
   xlab('Location') + ylab('Species richness') +
-  ggtitle('Species richness at each location surveyed for each year')
+  ggtitle('Species richness at each location surveyed for each year') +
+  coord_flip()
 
 ```
 
@@ -434,16 +462,16 @@ year_effort <- knpr_main |>
 
 #FOR NEXT YEAR
 
-# spp_rich_annual_plot <- spp_rich_annual |>
-#   inner_join(year_effort) |>
-#   ggplot(aes(x = year)) +
-#   geom_line(aes(y = species_count), size = 1) +
-#   geom_bar(aes(y = count_of_locs * 5), alpha = 0.7, stat = "identity") +  # Adjust the multiplier for better visualization
-#   scale_y_continuous(name = "Species Count", sec.axis = sec_axis(~./5, name = "Count of Locations")) +
-#   labs(x = "Year") +
-#   theme_bw()
-# 
-# spp_rich_annual_plot
+spp_rich_annual_plot <- spp_rich_annual |>
+   inner_join(year_effort) |>
+   ggplot(aes(x = year)) +
+   geom_line(aes(y = species_count), size = 1) +
+   geom_bar(aes(y = count_of_locs * 5), alpha = 0.7, stat = "identity") +  # Adjust the multiplier for better visualization
+   scale_y_continuous(name = "Species Count", sec.axis = sec_axis(~./5, name = "Count of Locations")) +
+   labs(x = "Year") +
+   theme_bw()
+
+spp_rich_annual_plot
 
 ```
 
@@ -461,6 +489,10 @@ guilds <- read_csv("bird_guilds.csv") |>
   filter(habitat_nesting %in% c("CW","MW","OW","TSS"))
 
 kable(knpr_main |> 
+        group_by(species_code) |>
+        add_tally() |>
+        ungroup() |>
+        filter(n >= 10) |>
         select(species_code, species_common_name) |> 
         distinct() |> 
         filter(!grepl('^UN', species_code), !species_code == "NONE") |>
@@ -506,8 +538,10 @@ knpr_main |>
   add_tally() |>
   ungroup() |>
   filter(!n < 3) |>
+  arrange(species_code) |>
   mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
-  ggplot(aes(x = recording_date_time, y = species_code, fill = `Nesting habitat`)) + 
+  mutate(species_code = factor(species_code, levels = sort(unique(species_code)))) |>
+  ggplot(aes(x = julian, y = species_code, fill = `Nesting habitat`)) + 
   geom_density_ridges(alpha = 0.2) +
   scale_fill_viridis_d() +
   theme_bw() +
@@ -516,7 +550,98 @@ knpr_main |>
 
 ```
 
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| results: hide
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: Relative abundance of species on Auriol Trial
+#| label: relative-abundance-auriol
+#| cap-location: margin
+
+# Calculate the total count per year
+total_per_year <- knpr_main |>
+  group_by(species_code) |>
+  add_tally() |>
+  ungroup() |>
+  filter(n >= 10) |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
+  filter(Site == "Auriol Trail") |>
+  mutate(Year = year(recording_date_time)) |>
+  wt_replace_tmtt(calc = "round") |>
+  mutate(individual_count = as.numeric(individual_count)) |>
+  filter(!is.na(individual_count)) |>
+  group_by(Year) |>
+  summarise(Total_Individuals = sum(individual_count, na.rm = TRUE))
+
+# Join the total counts with the long data and calculate relative abundance
+relative_abundance <- knpr_main |>
+  mutate(Year = year(recording_date_time)) |>
+  left_join(total_per_year, by = "Year") |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
+  filter(Site == "Auriol Trail") |>
+  wt_replace_tmtt(calc = "round") |>
+  mutate(individual_count = as.numeric(individual_count)) |>
+  filter(!is.na(individual_count)) |>
+  mutate(Relative_Abundance = individual_count / Total_Individuals)
+
+# Optionally, group by location and site if needed
+relative_abundance_by_site <- relative_abundance |>
+  group_by(location, Site, Year) |>
+  summarise(Total_Relative_Abundance = sum(Relative_Abundance)) |>
+  mutate(Year = as.factor(Year))
+
+ggplot(relative_abundance_by_site, aes(x = Year, y = Total_Relative_Abundance, colour = location, group = location)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "Relative Abundance of Birds On Auriol Trail Across Sites and Time",
+    x = "Year",
+    y = "Relative Abundance",
+    color = "Location"
+  ) +
+  scale_colour_viridis_d() +
+  theme_bw()
+
+# Optionally, group by location and site if needed
+relative_abundance_by_site2 <- relative_abundance |>
+  select(location, Site, Year, Relative_Abundance) |>
+  distinct()
+  
+ggplot(relative_abundance_by_site2, aes(x = Year, y = Relative_Abundance)) +
+  geom_smooth(method = "loess", se = TRUE) +  # Add a smoothed line
+  labs(
+    title = "Relative Abundance Over Time at Auriol Site",
+    x = "Year",
+    y = "Relative Abundance"
+  ) +
+  theme_minimal()
+
+
+```
+
+### Ultrasonic data
+
+The detectors ran for a total of 35 recorder nights and in total collected 8794 files. Of these 8776 were classified as noise files, with no distinguishable bat present. Of the remaining recordings the only species identified was little brown bats (6, Table 2). Recordings that had no diagnostic criteria for any species were classified as either 40kHz Myotis (calls with consistent minimum frequency with an Fc=35-45kHz) or high frequency group (bat calls with Fc\>35kHz). No low frequency calls were recorded at either site. Due to the absence of any diagnostic calls for species other than the little brown bat the 40kHz Myotis and High Frequency recordings were likely produced by little brown bats.
+
+Table 2: Results of manually classified recordings collected at two station in Kluane National Park in 2024.
+
+| Species Group/Species | Code   | AC-Bats | JR-Bats | Total    |
+|-----------------------|--------|---------|---------|----------|
+| Little Brown Bat      | MYLU   | 6       | 0       | **6**    |
+| 40kHz Myotis          | 40KMyo | 9       | 1       | **10**   |
+| High Frequency Bats   | HighF  | 2       | 0       | **2**    |
+| Noise                 | NOISE  | 1623    | 7153    | **8776** |
+| **Total Bats**        |        | **17**  | **1**   |          |
+
 # Discussion
+
+## Improvements to EI monitoring for birds
 
 Given the declining health of the forests in the Park, the observed low levels of species richness and diversity are unsurprising. Following prescribed burns, it is expected that the habitat will gradually support the emergence of new guilds and species as part of its natural regeneration process. Monitoring these locations will allow for the tracking of these changes over time. While this project has yielded promising results, there are several operational improvements necessary to fully realize its potential moving into next season. Some key recommendations include:
 
@@ -528,6 +653,50 @@ Given the declining health of the forests in the Park, the observed low levels o
 
 -   **ARU deployment in prescribed burns**: Deploying at least one ARU per 0.5 hectares burned ensures thorough monitoring of post-burn effects on bird populations. This density of ARU deployment generates detailed data on how bird populations respond to habitat changes following prescribed burns, facilitating the understanding of ecosystem resilience and recovery processes. By monitoring post-burn effects on bird populations, researchers can inform conservation strategies aimed at mitigating the impact of habitat disturbance. Given the guild changes seen in species communities post-burn it may be necessary to survey burned areas only every 1, 3 and 5-years post-burn along the length of the program.
 
+-   **Extending analyses**: With the accumulation of additional data, it is recommended to conduct more sophisticated analyses, including utilizing dynamic occupancy models to effectively capture the fluctuations in species occupancy across sites over time. Exploring models aimed at examining the resilience of both individual species and community structure is suggested.
+
+### Recommendations for ultrasonic deployments
+
+For future deployments, it is recommended to ensure recorder settings align with the NABat protocol (Loeb et al., 2015). Some recordings were collected during daytime hours, suggesting the recording schedule included non-target hours. NABat standards advise recording only from 30 minutes before sunset to 30 minutes after sunrise.
+
+Both deployment locations were positioned near sources of ultrasonic noise (Figure 1), likely contributing to the large number of noise files in the analysis. Additionally, some noise files contained potential rodent vocalizations, which may be worth noting for future analyses. If feasible, relocating the sites away from ultrasonic noise sources is recommended. Alternatively, adjusting the recorder gain settings could help reduce noise file occurrences. In 2024, the gain was set to 12; reducing it to 0 could significantly decrease noise files and extend recorder battery life. While lower gain settings may reduce the detection of quieter species, the lack of evidence for these species this year suggests the benefits would outweigh this limitation.
+
+![Figure 1: Examples of environmental ultrasonic noise in AC-Bats and JR-Bats sites in 2024 deployments](images/clipboard-2946309762.png)
+
 -   **Bat monitoring enhancements**: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will also optimize the total amount of data volume collected and battery usage. It is also recommended to programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The [North American Bat Monitoring Program](https://www.nabatmonitoring.org/) offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.
 
--   **Extending analyses**: With the accumulation of additional data, it is recommended to conduct more sophisticated analyses, including utilizing dynamic occupancy models to effectively capture the fluctuations in species occupancy across sites over time. Exploring models aimed at examining the resilience of both individual species and community structure is suggested.
+## Appendix A: Settings used for classifiers
+
+### Kaleidoscope Settings
+
+**Version:** 5.6.8
+
+#### [Global]
+
+- **Mode:** 0  
+- **Threads:** 24  
+
+#### [Classifier]
+
+- **Classifier:** classifiers-Bats_of_North_America_5.4.0  
+- **ROC:** 2  
+
+**Enabled Species:**
+
+- EPTFUS: 1  
+- LASBOR: 1  
+- LASNOC: 1  
+- MYOLUC: 1  
+
+#### [Analysis]
+- **Frequency Minimum:** 8  
+- **Frequency Maximum:** 120  
+- **Duration Minimum:** 2  
+- **Duration Maximum:** 40  
+- **Maximum Gap:** 500  
+- **Minimum Calls:** 1  
+- **Filter ZC:** 1  
+- **Remove DC:** 0  
+- **CF Minimum Frequency:** 0  
+- **CF Maximum Frequency:** 0  
+- **CF Maximum Bandwidth:** 0 

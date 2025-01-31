@@ -2,13 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alex MacPhail">
+<meta name="author" content="Camila Hurtado">
 <meta name="author" content="Jeni Rudisill">
-<meta name="dcterms.date" content="2024-05-30">
+<meta name="dcterms.date" content="2025-01-31">
 
 <title>Report on the use of passive acoustic monitoring in Kluane National Park Reserve</title>
 <style>
@@ -27,6 +28,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -57,14 +59,14 @@ div.csl-indent {
 <link href="knpr-pam_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <link href="knpr-pam_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
 <script src="knpr-pam_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="knpr-pam_files/libs/jquery-1.12.4/jquery.min.js"></script>
+<script src="knpr-pam_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="knpr-pam_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="knpr-pam_files/libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="knpr-pam_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
 <script src="knpr-pam_files/libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="knpr-pam_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="knpr-pam_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="knpr-pam_files/libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="knpr-pam_files/libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <link href="knpr-pam_files/libs/leaflet-measure-2.1.7/leaflet-measure.css" rel="stylesheet">
 <script src="knpr-pam_files/libs/leaflet-measure-2.1.7/leaflet-measure.min.js"></script>
 <link href="knpr-pam_files/libs/leaflet-minimap-3.3.1/Control.MiniMap.min.css" rel="stylesheet">
@@ -89,13 +91,28 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#data-collection-and-management" id="toc-data-collection-and-management" class="nav-link" data-scroll-target="#data-collection-and-management">Data collection and management</a></li>
   <li><a href="#community-data-processing" id="toc-community-data-processing" class="nav-link" data-scroll-target="#community-data-processing">Community data processing</a></li>
+  <li><a href="#ultrasonic-methods" id="toc-ultrasonic-methods" class="nav-link" data-scroll-target="#ultrasonic-methods">Ultrasonic Methods</a></li>
   </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#birds" id="toc-birds" class="nav-link" data-scroll-target="#birds">Birds</a></li>
+  <li><a href="#ultrasonic-data" id="toc-ultrasonic-data" class="nav-link" data-scroll-target="#ultrasonic-data">Ultrasonic data</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul class="collapse">
+  <li><a href="#improvements-to-ei-monitoring-for-birds" id="toc-improvements-to-ei-monitoring-for-birds" class="nav-link" data-scroll-target="#improvements-to-ei-monitoring-for-birds">Improvements to EI monitoring for birds</a>
+  <ul class="collapse">
+  <li><a href="#recommendations-for-ultrasonic-deployments" id="toc-recommendations-for-ultrasonic-deployments" class="nav-link" data-scroll-target="#recommendations-for-ultrasonic-deployments">Recommendations for ultrasonic deployments</a></li>
+  </ul></li>
+  <li><a href="#appendix-a-settings-used-for-classifiers" id="toc-appendix-a-settings-used-for-classifiers" class="nav-link" data-scroll-target="#appendix-a-settings-used-for-classifiers">Appendix A: Settings used for classifiers</a>
+  <ul class="collapse">
+  <li><a href="#kaleidoscope-settings" id="toc-kaleidoscope-settings" class="nav-link" data-scroll-target="#kaleidoscope-settings">Kaleidoscope Settings</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
 <main class="content page-columns page-full" id="quarto-document-content">
 
@@ -112,6 +129,7 @@ div.csl-indent {
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
              <p>Alex MacPhail </p>
+             <p>Camila Hurtado </p>
              <p>Jeni Rudisill </p>
           </div>
   </div>
@@ -119,7 +137,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 30, 2024</p>
+      <p class="date">January 31, 2025</p>
     </div>
   </div>
   
@@ -127,16 +145,18 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
-<div class="quarto-figure quarto-figure-center" style="float:left`;">
+
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="kluane-banner.jpg" class="img-fluid figure-img" alt="Photo of a glacier"></p>
+<p><img src="kluane-banner.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="float:left`;" alt="Photo of a glacier"></p>
 </figure>
 </div>
 <section id="abstract" class="level1">
 <h1>Abstract</h1>
-<p>Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across 10 locations in 2023, participating in the national prescribed Burn protocol. ARUs detected a total of 16 species including birds and mammals. Sustained monitoring of these areas following prescribed burns, incorporating enhanced protocols for equipment functionality, as well as broader scope in recording and data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.</p>
+<p>Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) across 37 locations in 2023, participating in the national prescribed Burn protocol. ARUs detected a total of 42 species including birds and mammals. Sustained monitoring of these areas following prescribed burns, incorporating enhanced protocols for equipment functionality, as well as broader scope in recording and data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.</p>
 <div style="background-color: #f4f4f4; padding: 20px;">
 <p>This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, feel free to reach out to the authors or refer to the publication date.</p>
 </div>
@@ -163,136 +183,589 @@ div.csl-indent {
 <section id="data-collection-and-management" class="level2">
 <h2 class="anchored" data-anchor-id="data-collection-and-management">Data collection and management</h2>
 <div class="cell" data-layout-align="center">
-<div id="fig-locs" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-f3b37748d2f67450a31a" style="width:100%;height:650px;"></div>
-<script type="application/json" data-for="htmlwidget-f3b37748d2f67450a31a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[60.35861,60.355465,60.357741,60.82495,60.82495,60.806483,60.810704,60.814915],[-137.14162,-137.150033,-137.14829,-138.116595,-138.11491,-138.111839,-138.115098,-138.108141],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Location: AC-C2 <br>","Location: AC-T1 <br>","Location: AC-T2 <br>","Location: JR-C1 <br>","Location: JR-C2 <br>","Location: JR-T1 <br>","Location: JR-T2 <br>","Location: JR-T3 <br>"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMeasure","args":[{"position":"topright","primaryLengthUnit":"feet","primaryAreaUnit":"acres","activeColor":"#ABE67E","completedColor":"#C8F2BE","popupOptions":{"className":"leaflet-measure-resultpopup","autoPanPadding":[10,10]},"captureZIndex":10000,"localization":"en","decPoint":".","thousandsSep":","}]},{"method":"addMiniMap","args":[null,null,"bottomleft",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"limits":{"lat":[60.355465,60.82495],"lng":[-138.116595,-137.14162]}},"evals":[],"jsHooks":[]}</script>
-<figcaption class="figure-caption">Figure&nbsp;1: ARU survey locations</figcaption>
+<div id="fig-locs" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-1a6655d304d3cab7890b" style="width:100%;height:650px;"></div>
+<script type="application/json" data-for="htmlwidget-1a6655d304d3cab7890b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[60.35967,60.35861,60.355465,60.357741,60.82495,60.82495,60.806483,60.810704,60.814915,60.35967,60.8219,60.715483,60.715483,60.715483,60.715483,60.715483,60.715483,60.715483,60.709317,60.709317,60.709317,60.709317,60.709317,60.709317,60.709317,60.708283,60.708283,60.708283,60.708283,60.708283,60.708283,60.708283,60.7068,60.7068,60.7068,60.7068,60.7068,60.7068,60.7068,60.714167,60.714167,60.714167,60.714167,60.714167,60.714167,60.714167,60.713133,60.713133,60.713133,60.713133,60.713133,60.713133,60.713133,60.711117,60.711117,60.711117,60.711117,60.711117,60.711117,60.711117,60.709883,60.709883,60.709883,60.709883,60.709883,60.709883,60.709883,60.708667,60.708667,60.708667,60.708667,60.708667,60.708667,60.708667,60.708033,60.708033,60.708033,60.708033,60.708033,60.708033,60.708033,60.708217,60.708217,60.708217,60.708217,60.708217,60.708217,60.708217,60.709233,60.709233,60.709233,60.709233,60.709233,60.709233,60.6729,60.6694,60.6705,60.6716,60.6719,60.6709,60.669922,60.668901,60.667869,60.666386,60.667422,60.668477,60.35595,60.35861,60.355465,60.82495,60.82495,60.806483,60.810704,60.814915],[-137.14519,-137.14162,-137.150033,-137.14829,-138.116595,-138.11491,-138.111839,-138.115098,-138.108141,-137.14519,-138.10797,-137.431783,-137.431783,-137.431783,-137.431783,-137.431783,-137.431783,-137.431783,-137.46855,-137.46855,-137.46855,-137.46855,-137.46855,-137.46855,-137.46855,-137.4728,-137.4728,-137.4728,-137.4728,-137.4728,-137.4728,-137.4728,-137.476383,-137.476383,-137.476383,-137.476383,-137.476383,-137.476383,-137.476383,-137.435983,-137.435983,-137.435983,-137.435983,-137.435983,-137.435983,-137.435983,-137.440117,-137.440117,-137.440117,-137.440117,-137.440117,-137.440117,-137.440117,-137.4422,-137.4422,-137.4422,-137.4422,-137.4422,-137.4422,-137.4422,-137.446117,-137.446117,-137.446117,-137.446117,-137.446117,-137.446117,-137.446117,-137.450067,-137.450067,-137.450067,-137.450067,-137.450067,-137.450067,-137.450067,-137.454533,-137.454533,-137.454533,-137.454533,-137.454533,-137.454533,-137.454533,-137.459283,-137.459283,-137.459283,-137.459283,-137.459283,-137.459283,-137.459283,-137.463817,-137.463817,-137.463817,-137.463817,-137.463817,-137.463817,-137.3633,-137.3671,-137.364,-137.3609,-137.3663,-137.3693,-137.372275,-137.375252,-137.378221,-137.375762,-137.37292,-137.369837,-137.14195,-137.14162,-137.150033,-138.116595,-138.11491,-138.111839,-138.115098,-138.108141],5,null,null,{"interactive":true,"className":"","stroke":true,"color":["#440154","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#440154","#440154","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#440154","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#440154","#440154","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725","#FDE725"],"fillOpacity":0.2},null,null,["Location: AC-BAT <br>","Location: AC-C2 <br>","Location: AC-T1 <br>","Location: AC-T2 <br>","Location: JR-C1 <br>","Location: JR-C2 <br>","Location: JR-T1 <br>","Location: JR-T2 <br>","Location: JR-T3 <br>","Location: AC-BAT <br>","Location: JR-BAT <br>","Location: A1 <br>","Location: A1 <br>","Location: A1 <br>","Location: A1 <br>","Location: A1 <br>","Location: A1 <br>","Location: A1 <br>","Location: A10 <br>","Location: A10 <br>","Location: A10 <br>","Location: A10 <br>","Location: A10 <br>","Location: A10 <br>","Location: A10 <br>","Location: A11 <br>","Location: A11 <br>","Location: A11 <br>","Location: A11 <br>","Location: A11 <br>","Location: A11 <br>","Location: A11 <br>","Location: A12 <br>","Location: A12 <br>","Location: A12 <br>","Location: A12 <br>","Location: A12 <br>","Location: A12 <br>","Location: A12 <br>","Location: A2 <br>","Location: A2 <br>","Location: A2 <br>","Location: A2 <br>","Location: A2 <br>","Location: A2 <br>","Location: A2 <br>","Location: A3 <br>","Location: A3 <br>","Location: A3 <br>","Location: A3 <br>","Location: A3 <br>","Location: A3 <br>","Location: A3 <br>","Location: A4 <br>","Location: A4 <br>","Location: A4 <br>","Location: A4 <br>","Location: A4 <br>","Location: A4 <br>","Location: A4 <br>","Location: A5 <br>","Location: A5 <br>","Location: A5 <br>","Location: A5 <br>","Location: A5 <br>","Location: A5 <br>","Location: A5 <br>","Location: A6 <br>","Location: A6 <br>","Location: A6 <br>","Location: A6 <br>","Location: A6 <br>","Location: A6 <br>","Location: A6 <br>","Location: A7 <br>","Location: A7 <br>","Location: A7 <br>","Location: A7 <br>","Location: A7 <br>","Location: A7 <br>","Location: A7 <br>","Location: A8 <br>","Location: A8 <br>","Location: A8 <br>","Location: A8 <br>","Location: A8 <br>","Location: A8 <br>","Location: A8 <br>","Location: A9 <br>","Location: A9 <br>","Location: A9 <br>","Location: A9 <br>","Location: A9 <br>","Location: A9 <br>","Location: Q1 <br>","Location: Q10 <br>","Location: Q11 <br>","Location: Q12 <br>","Location: Q2 <br>","Location: Q3 <br>","Location: Q4 <br>","Location: Q5 <br>","Location: Q6 <br>","Location: Q7 <br>","Location: Q8 <br>","Location: Q9 <br>","Location: AC-C1 <br>","Location: AC-C2 <br>","Location: AC-T1 <br>","Location: JR-C1 <br>","Location: JR-C2 <br>","Location: JR-T1 <br>","Location: JR-T2 <br>","Location: JR-T3 <br>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMeasure","args":[{"position":"topright","primaryLengthUnit":"feet","primaryAreaUnit":"acres","activeColor":"#ABE67E","completedColor":"#C8F2BE","popupOptions":{"className":"leaflet-measure-resultpopup","autoPanPadding":[10,10]},"captureZIndex":10000,"localization":"en","decPoint":".","thousandsSep":","}]},{"method":"addMiniMap","args":[null,null,"bottomleft",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"limits":{"lat":[60.355465,60.82495],"lng":[-138.116595,-137.14162]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: ARU survey locations
+</figcaption>
 </figure>
 </div>
 </div>
-<p>Data were collected during spring and summer of 2023. A total of 10 locations were surveyed, encompassing sites at Alder Creek (<code>AC-</code>) and Jarvis River (<code>JR-</code>), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (treatment, e.g.&nbsp;<code>AC-T1</code>), with 2 locations serving as unburned controls (e.g.&nbsp;<code>JR-C1</code>). 3 locations were within the area also being considered for a prescribed fire in future seasons (2025 - ). ARU were deployed across locations throughout the season, as outlined in Table 1 (<a href="#tbl-loc-summary">Table&nbsp;1</a>) and depicted in Figure 1 (<a href="#fig-locs">Figure&nbsp;1</a>). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of 6.27 +/- 5.66 days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawk, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established in late May and Jarvis River in June.</p>
-<div id="fig-download-recs" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="download-recs.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: Downloading a list of recordings from WildTrax</figcaption>
+<p>Data were collected during spring and summer of 2015. A total of 37 locations were surveyed, encompassing sites at Alder Creek (<code>AC-</code>) and Jarvis River (<code>JR-</code>), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2024 (treatment, e.g.&nbsp;<code>AC-T1</code>), with 2 locations serving as unburned controls (e.g.&nbsp;<code>JR-C1</code>). 3 locations were within the area also being considered for a prescribed fire in future seasons (2025 - ). ARU were deployed across locations throughout the season, as outlined in Table 1 (<a href="#tbl-loc-summary" class="quarto-xref">Table&nbsp;1</a>) and depicted in Figure 1 (<a href="#fig-locs" class="quarto-xref">Figure&nbsp;1</a>). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of 5.4 +/- 2.12 days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45. Evening recordings targeted species such as Varied Thrush, Common Nighthawk, and owls. Station installations remained constant throughout the monitoring period, with Alder Creek stations established in late May and Jarvis River in June.</p>
+<div id="fig-download-recs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-download-recs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="download-recs.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-download-recs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Downloading a list of recordings from WildTrax
+</figcaption>
 </figure>
 </div>
-<p>A total of 191 recordings were collected. Data were transferred via SD cards to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of <code>LOCATION_DATETIME</code>, such as <code>AC-T1_20230625_053500.wav</code>. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform’s Recording tab, accessible under Manage &gt; Download list of recordings (see <a href="#fig-download-recs">Figure&nbsp;2</a>).</p>
+<p>A total of 206 recordings were collected. Data were transferred via SD cards to the University of Alberta in Edmonton, where they are redundantly stored on a server known as Cirrus. The recordings were standardized to ensure adherence to the naming convention of <code>LOCATION_DATETIME</code>, such as <code>AC-T1_20230625_053500.wav</code>. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform’s Recording tab, accessible under Manage &gt; Download list of recordings (see <a href="#fig-download-recs" class="quarto-xref">Figure&nbsp;2</a>).</p>
 <div class="cell">
+<div id="tbl-loc-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-loc-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Locations surveyed across years. Ones indicated a deployment in that year for that location. Note the absence of AC-C1, AC-T3, JR-BAT which failed to collect data.
+</figcaption>
+<div aria-describedby="tbl-loc-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-loc-summary" class="anchored">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;1: Locations surveyed across years. Ones indicated a deployment in that year for that location. Note the absence of AC-C1, AC-T3, JR-BAT which failed to collect data.</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<caption>Location summary for ARUs deployed</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Location</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">2023</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Site</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Treatment</th>
+<th style="text-align: left;">Location</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">2015</th>
+<th style="text-align: right;">2017</th>
+<th style="text-align: right;">2020</th>
+<th style="text-align: right;">2021</th>
+<th style="text-align: right;">2022</th>
+<th style="text-align: right;">2023</th>
+<th style="text-align: right;">2024</th>
+<th style="text-align: left;">Site</th>
+<th style="text-align: left;">Treatment</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">A1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A10</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A11</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A12</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A3</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A4</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A5</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A6</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A7</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A8</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A9</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Auriol Trail</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q10</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q11</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q12</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q3</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q4</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q5</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q6</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q7</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q8</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q9</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Quill Creek</td>
+<td style="text-align: left;">Ecological Integrity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AC-BAT</td>
+<td style="text-align: left;">Bat</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Alder Creek</td>
+<td style="text-align: left;">Bat Monitoring</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">AC-C2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Alder Creek</td>
 <td style="text-align: left;">Control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">AC-T1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Alder Creek</td>
 <td style="text-align: left;">Prescribed Burn</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">AC-T2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: left;">Alder Creek</td>
 <td style="text-align: left;">Prescribed Burn</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">JR-C1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Jarvis River</td>
 <td style="text-align: left;">Control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">JR-C2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Jarvis River</td>
 <td style="text-align: left;">Control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">JR-T1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Jarvis River</td>
+<td style="text-align: left;">Prescribed Burn</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">JR-T2</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Jarvis River</td>
 <td style="text-align: left;">Prescribed Burn</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">JR-T2</td>
+<td style="text-align: left;">JR-T3</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Jarvis River</td>
 <td style="text-align: left;">Prescribed Burn</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">JR-T3</td>
+<td style="text-align: left;">JR-BAT</td>
+<td style="text-align: left;">Bat</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">Jarvis River</td>
-<td style="text-align: left;">Prescribed Burn</td>
+<td style="text-align: left;">Bat Monitoring</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AC-C1</td>
+<td style="text-align: left;">Bird</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Alder Creek</td>
+<td style="text-align: left;">Control</td>
 </tr>
 </tbody>
 </table>
 </div>
-
-
+</div>
+</figure>
 </div>
 </div>
 </section>
 <section id="community-data-processing" class="level2">
 <h2 class="anchored" data-anchor-id="community-data-processing">Community data processing</h2>
-<p>Data processing took place in <a href="https://wildtrax.ca">WildTrax</a> with the goal to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location surveyed, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see <a href="#tbl-loc-repl">Table&nbsp;4</a>). Four recordings will ensure that we have the minimum number of samples for a simple occupancy analysis (<span class="citation" data-cites="mackenzie2002estimating">Darryl I. MacKenzie et al. (<a href="#ref-mackenzie2002estimating" role="doc-biblioref">2002</a>)</span> and <span class="citation" data-cites="imperfect-occu">Darryl I. MacKenzie et al. (<a href="#ref-imperfect-occu" role="doc-biblioref">2003</a>)</span>). Tags are made using count-removal (see <span class="citation" data-cites="farnsworth2002removal">Farnsworth et al. (<a href="#ref-farnsworth2002removal" role="doc-biblioref">2002</a>)</span>, <span class="citation" data-cites="time-removal">Sólymos et al. (<a href="#ref-time-removal" role="doc-biblioref">2018</a>)</span>) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT (‘too many to tag’) flag was used (see <a href="#tbl-tmtt">Table&nbsp;3</a>). 4% of the total tags were TMTT but were subsequently converted to numeric using <code>wildRtrax::wt_replace_tmtt</code>. We also verified that all tags that were created were checked by a second observer (n = 98.64%) to ensure accuracy of detections (see <a href="#tbl-verified">Table&nbsp;2</a>). Amphibian abundance was estimated at the time of first detection using the <a href="https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program">North American Amphibian Monitoring Program</a> with abundance of species being estimated on the scale of “calling intensity index” (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the <a href="https://abbiodiversity.github.io/wildRtrax/">wildRtrax</a> package is use to download the data into a standard format prepared for analysis. The <code>wt_download_report</code> function downloads the data directly to a R framework for easy manipulation (see <a href="https://abbiodiversity.github.io/wildRtrax/articles/apis.html">wildRtrax APIs</a>).</p>
+<p>Data processing took place in <a href="https://wildtrax.ca">WildTrax</a> with the goal to describe the acoustic community of species heard at locations while choosing a large enough subset of recordings for analyses. To ensure balanced replication, for each location surveyed, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see <a href="#tbl-loc-repl" class="quarto-xref">Table&nbsp;4</a>). Four recordings will ensure that we have the minimum number of samples for a simple occupancy analysis (<span class="citation" data-cites="mackenzie2002estimating">Darryl I. MacKenzie et al. (<a href="#ref-mackenzie2002estimating" role="doc-biblioref">2002</a>)</span> and <span class="citation" data-cites="imperfect-occu">Darryl I. MacKenzie et al. (<a href="#ref-imperfect-occu" role="doc-biblioref">2003</a>)</span>). Tags are made using count-removal (see <span class="citation" data-cites="farnsworth2002removal">Farnsworth et al. (<a href="#ref-farnsworth2002removal" role="doc-biblioref">2002</a>)</span>, <span class="citation" data-cites="time-removal">Sólymos et al. (<a href="#ref-time-removal" role="doc-biblioref">2018</a>)</span>) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT (‘too many to tag’) flag was used (see <a href="#tbl-tmtt" class="quarto-xref">Table&nbsp;3</a>). 0% of the total tags were TMTT but were subsequently converted to numeric using <code>wildRtrax::wt_replace_tmtt</code>. We also verified that all tags that were created were checked by a second observer (n = 2.58%) to ensure accuracy of detections (see <a href="#tbl-verified" class="quarto-xref">Table&nbsp;2</a>). Amphibian abundance was estimated at the time of first detection using the <a href="https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program">North American Amphibian Monitoring Program</a> with abundance of species being estimated on the scale of “calling intensity index” (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the <a href="https://abbiodiversity.github.io/wildRtrax/">wildRtrax</a> package is use to download the data into a standard format prepared for analysis. The <code>wt_download_report</code> function downloads the data directly to a R framework for easy manipulation (see <a href="https://abbiodiversity.github.io/wildRtrax/articles/apis.html">wildRtrax APIs</a>).</p>
 <div class="cell">
+<div id="tbl-verified" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-verified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Proportion of tags verified
+</figcaption>
+<div aria-describedby="tbl-verified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-verified" class="anchored">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;2: Proportion of tags verified</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Tag is verified</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Count</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Proportion</th>
+<th style="text-align: left;">Tag is verified</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: right;">Proportion</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1.36</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">822</td>
+<td style="text-align: right;">72.49</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">t</td>
-<td style="text-align: right;">145</td>
-<td style="text-align: right;">98.64</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">309</td>
+<td style="text-align: right;">27.25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.26</td>
 </tr>
 </tbody>
 </table>
 </div>
-
-
+</div>
+</figure>
 </div>
 </div>
 <div class="cell">
+<div id="tbl-tmtt" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tmtt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: TMTT tags
+</figcaption>
+<div aria-describedby="tbl-tmtt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-tmtt" class="anchored">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;3: TMTT tags</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">location</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">recording_date_time</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">species_code</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">individual_count</th>
+<th style="text-align: left;">location</th>
+<th style="text-align: left;">recording_date_time</th>
+<th style="text-align: left;">species_code</th>
+<th style="text-align: left;">individual_count</th>
 </tr>
 </thead>
 <tbody>
@@ -335,116 +808,76 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
-
-
+</div>
+</figure>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div id="tbl-loc-repl" class="anchored">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;4: Tasks and unit replication for listening</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">location</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">task_duration</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">typ</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">AC-C2</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AC-T1</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AC-T2</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">JR-C1</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">JR-C2</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">JR-T1</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">JR-T2</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">JR-T3</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;">300s</td>
-<td style="text-align: left;">Dawn</td>
-<td style="text-align: right;">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-
+<div id="tbl-loc-repl" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-loc-repl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Tasks and unit replication for listening
+</figcaption>
+<div aria-describedby="tbl-loc-repl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
 
 </div>
 </div>
-<hr>
+</figure>
+</div>
+</section>
+<section id="ultrasonic-methods" class="level2">
+<h2 class="anchored" data-anchor-id="ultrasonic-methods">Ultrasonic Methods</h2>
+<p>Full-spectrum recordings were collected at each station and processed using two automatic classifiers: Kaleidoscope’s Bats of North America 5.4.0 classifier and Sonobat 3.0’s Northwestern British Columbia classifier. The classifier settings are detailed in Appendix A. Based on species ranges and prior detections (Slough et al., 2022), manual identification using Kaleidoscope results was limited to Big Brown Bats (<em>Eptesicus fuscus</em>), Eastern Red Bats (<em>Lasiurus borealis</em>), Silver-haired Bats (<em>Lasionycteris noctivagans</em>), and Little Brown Bats (<em>Myotis lucifugus</em>).</p>
+<p>All recordings assigned a species by Kaleidoscope or Sonobat were further reviewed and manually vetted. Species identifications were compared against call parameters described by Slough et al.&nbsp;(2022), Solick (2022), and Szewczak (2018) and adhered to NABat vetting standards (Reichert et al., 2018).</p>
 </section>
 </section>
 <section id="results" class="level1 page-columns page-full">
 <h1>Results</h1>
-<p>Three locations (<code>AC-C1</code>, <code>AC-T3</code>, <code>JR-BAT</code>) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see #discussion). A total of 16 species were found. <a href="#fig-spp-rich-locs">Figure&nbsp;3</a> describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).</p>
-<div class="cell page-columns page-full" data-layout-align="center">
+<section id="birds" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="birds">Birds</h3>
+<p>In 2023, three locations (<code>AC-C1</code>, <code>AC-T3</code>) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see #discussion). In 2024, all locations successfully recorded their intended schedules. A total of 42 species were found. <a href="#fig-spp-rich-locs" class="quarto-xref">Figure&nbsp;3</a> describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-rich-locs" class="quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="figure page-columns page-full">
-<p><img src="knpr-pam_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption margin-caption">Figure&nbsp;3: Species richness at forest monitoring locations across years</figcaption>
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="knpr-pam_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Species richness at forest monitoring locations across years
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
+<div id="tbl-bird-guilds" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bird-guilds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Common forest bird species detected
+</figcaption>
+<div aria-describedby="tbl-bird-guilds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-bird-guilds" class="anchored">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Table&nbsp;5: Common forest bird species detected</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 85%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">species_code</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">species_common_name</th>
+<th style="text-align: left;">species_code</th>
+<th style="text-align: left;">species_common_name</th>
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: left;">40KMYO</td>
+<td style="text-align: left;">Various species of Myotis having a minimum frequency range between 30-45K</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AMRO</td>
+<td style="text-align: left;">American Robin</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">BOCH</td>
 <td style="text-align: left;">Boreal Chickadee</td>
@@ -454,52 +887,36 @@ div.csl-indent {
 <td style="text-align: left;">Canada Jay</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CHSP</td>
-<td style="text-align: left;">Chipping Sparrow</td>
+<td style="text-align: left;">CORA</td>
+<td style="text-align: left;">Common Raven</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CORE</td>
-<td style="text-align: left;">Common Redpoll</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">DEJU</td>
 <td style="text-align: left;">Dark-eyed Junco</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">GCKI</td>
-<td style="text-align: left;">Golden-crowned Kinglet</td>
-</tr>
 <tr class="odd">
-<td style="text-align: left;">HETH</td>
-<td style="text-align: left;">Hermit Thrush</td>
+<td style="text-align: left;">NOISE</td>
+<td style="text-align: left;">Noise</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">LEYE</td>
-<td style="text-align: left;">Lesser Yellowlegs</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PIGR</td>
 <td style="text-align: left;">Pine Grosbeak</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">PISI</td>
 <td style="text-align: left;">Pine Siskin</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">RESQ</td>
 <td style="text-align: left;">Red Squirrel</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">SWTH</td>
-<td style="text-align: left;">Swainson's Thrush</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">SWTH</td>
+<td style="text-align: left;">Swainson’s Thrush</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">VATH</td>
 <td style="text-align: left;">Varied Thrush</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">WIWA</td>
-<td style="text-align: left;">Wilson's Warbler</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">WWCR</td>
@@ -512,36 +929,187 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
-
-
+</div>
+</figure>
 </div>
 </div>
-<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-activity" class="quarto-figure quarto-figure-center anchored page-columns page-full">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="knpr-pam_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Seasonal detection activity of most commonly detected forest species
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
-<p><img src="knpr-pam_files/figure-html/fig-spp-activity-1.png" class="img-fluid figure-img" width="960"></p>
-<figcaption class="figure-caption margin-caption">Figure&nbsp;4: Seasonal detection activity of most commonly detected forest species</figcaption>
+<p><img src="knpr-pam_files/figure-html/relative-abundance-auriol-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="margin-caption">Relative abundance of species on Auriol Trial</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="knpr-pam_files/figure-html/relative-abundance-auriol-2.png" class="img-fluid figure-img" width="960"></p>
+<figcaption class="margin-caption">Relative abundance of species on Auriol Trial</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
+<section id="ultrasonic-data" class="level3">
+<h3 class="anchored" data-anchor-id="ultrasonic-data">Ultrasonic data</h3>
+<p>The detectors ran for a total of 35 recorder nights and in total collected 8794 files. Of these 8776 were classified as noise files, with no distinguishable bat present. Of the remaining recordings the only species identified was little brown bats (6, Table 2). Recordings that had no diagnostic criteria for any species were classified as either 40kHz Myotis (calls with consistent minimum frequency with an Fc=35-45kHz) or high frequency group (bat calls with Fc&gt;35kHz). No low frequency calls were recorded at either site. Due to the absence of any diagnostic calls for species other than the little brown bat the 40kHz Myotis and High Frequency recordings were likely produced by little brown bats.</p>
+<p>Table 2: Results of manually classified recordings collected at two station in Kluane National Park in 2024.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Species Group/Species</th>
+<th>Code</th>
+<th>AC-Bats</th>
+<th>JR-Bats</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Little Brown Bat</td>
+<td>MYLU</td>
+<td>6</td>
+<td>0</td>
+<td><strong>6</strong></td>
+</tr>
+<tr class="even">
+<td>40kHz Myotis</td>
+<td>40KMyo</td>
+<td>9</td>
+<td>1</td>
+<td><strong>10</strong></td>
+</tr>
+<tr class="odd">
+<td>High Frequency Bats</td>
+<td>HighF</td>
+<td>2</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr class="even">
+<td>Noise</td>
+<td>NOISE</td>
+<td>1623</td>
+<td>7153</td>
+<td><strong>8776</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Total Bats</strong></td>
+<td></td>
+<td><strong>17</strong></td>
+<td><strong>1</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
+<section id="improvements-to-ei-monitoring-for-birds" class="level2">
+<h2 class="anchored" data-anchor-id="improvements-to-ei-monitoring-for-birds">Improvements to EI monitoring for birds</h2>
 <p>Given the declining health of the forests in the Park, the observed low levels of species richness and diversity are unsurprising. Following prescribed burns, it is expected that the habitat will gradually support the emergence of new guilds and species as part of its natural regeneration process. Monitoring these locations will allow for the tracking of these changes over time. While this project has yielded promising results, there are several operational improvements necessary to fully realize its potential moving into next season. Some key recommendations include:</p>
 <ul>
 <li><p><strong>Extending survey window and recording schedule</strong>: Initiating the survey window to encompass resident and early-migrant species (early May) and extending it into the post-breeding season (mid-July) will capture a comprehensive range of species. Given the diverse migration timing and breeding patterns among species, extending the window can help to add additional species whose detectability is lower. Recording bird vocalizations throughout the deployment period at various times of the day–pre-dawn, dawn, post-dawn, pre-dusk, dusk, post-dusk, and night–enables a comprehensive assessment of bird diversity and activity patterns. Birds exhibit diverse diurnal and nocturnal behaviors, with some species being more vocal during specific times of the day or night. Continuous recording across different times allows ARUs to capture a broad spectrum of species, including those that are crepuscular or nocturnal, providing valuable insights into their behaviors and habitat preferences. This approach enhances the accuracy and completeness of bird surveys, offering valuable data for planning and management efforts.</p></li>
 <li><p><strong>Equipment maintenance and management</strong>: Given that 3 locations failed during their deployment, ensuring that equipment is properly functioning, tested and maintained prior to deployment is crucial for ensuring the success of a long-term monitoring program. The ABMI provides <a href="https://ftp-public.abmi.ca/home/publications/documents/599_ABMI_2021_TerrestrialARUandRemoteCameraTrapProtocols_ABMI.pdf">Equipment Protocols</a> to help assist in the maintenance and deployment of most <a href="https://www.wildlifeacoustics.com/">Wildlife Acoustics</a> makes and models. Most importantly, ensure the units are cleaned and inspected for physical or mechanical damage, update the firmware and conduct tests to ensure functionality in a controlled environment.</p></li>
 <li><p><strong>Localized monitoring</strong>: Consistently deploying ARUs in the same locations on the landscape year after year will help to establish robust monitoring sites. By continuously surveying specific areas, changes in bird distribution and abundance can be monitored. This approach facilitates the identification of long-term trends and enables the understanding of changes in bird populations and guilds over time, especially with planned changes with the prescribed burns. Forest structure may be lost after a burn, however ARUs can be established in the same locations using different deployment methods (again see <a href="https://ftp-public.abmi.ca/home/publications/documents/599_ABMI_2021_TerrestrialARUandRemoteCameraTrapProtocols_ABMI.pdf">Equipment Protocols</a>).</p></li>
 <li><p><strong>ARU deployment in prescribed burns</strong>: Deploying at least one ARU per 0.5 hectares burned ensures thorough monitoring of post-burn effects on bird populations. This density of ARU deployment generates detailed data on how bird populations respond to habitat changes following prescribed burns, facilitating the understanding of ecosystem resilience and recovery processes. By monitoring post-burn effects on bird populations, researchers can inform conservation strategies aimed at mitigating the impact of habitat disturbance. Given the guild changes seen in species communities post-burn it may be necessary to survey burned areas only every 1, 3 and 5-years post-burn along the length of the program.</p></li>
-<li><p><strong>Bat monitoring enhancements</strong>: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will also optimize the total amount of data volume collected and battery usage. It is also recommended to programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The <a href="https://www.nabatmonitoring.org/">North American Bat Monitoring Program</a> offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.</p></li>
 <li><p><strong>Extending analyses</strong>: With the accumulation of additional data, it is recommended to conduct more sophisticated analyses, including utilizing dynamic occupancy models to effectively capture the fluctuations in species occupancy across sites over time. Exploring models aimed at examining the resilience of both individual species and community structure is suggested.</p></li>
+</ul>
+<section id="recommendations-for-ultrasonic-deployments" class="level3">
+<h3 class="anchored" data-anchor-id="recommendations-for-ultrasonic-deployments">Recommendations for ultrasonic deployments</h3>
+<p>For future deployments, it is recommended to ensure recorder settings align with the NABat protocol (Loeb et al., 2015). Some recordings were collected during daytime hours, suggesting the recording schedule included non-target hours. NABat standards advise recording only from 30 minutes before sunset to 30 minutes after sunrise.</p>
+<p>Both deployment locations were positioned near sources of ultrasonic noise (Figure 1), likely contributing to the large number of noise files in the analysis. Additionally, some noise files contained potential rodent vocalizations, which may be worth noting for future analyses. If feasible, relocating the sites away from ultrasonic noise sources is recommended. Alternatively, adjusting the recorder gain settings could help reduce noise file occurrences. In 2024, the gain was set to 12; reducing it to 0 could significantly decrease noise files and extend recorder battery life. While lower gain settings may reduce the detection of quieter species, the lack of evidence for these species this year suggests the benefits would outweigh this limitation.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/clipboard-2946309762.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 1: Examples of environmental ultrasonic noise in AC-Bats and JR-Bats sites in 2024 deployments</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Bat monitoring enhancements</strong>: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will also optimize the total amount of data volume collected and battery usage. It is also recommended to programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The <a href="https://www.nabatmonitoring.org/">North American Bat Monitoring Program</a> offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.</li>
+</ul>
+</section>
+</section>
+<section id="appendix-a-settings-used-for-classifiers" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-a-settings-used-for-classifiers">Appendix A: Settings used for classifiers</h2>
+<section id="kaleidoscope-settings" class="level3">
+<h3 class="anchored" data-anchor-id="kaleidoscope-settings">Kaleidoscope Settings</h3>
+<p><strong>Version:</strong> 5.6.8</p>
+<section id="global" class="level4">
+<h4 class="anchored" data-anchor-id="global">[Global]</h4>
+<ul>
+<li><strong>Mode:</strong> 0<br>
+</li>
+<li><strong>Threads:</strong> 24</li>
+</ul>
+</section>
+<section id="classifier" class="level4">
+<h4 class="anchored" data-anchor-id="classifier">[Classifier]</h4>
+<ul>
+<li><strong>Classifier:</strong> classifiers-Bats_of_North_America_5.4.0<br>
+</li>
+<li><strong>ROC:</strong> 2</li>
+</ul>
+<p><strong>Enabled Species:</strong></p>
+<ul>
+<li>EPTFUS: 1<br>
+</li>
+<li>LASBOR: 1<br>
+</li>
+<li>LASNOC: 1<br>
+</li>
+<li>MYOLUC: 1</li>
+</ul>
+</section>
+<section id="analysis" class="level4">
+<h4 class="anchored" data-anchor-id="analysis">[Analysis]</h4>
+<ul>
+<li><strong>Frequency Minimum:</strong> 8<br>
+</li>
+<li><strong>Frequency Maximum:</strong> 120<br>
+</li>
+<li><strong>Duration Minimum:</strong> 2<br>
+</li>
+<li><strong>Duration Maximum:</strong> 40<br>
+</li>
+<li><strong>Maximum Gap:</strong> 500<br>
+</li>
+<li><strong>Minimum Calls:</strong> 1<br>
+</li>
+<li><strong>Filter ZC:</strong> 1<br>
+</li>
+<li><strong>Remove DC:</strong> 0<br>
+</li>
+<li><strong>CF Minimum Frequency:</strong> 0<br>
+</li>
+<li><strong>CF Maximum Frequency:</strong> 0<br>
+</li>
+<li><strong>CF Maximum Bandwidth:</strong> 0</li>
 </ul>
 
 </section>
+</section>
+</section>
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-abrahms2023climate" class="csl-entry" role="listitem">
 Abrahms, Briana, Neil H Carter, TJ Clark-Wolf, Kaitlyn M Gaynor, Erik Johansson, Alex McInturff, Anna C Nisi, Kasim Rafiq, and Leigh West. 2023. <span>“Climate Change as a Global Amplifier of Human–Wildlife Conflict.”</span> <em>Nature Climate Change</em> 13 (3): 224–34.
 </div>
@@ -575,6 +1143,9 @@ Knight, Elly C, and Erin M Bayne. 2019. <span>“Classification Threshold and Tr
 <div id="ref-lemieux2011state" class="csl-entry" role="listitem">
 Lemieux, Christopher J, Thomas J Beechey, Daniel J Scott, and Paul A Gray. 2011. <span>“The State of Climate Change Adaptation in Canada’s Protected Areas Sector.”</span> <em>The Canadian Geographer/Le G<span>é</span>ographe Canadien</em> 55 (3): 301–17.
 </div>
+<div id="ref-Loeb2015" class="csl-entry" role="listitem">
+Loeb, Susan C., Thomas J. Rodhouse, Lee E. Ellison, et al. 2015. <em>A Plan for the North American Bat Monitoring Program (NABat)</em>. Asheville, NC: U.S. Department of Agriculture, Forest Service, Southern Research Station. <a href="https://doi.org/10.1898/NWN21-10">https://doi.org/10.1898/NWN21-10</a>.
+</div>
 <div id="ref-lovett2013peepers" class="csl-entry" role="listitem">
 Lovett, Gary M. 2013. <span>“When Do Peepers Peep? Climate and the Date of First Calling in the Spring Peeper (Pseudacris Crucifer) in Southeastern New York State.”</span> <em>Northeastern Naturalist</em> 20 (2): 333–40.
 </div>
@@ -596,6 +1167,9 @@ Mantyka-pringle, Chrystal S, Tara G Martin, and Jonathan R Rhodes. 2012. <span>�
 <div id="ref-oksanen2010canonical" class="csl-entry" role="listitem">
 Oksanen, Jari, Frank G Blanchet, Roeland Kindt, Pierre Legendre, Peter R Minchin, Robert B O’Hara, Gavin L Simpson, et al. 2010. <span>“Canonical Analysis of Principal Coordinates: A Useful Method of Constrained Ordination for Ecology.”</span> <em>Ecology</em> 92 (3): 597–611. <a href="https://doi.org/10.1890/10-0340.1">https://doi.org/10.1890/10-0340.1</a>.
 </div>
+<div id="ref-Reichert2018" class="csl-entry" role="listitem">
+Reichert, B., C. Lausen, S. Loeb, et al. 2018. <em>A Guide to Processing Bat Acoustic Data for the North American Bat Monitoring Program (NABat)</em>. U.S. Geological Survey. <a href="https://doi.org/10.1898/NWN21-10">https://doi.org/10.1898/NWN21-10</a>.
+</div>
 <div id="ref-sattar2021review" class="csl-entry" role="listitem">
 Sattar, Q, ME Maqbool, R Ehsan, S Akhtar, Q Sattar, ME Maqbool, R Ehsan, and S Akhtar. 2021. <span>“Review on Climate Change and Its Effect on Wildlife and Ecosystem.”</span> <em>Open J Environ Biol</em> 6 (1): 008–14.
 </div>
@@ -608,11 +1182,20 @@ Shonfield, Julia, and Erin M Bayne. 2017. <span>“Autonomous Recording Units in
 <div id="ref-shonfield2018utility" class="csl-entry" role="listitem">
 Shonfield, Julia, Sarah Heemskerk, and Erin M Bayne. 2018. <span>“Utility of Automated Species Recognition for Acoustic Monitoring of Owls.”</span> <em>Journal of Raptor Research</em> 52 (1): 42–55.
 </div>
+<div id="ref-Slough2022" class="csl-entry" role="listitem">
+Slough, B., C. Lausen, B. Paterson, et al. 2022. <span>“New Records about the Diversity, Distribution, and Seasonal Activity Patterns by Bats in Yukon and Northwestern British Columbia.”</span> <em>Northwest Naturalist</em> 103: 162–82. <a href="https://doi.org/10.1898/NWN21-10">https://doi.org/10.1898/NWN21-10</a>.
+</div>
+<div id="ref-Solick2022" class="csl-entry" role="listitem">
+Solick, Daniel I. 2022. <span>“Bat Acoustic Species-Pair Matrix for Western u.s./Canada.”</span> Colorado: Vesper Bat Detection Services.
+</div>
 <div id="ref-time-removal" class="csl-entry" role="listitem">
 Sólymos, Péter, Steven M. Matsuoka, Steven G. Cumming, Diana Stralberg, Patricia Fontaine, Fiona K. A. Schmiegelow, Samantha J. Song, and Erin M. Bayne. 2018. <span>“<span class="nocase">Evaluating time-removal models for estimating availability of boreal birds during point count surveys: Sample size requirements and model complexity</span>.”</span> <em>The Condor</em> 120 (4): 765–86. <a href="https://doi.org/10.1650/CONDOR-18-32.1">https://doi.org/10.1650/CONDOR-18-32.1</a>.
 </div>
 <div id="ref-lots-of-pam" class="csl-entry" role="listitem">
 Sugai, Larissa Sayuri Moreira, Thiago Sanna Freire Silva, Jr Ribeiro José Wagner, and Diego Llusia. 2018. <span>“<span class="nocase">Terrestrial Passive Acoustic Monitoring: Review and Perspectives</span>.”</span> <em>BioScience</em> 69 (1): 15–25. <a href="https://doi.org/10.1093/biosci/biy147">https://doi.org/10.1093/biosci/biy147</a>.
+</div>
+<div id="ref-Szewczak2018" class="csl-entry" role="listitem">
+Szewczak, Joe. 2018. <span>“Acoustic Features of Western US Bats.”</span> Arcata, California: Humboldt State University.
 </div>
 <div id="ref-arus-mics" class="csl-entry" role="listitem">
 Turgeon, Patrick, Steven L. Van Wilgenburg, and Kiel L. Drake. 2017. <span>“Microphone Variability and Degradation: Implications for Monitoring Programs Employing Autonomous Recording Units.”</span> <em>Avian Conservation and Ecology</em> 12. <a href="https://api.semanticscholar.org/CorpusID:89959184">https://api.semanticscholar.org/CorpusID:89959184</a>.
@@ -657,18 +1240,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -700,11 +1272,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -714,8 +1325,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -727,7 +1347,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -771,6 +1514,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -796,6 +1540,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -856,6 +1626,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
