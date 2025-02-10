@@ -90,20 +90,16 @@ div.csl-indent {
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#ecological-integrity-monitoring" id="toc-ecological-integrity-monitoring" class="nav-link" data-scroll-target="#ecological-integrity-monitoring">Ecological Integrity Monitoring</a>
-  <ul class="collapse">
+  <li><a href="#ecological-integrity-monitoring" id="toc-ecological-integrity-monitoring" class="nav-link" data-scroll-target="#ecological-integrity-monitoring">Ecological Integrity Monitoring</a></li>
   <li><a href="#prescribed-burns" id="toc-prescribed-burns" class="nav-link" data-scroll-target="#prescribed-burns">Prescribed burns</a></li>
-  </ul></li>
   <li><a href="#data-processing" id="toc-data-processing" class="nav-link" data-scroll-target="#data-processing">Data processing</a></li>
   <li><a href="#bat-methods" id="toc-bat-methods" class="nav-link" data-scroll-target="#bat-methods">Bat Methods</a></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
   <li><a href="#relative-abundance-trends-of-birds-for-ecological-integrity-monitoring" id="toc-relative-abundance-trends-of-birds-for-ecological-integrity-monitoring" class="nav-link" data-scroll-target="#relative-abundance-trends-of-birds-for-ecological-integrity-monitoring">Relative abundance trends of birds for ecological integrity monitoring</a></li>
-  <li><a href="#prescribed-burns-1" id="toc-prescribed-burns-1" class="nav-link" data-scroll-target="#prescribed-burns-1">Prescribed burns</a>
-  <ul class="collapse">
+  <li><a href="#prescribed-burns-1" id="toc-prescribed-burns-1" class="nav-link" data-scroll-target="#prescribed-burns-1">Prescribed burns</a></li>
   <li><a href="#bat-data" id="toc-bat-data" class="nav-link" data-scroll-target="#bat-data">Bat data</a></li>
-  </ul></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
   <ul class="collapse">
@@ -235,8 +231,9 @@ Note
 <p>Locations from Kluane National Park Reserve ARU Monitoring Program</p>
 </div>
 </div>
-<section id="prescribed-burns" class="level3">
-<h3 class="anchored" data-anchor-id="prescribed-burns">Prescribed burns</h3>
+</section>
+<section id="prescribed-burns" class="level2">
+<h2 class="anchored" data-anchor-id="prescribed-burns">Prescribed burns</h2>
 <p>In 2023, Kluane initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of bird populations in forested habitats, as an integral component of the forest health measures. Data were collected during spring and summer of 2015. A total of 37 locations were surveyed, encompassing sites at Alder Creek (<code>AC-</code>) and Jarvis River (<code>JR-</code>), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2025 (“Treatment”, e.g.&nbsp;<code>AC-T1</code>), with 2 locations serving as unburned controls (e.g.&nbsp;<code>JR-C1</code>). ARUs were deployed at locations throughout the season, as outlined in Table 1 (<a href="#tbl-loc-summary" class="quarto-xref">Table&nbsp;1</a>) and depicted in Figure 1 (<span class="citation" data-cites="aru-monitoring-locations">(<a href="#ref-aru-monitoring-locations" role="doc-biblioref"><strong>aru-monitoring-locations?</strong></a>)</span>). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of 5.4 +/- 2.12 days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45.</p>
 <p>A total of 206 recordings were collected. Data were transferred via SD cards to the University of Alberta Data Centre in Edmonton for redundant data storage. The recordings were standardized to ensure adherence to the naming convention of <code>LOCATION_DATETIME</code>, such as <code>AC-T1_20230625_053500.wav</code>. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform’s Recording tab, accessible under Manage &gt; Download list of recordings (see <a href="#fig-download-recs" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <div class="cell">
@@ -741,7 +738,6 @@ Table&nbsp;1: Locations surveyed across years. Ones indicated a deployment in th
 </div>
 </div>
 </section>
-</section>
 <section id="data-processing" class="level2">
 <h2 class="anchored" data-anchor-id="data-processing">Data processing</h2>
 <p>Data processing took place in <a href="https://wildtrax.ca">WildTrax</a> with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e.&nbsp;wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see <strong>?@tbl-loc-repl</strong>).</p>
@@ -940,7 +936,7 @@ Table&nbsp;4: Common forest bird species detected
 </div>
 <div class="cell page-columns page-full" data-layout-align="center" data-cap-location="margin">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center" data-cap-location="margin">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-cap-location="margin" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
@@ -996,8 +992,9 @@ Figure&nbsp;2: Seasonal detection activity of most commonly detected forest spec
 </div>
 </div>
 </div>
-<section id="bat-data" class="level3">
-<h3 class="anchored" data-anchor-id="bat-data">Bat data</h3>
+</section>
+<section id="bat-data" class="level2">
+<h2 class="anchored" data-anchor-id="bat-data">Bat data</h2>
 <p>The detectors ran for a total of 35 recorder nights and in total collected 8794 files. Of these 8776 were classified as noise files, with no distinguishable bat present. Of the remaining recordings the only species identified was little brown bats (6, Table 2). Recordings that had no diagnostic criteria for any species were classified as either 40kHz Myotis (calls with consistent minimum frequency with an Fc=35-45kHz) or high frequency group (bat calls with Fc&gt;35kHz). No low frequency calls were recorded at either site. Due to the absence of any diagnostic calls for species other than the little brown bat the 40kHz Myotis and High Frequency recordings were likely produced by little brown bats.</p>
 <p>Table 2: Results of manually classified recordings collected at two station in Kluane National Park in 2024.</p>
 <table class="caption-top table">
@@ -1048,7 +1045,6 @@ Figure&nbsp;2: Seasonal detection activity of most commonly detected forest spec
 </tr>
 </tbody>
 </table>
-</section>
 </section>
 </section>
 <section id="discussion" class="level1">

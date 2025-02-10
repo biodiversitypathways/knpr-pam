@@ -24,7 +24,7 @@ toc-depth: 3
 toc-expand: true
 toc-location: left
 styles: styles.css
-github: https://github.com/ABbiodiversity/knpr-pam
+github: https://github.com/biodiversitypathways/knpr-pam
 ---
 
 ![](kluane-banner.jpg){style="float:left`;" fig-alt="Photo of a glacier" fig-align="center"}
@@ -268,7 +268,7 @@ kable(recs_plot)
 
 ## Data processing
 
-Data processing took place in [WildTrax](https://wildtrax.ca) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see @tbl-loc-repl). 
+Data processing took place in [WildTrax](https://wildtrax.ca) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see @tbl-loc-repl).
 
 ![Downloading a list of recordings from WildTrax](download-recs.png){#fig-download-recs}
 
@@ -791,25 +791,25 @@ Both deployment locations were positioned near sources of ultrasonic noise (Figu
 
 **Kaleidoscope Settings** (**Version:** 5.6.8):
 
-- **Mode:** 0  
-- **Threads:** 24  
-- **Classifier Settings:** 
-  - **Classifier Version**: classifiers-Bats_of_North_America_5.4.0  
-  - **ROC:** 2  
-- **Enabled Species:**
-  - EPTFUS: 1  
-  - LASBOR: 1  
-  - LASNOC: 1  
-  - MYOLUC: 1  
-- **Analysis Settings**
-  - **Frequency Minimum:** 8  
-  - **Frequency Maximum:** 120  
-  - **Duration Minimum:** 2  
-  - **Duration Maximum:** 40  
-  - **Maximum Gap:** 500  
-  - **Minimum Calls:** 1  
-  - **Filter ZC:** 1  
-  - **Remove DC:** 0  
-  - **CF Minimum Frequency:** 0  
-  - **CF Maximum Frequency:** 0  
-  - **CF Maximum Bandwidth:** 0 
+-   **Mode:** 0\
+-   **Threads:** 24\
+-   **Classifier Settings:**
+    -   **Classifier Version**: classifiers-Bats_of_North_America_5.4.0\
+    -   **ROC:** 2\
+-   **Enabled Species:**
+    -   EPTFUS: 1\
+    -   LASBOR: 1\
+    -   LASNOC: 1\
+    -   MYOLUC: 1\
+-   **Analysis Settings**
+    -   **Frequency Minimum:** 8\
+    -   **Frequency Maximum:** 120\
+    -   **Duration Minimum:** 2\
+    -   **Duration Maximum:** 40\
+    -   **Maximum Gap:** 500\
+    -   **Minimum Calls:** 1\
+    -   **Filter ZC:** 1\
+    -   **Remove DC:** 0\
+    -   **CF Minimum Frequency:** 0\
+    -   **CF Maximum Frequency:** 0\
+    -   **CF Maximum Bandwidth:** 0
