@@ -113,16 +113,16 @@ The objectives of this report are to:
 Acoustic monitoring surveys were conducted at Auriol Trail and Quill Creek to assess avian activity during the core breeding season in May and June. Acoustic monitoring at Auriol Trail was carried out annually from 2015 to 2024, while Quill Creek was surveyed in 2022 only. These surveys involved a standardized 10-minute recording at each site, enabling consistent data collection for comparisons across years and locations. The recordings were analyzed to capture the presence and abundance of breeding bird species.
 
 ```{r, echo=F}
-#| warning: false
 #| echo: false
 #| eval: true
+#| warning: false
 #| message: false
 #| include: true
 #| fig-align: center
 #| fig-width: 10
 #| fig-height: 10
 #| fig-cap: Locations from Kluane National Park Reserve ARU Monitoring Program
-#| label: aru-monitoring-locations
+#| label: fig-aru-monitoring-locations
 
 knpr_locs <- knpr_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
@@ -187,7 +187,7 @@ leaflet() %>%
 
 ## Prescribed burns
 
-In 2023, Kluane initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of bird populations in forested habitats, as an integral component of the forest health measures. Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2025 ("Treatment", e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARUs were deployed at locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in Figure 1 (@aru-monitoring-locations). ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45.
+In 2023, Kluane initiated a program incorporating autonomous recording units (ARUs) for passive acoustic monitoring of bird populations in forested habitats, as an integral component of the forest health measures. Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2025 ("Treatment", e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARUs were deployed at locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in @fig-aru-monitoring-locations. ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45.
 
 A total of `r count_recs` recordings were collected. Data were transferred via SD cards to the University of Alberta Data Centre in Edmonton for redundant data storage. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs).
 
@@ -268,11 +268,11 @@ kable(recs_plot)
 
 ## Data processing
 
-Data processing took place in [WildTrax](https://wildtrax.ca) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates (see @tbl-loc-repl).
+Data processing took place in [WildTrax](https://wildtrax.ca) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates.
 
 ![Downloading a list of recordings from WildTrax](download-recs.png){#fig-download-recs}
 
-Tags were made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round(nrow(tmtt_tags)/nrow(knpr_main),2)*100`% of the total tags were TMTT but were subsequently converted to numeric using `wildrtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(2) |> pull()`%) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
+Tags were made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round((nrow(tmtt_tags)/nrow(knpr_main))*100,4)`% of the total tags were TMTT but were subsequently converted to numeric using `wildrtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(2) |> pull()`%) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
 
 ```{r}
 #| warning: false
@@ -320,7 +320,7 @@ kable(head(tmtt_tags))
 
 ## Bat Methods
 
-Full-spectrum recordings were collected at the two locations at Alder Creek and Jarvis River and processed using two automatic classifiers: [Kaleidoscope](https://www.wildlifeacoustics.com/products/kaleidoscope-pro)'s Bats of North America (version 5.4.0) classifier and [Sonobat](https://sonobat.com/)'s (version 3.0) Northwestern British Columbia classifier. The classifier settings are detailed in (@Appendix A). Based on species ranges and prior detections (@slough2023little), manual identification using Kaleidoscope results was limited to Big brown bat (*Eptesicus fuscus*), Eastern red bat (*Lasiurus borealis*), silver-haired bat (*Lasionycteris noctivagans*), and Little brown bat (*Myotis lucifugus*).
+Full-spectrum recordings were collected at the two locations at Alder Creek and Jarvis River and processed using two automatic classifiers: [Kaleidoscope](https://www.wildlifeacoustics.com/products/kaleidoscope-pro)'s Bats of North America (version 5.4.0) classifier and [Sonobat](https://sonobat.com/)'s (version 3.0) Northwestern British Columbia classifier. The classifier settings are detailed in (@sec-appendix). Based on species ranges and prior detections (@slough2023little), manual identification using Kaleidoscope results was limited to Big brown bat (*Eptesicus fuscus*), Eastern red bat (*Lasiurus borealis*), silver-haired bat (*Lasionycteris noctivagans*), and Little brown bat (*Myotis lucifugus*).
 
 All recordings assigned a species by Kaleidoscope or Sonobat were further reviewed and manually vetted. Species identifications were compared against call parameters described by @slough2023little, @solick2022coat, and @Szewczak2024western_na_bat_acoustic_table and adhered to NABat vetting standards from @reichert2018guide.
 
@@ -692,7 +692,7 @@ ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
 
 ## Prescribed burns
 
-In 2023, three locations (`AC-C1`, `AC-T3`) failed and did not complete their intended recording schedule. These failures could be due to either low batteries, SD card formatting issues or outdated firmware (see @discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(distinct_spp)` species were found. @fig-spp-rich-locs describes the relationship of species richness across each location. Species richness was equal between sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
+In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(distinct_spp)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments).
 
 ```{r}
 #| warning: false
@@ -705,8 +705,7 @@ In 2023, three locations (`AC-C1`, `AC-T3`) failed and did not complete their in
 #| fig-width: 10
 #| fig-height: 10
 #| fig-cap: Prescribed burns
-#| label: prescribed-burns
-#| cap-location: margin
+#| label: fig-prescribed-burns
 
 burn_data <- knpr_main |>
   filter(project_id %in% c(2317,3178)) |>
@@ -746,25 +745,40 @@ ggplot(richness_data, aes(x = Treatment, y = species_richness, fill = Treatment)
   theme_bw()+
   annotate("text", x = 1.5, y = max(richness_data$species_richness),
            label = paste0("p = ", signif(t_test_result$p.value, 3)),
-           size = 5, color = "black")
+           size = 5, color = "black") +
+  scale_fill_viridis_d()
 
 ```
 
 ## Bat data
 
-The detectors ran for a total of 35 recorder nights and in total collected 8794 files. Of these 8776 were classified as noise files, with no distinguishable bat present. Of the remaining recordings the only species identified was little brown bats (6, Table 2). Recordings that had no diagnostic criteria for any species were classified as either 40kHz Myotis (calls with consistent minimum frequency with an Fc=35-45kHz) or high frequency group (bat calls with Fc\>35kHz). No low frequency calls were recorded at either site. Due to the absence of any diagnostic calls for species other than the little brown bat the 40kHz Myotis and High Frequency recordings were likely produced by little brown bats.
+The detectors ran for a total of 35 recorder nights and in total collected 8794 files, of these 8776 were classified as noise files (`r round((8776/8794)*100,2)`%), with no distinguishable bat present. Of the remaining recordings the only species identified was Little brown bat (@tbl-bat-results). Recordings that had no diagnostic criteria for any species were classified as either 40kHz Myotis (calls with consistent minimum frequency with an Fc=35-45kHz) or high frequency group (bat calls with Fc\>35kHz). No low frequency calls were recorded at either site. Due to the absence of any diagnostic calls for species other than the Little brown bat the 40kHz Myotis (40KMyo) and High Frequency (HighF) recordings were likely produced by Little brown bats.
 
-Table 2: Results of manually classified recordings collected at two station in Kluane National Park in 2024.
+```{r}
+#| warning: false
+#| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| tbl-cap: Results of manually classified recordings collected at two stations in Kluane National Park Reserve in 2024.
+#| label: tbl-bat-results
+#| cap-location: margin
 
-| Species Group/Species | Code   | AC-Bats | JR-Bats | Total    |
-|-----------------------|--------|---------|---------|----------|
-| Little Brown Bat      | MYLU   | 6       | 0       | **6**    |
-| 40kHz Myotis          | 40KMyo | 9       | 1       | **10**   |
-| High Frequency Bats   | HighF  | 2       | 0       | **2**    |
-| Noise                 | NOISE  | 1623    | 7153    | **8776** |
-| **Total Bats**        |        | **17**  | **1**   |          |
+bat_data <- data.frame(
+  `Species Group/Species` = c("Little Brown Bat", "40kHz Myotis", "High Frequency Bats", "Noise", "Total Bats"),
+  Code = c("MYLU", "40KMyo", "HighF", "NOISE", ""),
+  `AC Bats` = c(6, 9, 2, 1623, "17"),
+  `JR Bats` = c(0, 1, 0, 7153, "1"),
+  Total = c("6", "10", "2", "8776", "")
+)
 
-# Discussion
+# Generate the kable table
+kable(bat_data, align = "lcccc", escape = FALSE) %>%
+  kable_styling(full_width = FALSE, position = "center", bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+# Discussion {#sec-discussion}
 
 ## Improvements to EI monitoring for birds
 
@@ -782,15 +796,15 @@ Given the declining health of the forests in the Park, the observed low levels o
 
 ## Recommendations for bat deployments
 
-For future deployments, it is recommended to ensure recorder settings align with the NABat protocol (Loeb et al., 2015). Some recordings were collected during daytime hours, suggesting the recording schedule included non-target hours. NABat standards advise recording only from 30 minutes before sunset to 30 minutes after sunrise.
+For future deployments, it is recommended to ensure recorder settings align with the NABat protocol (@Loeb_2015). Some recordings were collected during daytime hours, suggesting the recording schedule included non-target hours. NABat standards advise recording only from 30 minutes before sunset to 30 minutes after sunrise.
 
-Both deployment locations were positioned near sources of ultrasonic noise (Figure 1), likely contributing to the large number of noise files in the analysis. Additionally, some noise files contained potential rodent vocalizations, which may be worth noting for future analyses. If feasible, relocating the sites away from ultrasonic noise sources is recommended. Alternatively, adjusting the recorder gain settings could help reduce noise file occurrences. In 2024, the gain was set to 12; reducing it to 0 could significantly decrease noise files and extend recorder battery life. While lower gain settings may reduce the detection of quieter species, the lack of evidence for these species this year suggests the benefits would outweigh this limitation.
+Both deployment locations were positioned near sources of ultrasonic noise (@fig-bat-noise), likely contributing to the large number of noise files in the analysis. Additionally, some noise files contained potential rodent vocalizations, which may be worth noting for future analyses. If feasible, relocating the sites away from ultrasonic noise sources is recommended. Alternatively, adjusting the recorder gain settings could help reduce noise file occurrences. In 2024, the gain was set to 12; reducing it to 0 could significantly decrease noise files and extend recorder battery life. While lower gain settings may reduce the detection of quieter species, the lack of evidence for these species this year suggests the benefits would outweigh this limitation.
 
-![Figure 1: Examples of environmental ultrasonic noise in AC-Bats and JR-Bats sites in 2024 deployments](images/clipboard-2946309762.png)
+![Examples of environmental ultrasonic noise in AC-Bats and JR-Bats sites in 2024 deployments](bat-noise.png){#fig-bat-noise}
 
 -   **Bat monitoring enhancements**: Continuing to use a sample rate to 256 kHz is advisable, given that bat species in western Canada typically do not vocalize beyond this frequency range. The sampling rate will also optimize the total amount of data volume collected and battery usage. It is also recommended to programming the Max Time Between Calls (TBC) by adjusting the trigger window from 3 to 2 seconds. The [North American Bat Monitoring Program](https://www.nabatmonitoring.org/) offers many additional recommendations for deployment, processing and interpretation of ultrasonic data.
 
-# Appendix A: Settings used for classifiers
+# Appendix A: Settings used for classifiers {#sec-appendix}
 
 **Kaleidoscope Settings** (**Version:** 5.6.8):
 
