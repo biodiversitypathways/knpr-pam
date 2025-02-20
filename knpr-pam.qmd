@@ -314,7 +314,7 @@ tmtt_tags <- knpr_main |>
   distinct() |>
   filter(individual_count == "TMTT")
 
-kable(head(tmtt_tags))
+kable(tmtt_tags)
 
 ```
 
@@ -339,86 +339,25 @@ All recordings assigned a species by Kaleidoscope or Sonobat were further review
 #| label: fig-spp-rich-locs
 #| cap-location: margin
 
-# spp_rich_location <- knpr_main |>
-#   as_tibble() |>
-#   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
-#   mutate(year = lubridate::year(recording_date_time)) |>
-#   select(location, year, species_code) |>
-#   distinct() |>
-#   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
-#   group_by(Site, year) |>
-#   summarise(species_count = n_distinct(species_code)) |>
-#   ungroup()
-# 
-# distinct_spp <- knpr_main |>
-#   as_tibble() |>
-#   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
-#   mutate(year = lubridate::year(recording_date_time)) |>
-#   select(species_code) |>
-#   distinct() |>
-#   arrange(species_code)
-# 
-# spp_rich_location |>
-#   ggplot(aes(x=reorder(Site,-species_count), y=species_count, fill=Site)) +
-#   geom_line() +
-#   geom_bar(stat = "identity") +
-#   theme_bw() +
-#   scale_fill_viridis_d() +
-#   scale_y_continuous(breaks = pretty_breaks()) +
-#   xlab('Location') + ylab('Species richness') +
-#   ggtitle('Species richness at each location surveyed for each year') +
-#   coord_flip()
+spp_rich_location <- knpr_main |>
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, year, species_code) |>
+  distinct() |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
+  filter(Site == "Auriol Trail") |>
+  group_by(Site, year) |>
+  summarise(species_count = n_distinct(species_code)) |>
+  ungroup()
 
-```
-
-```{r}
-#| warning: false
-#| echo: false
-#| eval: true
-#| include: true
-#| results: hide
-
-# spp_rich_annual <- knpr_main |>
-#   as_tibble() |>
-#   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
-#   mutate(year = lubridate::year(recording_date_time)) |>
-#   select(location, year, species_code) |>
-#   distinct() |>
-#   group_by(year) |>
-#   summarise(effort = n_distinct(species_code) / n_distinct(location),
-#             species_count = n_distinct(species_code)) |>
-#   ungroup()
-# 
-# year_effort <- knpr_main |>
-#   mutate(year = lubridate::year(recording_date_time)) |>
-#   group_by(year) |>
-#   summarise(count_of_locs = n_distinct(location))
-```
-
-```{r}
-#| warning: false
-#| echo: false
-#| eval: false
-#| include: false
-#| fig-align: center
-#| fig-width: 10
-#| fig-height: 10
-#| fig-cap: Species richness at forest monitoring locations across years considering sampling effort
-#| label: fig-spp-rich-annual
-#| cap-location: margin
-
-#FOR NEXT YEAR
-
-# spp_rich_annual_plot <- spp_rich_annual |>
-#    inner_join(year_effort) |>
-#    ggplot(aes(x = year)) +
-#    geom_line(aes(y = species_count), size = 1) +
-#    geom_bar(aes(y = count_of_locs * 5), alpha = 0.7, stat = "identity") +  # Adjust the multiplier for better visualization
-#    scale_y_continuous(name = "Species Count", sec.axis = sec_axis(~./5, name = "Count of Locations")) +
-#    labs(x = "Year") +
-#    theme_bw()
-# 
-# spp_rich_annual_plot
+spp_rich_location |>
+  ggplot(aes(x=as.factor(year), y=species_count, fill=year)) +
+  geom_bar(stat = "identity") +
+  theme_bw() +
+  scale_fill_viridis_c() +
+  xlab('Location') + ylab('Species richness') +
+  ggtitle('Species richness along Auriol Trail by year')
 
 ```
 
