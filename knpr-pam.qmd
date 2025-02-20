@@ -46,6 +46,7 @@ library(scales)
 library(kableExtra)
 library(plotly)
 library(DT)
+library(vegan)
 
 wt_auth()
 
@@ -326,7 +327,36 @@ All recordings assigned a species by Kaleidoscope or Sonobat were further review
 
 # Results
 
-## Relative abundance trends of birds for ecological integrity monitoring
+## Mean abundance (all forest species)
+
+```{r}
+
+tot_all <- knpr_main |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T)
+
+plot_all <- 
+  tot_all |>
+  mutate(year = year(recording_date_time)) |>
+  wt_replace_tmtt(calc = "round") |>
+  select(location, year, species_code, individual_order, individual_count) |>
+  group_by(location, year, species_code) |>
+  summarise(individual_order = mean(individual_order)) |>
+  ungroup() |>
+  mutate(year = round(year,0))
+
+plot_all |>
+  ggplot(aes(x = year, y = individual_order)) +
+  geom_point() +
+  geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  # Use numeric conversion for geom_smooth
+  scale_colour_viridis_d() +
+  scale_x_discrete(labels = scales::label_number(accuracy = 0)) +  # Keep years as factors and format without spaces
+  theme_bw() +
+  labs(x = "Year", y = "Mean number of individuals")
+
+```
+
+## Trends along Auriol Trail
 
 ```{r}
 #| warning: false
@@ -444,81 +474,6 @@ knpr_main |>
 #| include: true
 #| results: hide
 #| fig-align: center
-#| fig-width: 10
-#| fig-height: 10
-#| fig-cap: Relative abundance of species on Auriol Trial
-#| label: relative-abundance-auriol2
-#| cap-location: margin
-
-# # Calculate the total count per year
-# total_per_year <- knpr_main |>
-#   group_by(species_code) |>
-#   add_tally() |>
-#   ungroup() |>
-#   #filter(n >= 10) |>
-#   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
-#   filter(Site == "Auriol Trail") |>
-#   mutate(Year = year(recording_date_time)) |>
-#   wt_replace_tmtt(calc = "round") |>
-#   mutate(individual_count = as.numeric(individual_count)) |>
-#   filter(!is.na(individual_count)) |>
-#   group_by(Year, location) |>
-#   summarise(mean_individuals = mean(individual_count, na.rm = TRUE))
-
-# Join the total counts with the long data and calculate relative abundance
-# relative_abundance <- knpr_main |>
-#   mutate(Year = year(recording_date_time)) |>
-#   left_join(total_per_year, by = "Year") |>
-#   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
-#   filter(Site == "Auriol Trail") |>
-#   wt_replace_tmtt(calc = "round") |>
-#   mutate(individual_count = as.numeric(individual_count)) |>
-#   filter(!is.na(individual_count)) |>
-#   mutate(Relative_Abundance = individual_count / Total_Individuals)
-
-# Optionally, group by location and site if needed
-# relative_abundance_by_site <- relative_abundance |>
-#   group_by(location, Site, Year) |>
-#   summarise(Total_Relative_Abundance = sum(Relative_Abundance)) |>
-#   mutate(Year = as.factor(Year))
-
-# ggplot(total_per_year, aes(x = Year, y = mean_individuals)) +
-#   geom_line(size = 1) +
-#   geom_point(size = 2) + 
-#   labs(
-#     title = "Relative Abundance of Birds On Auriol Trail Across Sites and Time",
-#     x = "Year",
-#     y = "Relative Abundance",
-#     color = "Location"
-#   ) +
-#   scale_colour_viridis_d() +
-#   theme_bw()
-
-# Optionally, group by location and site if needed
-# relative_abundance_by_site2 <- relative_abundance |>
-#   select(location, Site, Year, Relative_Abundance) |>
-#   distinct()
-  
-# ggplot(relative_abundance_by_site2, aes(x = Year, y = Relative_Abundance)) +
-#   geom_smooth(method = "loess", se = TRUE) +  # Add a smoothed line
-#   labs(
-#     title = "Relative Abundance Over Time at Auriol Site",
-#     x = "Year",
-#     y = "Relative Abundance"
-#   ) +
-#   theme_minimal()
-
-
-```
-
-```{r}
-#| warning: false
-#| echo: false
-#| eval: true
-#| message: false
-#| include: true
-#| results: hide
-#| fig-align: center
 #| fig-width: 8
 #| fig-height: 8
 #| fig-cap: Count abundance of medium-distance migrants by year
@@ -526,7 +481,7 @@ knpr_main |>
 #| cap-location: margin
 
 # Medium-distance migrants
-mdm <- c("AMRO","DEJU","VATH","WWCR","YRWA")
+mdm <- c("SWTH","DEJU","VATH", "YRWA")
 
 tot_auriol <- knpr_main |>
   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
@@ -583,7 +538,7 @@ ggplot(count_annual_mdm, aes(x = as.factor(year), y = sum_year, fill = factor(ye
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_viridis_d() +
   labs(
-    title = "Annual Count of Birds per Location on Auriol Trail",
+    title = "Annual count of 4 common species on Auriol Trail",
     x = "Location",
     y = "Sum of Individuals",
     fill = "Year"
@@ -619,7 +574,7 @@ ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
   geom_smooth(method = "lm") +
   geom_point(size = 3, color = "darkblue") +
   labs(
-    title = "Trend in Mean Abundance of Medium-Distance Migrants",
+    title = "Trend in Mean Abundance of 4 common species on Auriol Trail",
     x = "Year",
     y = "Mean Abundance per Station"
   ) +
@@ -628,6 +583,47 @@ ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
   scale_x_continuous(breaks = seq(min(mean_abundance_year$year), max(mean_abundance_year$year), 1))
 
 ```
+
+### Diversity
+
+```{r}
+
+raw_dog <- knpr_main |> 
+  as_tibble() |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
+  filter(Site == "Auriol Trail") |>
+  wt_replace_tmtt() |>
+  select(location, recording_date_time, species_code, species_common_name, individual_order, individual_count) |>
+  distinct() |>
+  group_by(location, recording_date_time, species_code, species_common_name) |>
+  summarise(count = max(individual_order)) |>
+  ungroup() |>
+  pivot_wider(names_from = species_code, values_from = count, values_fill = 0) |>
+  as.data.frame()
+
+shannon <- raw_dog |>
+  pivot_longer(cols = -(location:species_common_name), names_to = "species", values_to = "count") |>
+  group_by(location, year = lubridate::year(recording_date_time), species) |>
+  summarise(total_count = sum(count)) |>
+  ungroup() |>
+  filter(!total_count == 0) |>
+  group_by(year) |>
+  summarise(shannon_index = diversity(total_count, index = "shannon")) |>
+  ungroup() |>
+  ggplot(aes(x = year, y = shannon_index, color = year)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Shannon Diversity Index Over Years",
+       x = "Year",
+       y = "Shannon Diversity Index") +
+  theme_minimal() +
+  scale_colour_viridis_c() +
+  ylim(3,4.5)
+
+shannon
+```
+
 
 ## Prescribed burns
 
