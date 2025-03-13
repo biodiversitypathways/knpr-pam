@@ -16,7 +16,7 @@ editor: visual
 bibliography: references.bib
 nocite: '@*'
 toc: true
-toc-depth: 1
+toc-depth: 2
 toc-expand: true
 toc-location: left
 styles: styles.css
@@ -74,11 +74,13 @@ knpr_main <-
       reports = "main"
     )
   )
+
+knpr_main <- bind_rows(knpr_main, old_standardized)
 ```
 
 # Abstract
 
-Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) at `r locs_summary |> filter(Treatment == "Ecological Integrity") |> tally()` locations (`r locs_summary |> filter(Treatment == "Ecological Integrity") |> select(Site) |> distinct() |> pull() |> paste(collapse = ", ")`) as part of the Ecological Integrity Monitoring Program (2009–2024) and `r locs_summary |> filter(grepl("Prescribed Burn",Treatment)) |> tally()` contributing to the National Prescribed Burn Protocol. ARUs detected `r distinct_spp |> tally() + 2` species, including both birds and mammals. Trends show stable relative abundance at the Auriol Site and consistent species richness across years in the pre-burned monitoring areas. While bat data revealed some positive detections of Little Brown Bat, significant deployement improvements are needed to maximize detection rates and data quality. Sustained monitoring of these areas following prescribed burns, incorporating enhanced equipment protocols to optimize detections of bats, as well as broader scope in recording data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.
+Passive acoustic monitoring has proven to be a valuable tool for studying vocalizing species. Environmental sensors are becoming increasingly easy to program and can autonomously generate extensive data sets of the soundscape, becoming an invaluable resource for ecological integrity monitoring. Kluane National Park Reserve deployed autonomous recording units (ARUs) at `r locs_summary |> filter(Treatment == "Ecological Integrity") |> tally()` locations (`r locs_summary |> filter(Treatment == "Ecological Integrity") |> select(Site) |> distinct() |> pull() |> paste(collapse = ", ")`) as part of the Ecological Integrity Monitoring Program (2009–2024) and `r locs_summary |> filter(grepl("Prescribed Burn",Treatment)) |> tally()` contributing to the National Prescribed Burn Protocol. ARUs detected `r nrow(common)` species, including both birds and mammals. Trends show stable relative abundance at the Auriol Site and consistent species richness across years in the pre-burned monitoring areas. While bat data revealed some positive detections of Little Brown Bat, significant deployement improvements are needed to maximize detection rates and data quality. Sustained monitoring of these areas following prescribed burns, incorporating enhanced equipment protocols to optimize detections of bats, as well as broader scope in recording data collection, will optimize the effectiveness of the ongoing monitoring program. Future data collection can be facilitated by more advanced models and analyses.
 
 ::: {.callout-note collapse="true" style="background-color: #f4f4f4; padding: 20px;"}
 This report is dynamically generated, meaning its results may evolve with the addition of new data or further analyses. For the most recent updates, refer to the publication date and feel free to reach out to the authors.
@@ -123,6 +125,7 @@ knpr_locs <- knpr_main |>
   mutate(year = lubridate::year(recording_date_time)) |>
   select(location, latitude, longitude, year) |>
   distinct() |>
+  drop_na() |>
   mutate(type = case_when(grepl('BAT',location) ~ "Bat", TRUE ~ "Bird")) |>
   sf::st_as_sf(coords = c("longitude","latitude"), crs = 4326)
 
@@ -182,7 +185,7 @@ leaflet() %>%
 
 ## Pre-burn monitoring for prescribed fire
 
-Data were collected during spring and summer of `r min(knpr_locs$year)`. A total of `r knpr_locs |> st_drop_geometry() |> select(location) |> distinct() |> tally() + 2` locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2025 ("Treatment", e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARUs were deployed at locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in @fig-aru-monitoring-locations. ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of `r average_deployment$mean` +/- `r average_deployment$sd` days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45.
+Data were collected during spring and summer of 2023-2024. A total of 10 locations were surveyed, encompassing sites at Alder Creek (`AC-`) and Jarvis River (`JR-`), each with five locations. In each site, 3 locations were designated for a prescribed burn in 2025 ("Treatment", e.g. `AC-T1`), with 2 locations serving as unburned controls (e.g. `JR-C1`). ARUs were deployed at locations throughout the season, as outlined in Table 1 (@tbl-loc-summary) and depicted in @fig-aru-monitoring-locations. ARUs were deployed at the onset of the breeding bird season (May-June) and rotated among locations until retrieval in July-August. Each ARU recorded for an average of 5.4 days. Recording schedules were standardized, comprising morning sessions at 05:30, 06:30, and 07:30, and evening sessions at 22:45 and 23:45.
 
 ```{r}
 #| warning: false
@@ -201,18 +204,23 @@ kable(locs_summary, caption = "Location summary for ARUs deployed in Kluane Nati
 ```{r}
 #| warning: false
 #| echo: false
-#| eval: true
+#| eval: false
 #| message: false
 #| include: true
 #| results: hide
 
+# Recording statistics
+
 #cirrus_knpr_recs <- wt_audio_scanner("/Volumes/BUpublic/KNPR/2023/V1/NOTBATS", file_type = "all", extra_cols = F)
 
-all_recs <- cirrus_knpr_recs |>
+all_recs <- wt_get_recordings('KNPR') |>
   select(location, recording_date_time) |>
+  as_tibble() |>
   distinct() |>
   drop_na() |>
-  mutate(julian = yday(recording_date_time),
+  unnest() |>
+  mutate(recording_date_time = lubridate::ymd_hms(recording_date_time),
+         julian = lubridate::yday(recording_date_time),
          hour = hour(recording_date_time),
          year = year(recording_date_time),
          month= month(recording_date_time, label = T)) |>
@@ -277,12 +285,12 @@ Tags were made using count-removal (see @farnsworth2002removal, @time-removal) w
 #| tbl-cap: Proportion of tags verified
 
 all_tags <- knpr_main |>
-  filter(project_id %in% c(3163,3178,2317)) |>
+  filter(project_id %in% c(3163,3178,2317,NA)) |>
   tally() |>
   pull()
 
 verified_tags <- knpr_main |>
-  filter(project_id %in% c(3163,3178,2317)) |>
+  filter(project_id %in% c(3163,3178,2317,NA)) |>
   group_by(tag_is_verified) |>
   tally() |>
   ungroup() |>
@@ -414,7 +422,7 @@ Mean abundance of individuals can be found at @fig-spp-mean-abundance-all. Speci
 #| message: false
 #| echo: false
 #| eval: true
-#| include: false
+#| include: true
 #| fig-align: center
 #| fig-cap: Mean number of individuals all data
 #| label: fig-spp-mean-abundance-all
@@ -424,8 +432,7 @@ tot_all <- knpr_main |>
   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T)
 
-plot_all <- 
-  tot_all |>
+plot_all <- tot_all |>
   mutate(year = year(recording_date_time)) |>
   wt_replace_tmtt(calc = "round") |>
   select(location, year, species_code, individual_order, individual_count) |>
@@ -433,6 +440,8 @@ plot_all <-
   summarise(individual_order = mean(individual_order)) |>
   ungroup() |>
   mutate(year = round(year,0))
+
+linear_model <- lm(individual_order ~ year, data = plot_all)
 
 plot_all |>
   ggplot(aes(x = year, y = individual_order)) +
@@ -450,7 +459,7 @@ plot_all |>
 #| message: false
 #| echo: false
 #| eval: true
-#| include: false
+#| include: true
 #| fig-align: center
 #| fig-cap: Species richness at forest monitoring locations across years
 #| label: fig-spp-rich-locs
@@ -483,7 +492,7 @@ spp_rich_location |>
 #| echo: false
 #| eval: true
 #| message: false
-#| include: false
+#| include: true
 #| results: hide
 #| fig-align: center
 #| fig-cap: Count abundance of medium-distance migrants by year
@@ -494,7 +503,6 @@ spp_rich_location |>
 mdm <- c("SWTH","DEJU","VATH", "YRWA")
 
 tot_auriol <- knpr_main |>
-  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
   filter(Site == "Auriol Trail") |>
   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T)
 
@@ -509,7 +517,7 @@ plot_mdm <-
   wt_replace_tmtt(calc = "round") |>
   select(location, year, species_code, individual_order, individual_count) |>
   group_by(location, year, species_code) |>
-  summarise(individual_order = mean(individual_order)) |>
+  summarise(individual_order = max(individual_order)) |>
   ungroup() |>
   mutate(year = round(year,0))
 
@@ -530,7 +538,7 @@ plot_mdm |>
 #| echo: false
 #| eval: true
 #| message: false
-#| include: false
+#| include: true
 #| results: hide
 #| fig-align: center
 #| fig-cap: Annual count on Auriol Trail
@@ -561,7 +569,7 @@ ggplot(count_annual_mdm, aes(x = as.factor(year), y = sum_year, fill = factor(ye
 #| echo: false
 #| eval: true
 #| message: false
-#| include: false
+#| include: true
 #| results: hide
 #| fig-align: center
 #| fig-cap: Mean abundance per location per year
@@ -595,7 +603,7 @@ ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
 #| echo: false
 #| eval: true
 #| message: false
-#| include: false
+#| include: true
 #| results: hide
 #| fig-align: center
 #| fig-cap: Shannon Diversity Index over years on Auriol Trail
@@ -605,8 +613,9 @@ ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
 shannon_d <- knpr_main |> 
   as_tibble() |>
   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
-  inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
-  filter(Site == "Auriol Trail") |>
+  inner_join(wt_get_species() |> select(species_code, species_class, species_order), by = "species_code") |>
+  filter(Site == "Auriol Trail",
+         !species_order %in% c("Piciformes","Galliformes")) |>
   wt_replace_tmtt() |>
   select(location, recording_date_time, species_code, species_common_name, individual_order, individual_count) |>
   distinct() |>
@@ -645,10 +654,38 @@ shannon
 #| echo: false
 #| eval: true
 #| message: false
-#| include: false
-#| results: hide
-#| label: petrikeev
-#| tbl-cap: Measures produced by Petrikeev (2019)
+#| include: true
+#| label: tbl-example
+#| tbl-cap: "Petrikeev 2019"
+#| tbl-subcap: 
+#|   - "Measures"
+#|   - "Scenario 1"
+#|   - "Scenario 2"
+#|   - "Scenario 3"
+#|   - "Scenario 4"
+#|   - "All"
+#| layout-ncol: 2
+
+lm_results <- old_standardized |> 
+  filter(recording_date_time >= "2009-01-01" & recording_date_time <= "2013-12-31") |>
+  group_by(location, recording_date_time, species_common_name) |>
+  summarise(individual_order = max(individual_order, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(location, recording_date_time) |>
+  summarise(sum_individuals = sum(individual_order, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(year = year(recording_date_time)) |>
+  group_by(location, year) |>
+  summarise(mean = mean(sum_individuals)) |>
+  ungroup()
+
+lm_fit <- lm(mean ~ year, data = lm_results)
+p_value <- summary(lm_fit)$coefficients[2, 4]
+slope <- summary(lm_fit)$coefficients[2, 1]
+
+# ggplot(lm_results, aes(x = year, y = mean)) +
+#   geom_smooth(method = "lm") +
+#   theme_bw()
 
 old_measures <- tibble(
   Field = c("Total bird abundance", "Medium distance migrants", "Modified ShannonWeiner"),
@@ -756,35 +793,64 @@ forest_bird_abundance <- tibble(
   )
 )
 
+kable(old_measures)
+kable(scenario_1)
+kable(scenario_2)
+kable(scenario_3)
+kable(scenario_4)
 kable(forest_bird_abundance)
 
-lm_results <- old_standardized %>%
-  filter(recording_date_time >= "2009-01-01" & recording_date_time <= "2013-12-31") %>%
-  group_by(location, recording_date_time, species_common_name) %>%
-  summarise(individual_order = max(individual_order, na.rm = TRUE)) %>%
-  ungroup() %>%
-  group_by(location, recording_date_time) %>%
-  summarise(sum_individuals = sum(individual_order, na.rm = TRUE)) %>%
-  ungroup() %>%
-  mutate(year = year(recording_date_time)) %>%
-  group_by(location, year) %>%
-  summarise(mean = mean(sum_individuals)) %>%
-  ungroup()
+```
 
-lm_fit <- lm(mean ~ year, data = lm_results)
-p_value <- summary(lm_fit)$coefficients[2, 4]
-slope <- summary(lm_fit)$coefficients[2, 1]
+```{r}
 
-# ggplot(lm_results, aes(x = year, y = mean)) +
-#   geom_smooth(method = "lm") +
-#   theme_bw()
+library(dplyr)
+library(lubridate)
+library(pwr)
+
+# Preprocess data
+kmp <- knpr_main |>
+  mutate(year = lubridate::year(recording_date_time)) |>
+  select(location, year, recording_date_time, species_code, individual_order, individual_count) |>
+  filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
+         species_code != "NONE", 
+         species_code != "NOISE",
+         species_code != "40KMYO") |>
+  filter(!species_code %in% mdm) |>
+  group_by(location, year, recording_date_time, species_code) |>
+  summarise(individual_order = max(individual_order), .groups = 'drop') |>
+  group_by(location, year) |>
+  summarise(sum = sum(individual_order), .groups = 'drop') |>
+  mutate(spl = case_when(year %in% c(2009:2013) ~ "First",
+                         year %in% c(2014:2019) ~ "Second",
+                         year %in% c(2020:2024) ~ "Third",
+                         TRUE ~ NA_character_))
+  # group_by(spl) |>
+  # summarise(mean = mean(sum),
+  #           sd = sd(sum), .groups = 'drop') |>
+  # mutate(T2 = mean - sd,    # Mean minus 1 standard deviation (for ~68%)
+  #        T1 = mean - (2 * sd))
+
+ggplot(kmp, aes(x = year, y = sum)) +
+  geom_point()
+
+trend_model <- lm(sum ~ year + location, data = kmp)
+p_values <- summary(trend_model)$coefficients[, 4]
+rsq <- summary(trend_model)$r.squared
+f_squared <- rsq / (1 - rsq)
+n <- nrow(kmp)
+power_analysis <- pwr.f2.test(u = length(coef(trend_model)) - 1,  
+                              v = n - length(coef(trend_model)),  
+                              f2 = f_squared,  
+                              sig.level = 0.2) 
 
 ```
 
 
+
 ## Pre-burn monitoring for prescribed fire
 
-In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(distinct_spp)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection.
+In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(common)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection. A two-sample t-test was conducted to compare mean species richness between different treatments, using the Treatment variable as the grouping factor. The result provides insights into whether there is a statistically significant difference in species richness between the treatments. As demonstrated in @fig-prescribed-burns there was no significant difference in species richness between controls and burns.
 
 ```{r}
 #| warning: false
