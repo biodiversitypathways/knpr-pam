@@ -654,7 +654,7 @@ shannon
 #| echo: false
 #| eval: true
 #| message: false
-#| include: true
+#| include: false
 #| label: tbl-example
 #| tbl-cap: "Petrikeev 2019"
 #| tbl-subcap: 
