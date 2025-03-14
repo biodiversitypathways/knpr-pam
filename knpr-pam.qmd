@@ -848,7 +848,8 @@ kmp_scenario_3 <- knpr_main |>
   filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
          species_code != "NONE", 
          species_code != "NOISE",
-         species_code != "40KMYO") |>
+         species_code != "40KMYO",
+         !species_code %in% c("CORA","YEWA","WISN")) |>
   group_by(location, year, recording_date_time, species_code) |>
   summarise(individual_order = max(individual_order), .groups = 'drop') |>
   group_by(location, year) |>
@@ -865,7 +866,8 @@ kmp_scenario_4 <- knpr_main |>
   filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
          species_code != "NONE", 
          species_code != "NOISE",
-         species_code != "40KMYO") |>
+         species_code != "40KMYO",
+         !species_code %in% c("CORA","YEWA","WISN")) |>
   group_by(location, year, recording_date_time, species_code) |>
   summarise(individual_order = max(individual_order), .groups = 'drop') |>
   group_by(year) |>
@@ -976,7 +978,6 @@ power_analyze <- data.frame(
 kable(power_analyze)
 
 ```
-
 
 
 ## Pre-burn monitoring for prescribed fire
