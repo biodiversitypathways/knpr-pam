@@ -414,7 +414,7 @@ knpr_main |>
   mutate(species_code = factor(species_code, levels = sort(unique(species_code)))) |>
   ggplot(aes(x = julian, y = species_code, fill = `Nesting habitat`)) + 
   geom_density_ridges(alpha = 0.2) +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "mako") +
   theme_bw() +
   xlab("Day of Year") + 
   ylab("Species")
