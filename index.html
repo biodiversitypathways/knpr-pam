@@ -10,7 +10,7 @@
 <meta name="author" content="Camila Hurtado">
 <meta name="author" content="Jeni Rudisill">
 <meta name="author" content="Lisa Larson">
-<meta name="dcterms.date" content="2025-03-13">
+<meta name="dcterms.date" content="2025-03-14">
 
 <title>Report on the use of passive acoustic monitoring in Kluane National Park Reserve</title>
 <style>
@@ -24,40 +24,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -204,7 +170,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 13, 2025</p>
+      <p class="date">March 14, 2025</p>
     </div>
   </div>
   
@@ -1122,7 +1088,13 @@ Table&nbsp;3: TMTT tags
 </section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>We will first reproduce the work started by <span class="citation" data-cites="Petrikeev2019analysis">Petrikeev (<a href="#ref-Petrikeev2019analysis" role="doc-biblioref">2019</a>)</span>.</p>
+<p>Analyses were conducted in R 4.4.2 ‘Pile of Leaves’ and in RStudio. Analysis was repeated following <span class="citation" data-cites="Petrikeev2019analysis">Petrikeev (<a href="#ref-Petrikeev2019analysis" role="doc-biblioref">2019</a>)</span> under the four different scenarios. We generated linear models of the four different scenarios and computed power using the <a href="https://cran.r-project.org/web/packages/pwr/pwr.pdf"><code>pwr</code></a> package using the R^2 and F-squared values.</p>
+<ul>
+<li>Scenario 1: Abundance of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson’s Thrush per location</li>
+<li>Scenario 2: Annual count of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson’s Thrush</li>
+<li>Scenario 3: Abundance of all species per location</li>
+<li>Scenario 4: Annual count of all species</li>
+</ul>
 </section>
 <section id="bat-methods" class="level2">
 <h2 class="anchored" data-anchor-id="bat-methods">Bat Methods</h2>
@@ -1424,7 +1396,7 @@ Table&nbsp;4: Common forest bird species detected
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1438,16 +1410,16 @@ Figure&nbsp;3: Seasonal detection activity of most commonly detected forest spec
 </div>
 <section id="ecological-integrity-trends-along-auriol-trail" class="level2">
 <h2 class="anchored" data-anchor-id="ecological-integrity-trends-along-auriol-trail">Ecological integrity trends along Auriol Trail</h2>
-<p>Mean abundance of individuals can be found at <a href="#fig-spp-mean-abundance-all" class="quarto-xref">Figure&nbsp;4</a>. Species richness at <a href="#fig-spp-rich-locs" class="quarto-xref">Figure&nbsp;5</a>. Count abundance of medium-distance migrants by year <a href="#fig-relative-abundance-auriol" class="quarto-xref">Figure&nbsp;6</a>. Annual count on Auriol Trail <a href="#fig-annual-auriol-count" class="quarto-xref">Figure&nbsp;7</a>. Mean abundance per location per year <a href="#fig-mean-auriol-abundance" class="quarto-xref">Figure&nbsp;8</a>. Mean Shannon Diversity remained relative stable across years along Auriol Trail as seen in <a href="#fig-shannon" class="quarto-xref">Figure&nbsp;9</a>.</p>
+<p>Mean abundance of individuals can be found at <a href="#fig-spp-mean-abundance-all" class="quarto-xref">Figure&nbsp;4</a>. Species richness at <a href="#fig-spp-rich-locs" class="quarto-xref">Figure&nbsp;5</a>. Count abundance of medium-distance migrants by year <a href="#fig-relative-abundance-auriol" class="quarto-xref">Figure&nbsp;6</a>. Annual count on Auriol Trail <a href="#fig-annual-auriol-count" class="quarto-xref">Figure&nbsp;7</a>. Mean abundance per location per year <a href="#fig-mean-auriol-abundance" class="quarto-xref">Figure&nbsp;8</a>. Mean Shannon Diversity remained relative stable across years along Auriol Trail as seen in <a href="#fig-shannon" class="quarto-xref">Figure&nbsp;9</a> with woodpeckers (Piciformes) and landfowl (Galliformes) removed to follow methods in <span class="citation" data-cites="Petrikeev2019analysis">Petrikeev (<a href="#ref-Petrikeev2019analysis" role="doc-biblioref">2019</a>)</span>.</p>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-spp-mean-abundance-all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-mean-abundance-all" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-mean-abundance-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-mean-abundance-all-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spp-mean-abundance-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Mean number of individuals all data
+Figure&nbsp;4: Mean number of individuals for all forest species detected
 </figcaption>
 </figure>
 </div>
@@ -1455,13 +1427,13 @@ Figure&nbsp;4: Mean number of individuals all data
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Species richness at forest monitoring locations across years
+Figure&nbsp;5: Species richness along Auriol Trail by year
 </figcaption>
 </figure>
 </div>
@@ -1469,13 +1441,13 @@ Figure&nbsp;5: Species richness at forest monitoring locations across years
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-relative-abundance-auriol" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-relative-abundance-auriol" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-relative-abundance-auriol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-relative-abundance-auriol-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-relative-abundance-auriol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Count abundance of medium-distance migrants by year
+Figure&nbsp;6: Count abundance of medium-distance migrants along Auriol Trail by year
 </figcaption>
 </figure>
 </div>
@@ -1483,13 +1455,13 @@ Figure&nbsp;6: Count abundance of medium-distance migrants by year
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-annual-auriol-count" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-annual-auriol-count" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-annual-auriol-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-annual-auriol-count-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-annual-auriol-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Annual count on Auriol Trail
+Figure&nbsp;7: Annual count of medium-distance migrants along Auriol Trail
 </figcaption>
 </figure>
 </div>
@@ -1497,13 +1469,13 @@ Figure&nbsp;7: Annual count on Auriol Trail
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-mean-auriol-abundance" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-mean-auriol-abundance" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mean-auriol-abundance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-mean-auriol-abundance-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mean-auriol-abundance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Mean abundance per location per year
+Figure&nbsp;8: Trend in mean abundance of medium-distance migrants along on Auriol Trail
 </figcaption>
 </figure>
 </div>
@@ -1511,7 +1483,7 @@ Figure&nbsp;8: Mean abundance per location per year
 </div>
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div class="cell-output-display">
-<div id="fig-shannon" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-shannon" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shannon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-shannon-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1525,52 +1497,82 @@ Figure&nbsp;9: Shannon Diversity Index over years on Auriol Trail
 </div>
 <section id="repeated-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="repeated-analysis">Repeated analysis</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess data</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>kmp <span class="ot">&lt;-</span> knpr_main <span class="sc">|&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(recording_date_time)) <span class="sc">|&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, year, recording_date_time, species_code, individual_order, individual_count) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC'</span>, species_code), </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>         species_code <span class="sc">!=</span> <span class="st">"NONE"</span>, </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>         species_code <span class="sc">!=</span> <span class="st">"NOISE"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>         species_code <span class="sc">!=</span> <span class="st">"40KMYO"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>species_code <span class="sc">%in%</span> mdm) <span class="sc">|&gt;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location, year, recording_date_time, species_code) <span class="sc">|&gt;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">individual_order =</span> <span class="fu">max</span>(individual_order), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location, year) <span class="sc">|&gt;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum =</span> <span class="fu">sum</span>(individual_order), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spl =</span> <span class="fu">case_when</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2009</span><span class="sc">:</span><span class="dv">2013</span>) <span class="sc">~</span> <span class="st">"First"</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                         year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2014</span><span class="sc">:</span><span class="dv">2019</span>) <span class="sc">~</span> <span class="st">"Second"</span>,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                         year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2020</span><span class="sc">:</span><span class="dv">2024</span>) <span class="sc">~</span> <span class="st">"Third"</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                         <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>))</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group_by(spl) |&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># summarise(mean = mean(sum),</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#           sd = sd(sum), .groups = 'drop') |&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mutate(T2 = mean - sd,    # Mean minus 1 standard deviation (for ~68%)</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#        T1 = mean - (2 * sd))</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kmp, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> sum)) <span class="sc">+</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="knpr-pam_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="cell" data-layout-align="center" data-cap-location="bottom">
+<div id="fig-repeated" class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Repeated measures from Petrikeev 2019.</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 15%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: right;">Mean_abundance</th>
+<th style="text-align: right;">SD</th>
+<th style="text-align: right;">T2</th>
+<th style="text-align: right;">T1</th>
+<th style="text-align: right;">R_Squared</th>
+<th style="text-align: right;">F_Squared</th>
+<th style="text-align: right;">Sample_Size_n</th>
+<th style="text-align: right;">Power</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Abundance of 4 spp.</td>
+<td style="text-align: right;">8.67</td>
+<td style="text-align: right;">4.27</td>
+<td style="text-align: right;">4.41</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Annual count of 4 spp.</td>
+<td style="text-align: right;">103.38</td>
+<td style="text-align: right;">44.24</td>
+<td style="text-align: right;">59.14</td>
+<td style="text-align: right;">14.90</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.87</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Abundance of all spp.</td>
+<td style="text-align: right;">11.18</td>
+<td style="text-align: right;">5.24</td>
+<td style="text-align: right;">5.94</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">156</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Annual count all spp.</td>
+<td style="text-align: right;">134.15</td>
+<td style="text-align: right;">55.32</td>
+<td style="text-align: right;">78.83</td>
+<td style="text-align: right;">23.50</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.88</td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trend_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sum <span class="sc">~</span> year <span class="sc">+</span> location, <span class="at">data =</span> kmp)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> <span class="fu">summary</span>(trend_model)<span class="sc">$</span>coefficients[, <span class="dv">4</span>]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>rsq <span class="ot">&lt;-</span> <span class="fu">summary</span>(trend_model)<span class="sc">$</span>r.squared</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>f_squared <span class="ot">&lt;-</span> rsq <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> rsq)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(kmp)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>power_analysis <span class="ot">&lt;-</span> <span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="fu">length</span>(<span class="fu">coef</span>(trend_model)) <span class="sc">-</span> <span class="dv">1</span>,  </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">v =</span> n <span class="sc">-</span> <span class="fu">length</span>(<span class="fu">coef</span>(trend_model)),  </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">f2 =</span> f_squared,  </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sig.level =</span> <span class="fl">0.2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
