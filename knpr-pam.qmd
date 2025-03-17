@@ -113,7 +113,7 @@ The objectives of this report are to:
 
 ## Ecological integrity monitoring
 
-Forest bird monitoring commenced in 2009. Acoustic monitoring surveys were conducted at Auriol Trail and Quill Creek to assess avian activity during the core breeding season in May and June to align with the Alaska Landbird Monitoring Strategy protocol @handel2004alaska. Surveys are conducted in the white spruce (*Picea glauca*) dominated forests along the Auriol Trail. Since 2013 the acoustic surveys are carried out biennially, while Quill Creek was surveyed in 2022 only. Twelve survey points were spaced 200 m apart. These surveys involved a standardized 10-minute recording at each site, enabling consistent data collection for comparisons across years and locations. The recordings were analyzed to capture the presence and abundance of breeding bird species. Two experienced observers visited the points along the Auriol Trail, and listened for 10 minutes independently at each point, recording all the birds heard and seen within 100 m.
+Forest bird monitoring commenced in 2009. Acoustic monitoring surveys were conducted at Auriol Trail and Quill Creek to assess avian activity during the core breeding season in May and June to align with the Alaska Landbird Monitoring Strategy protocol (@handel2004alaska). Surveys were conducted in the white spruce (*Picea glauca*) dominated forests along the Auriol Trail. Since 2013 the acoustic surveys are carried out biennially, while Quill Creek was surveyed in 2019 and 2022 only. Twelve survey points were spaced 200 m apart. These surveys involved a standardized 10-minute recording at each site, enabling consistent data collection for comparisons across years and locations. The recordings were analyzed to capture the presence and abundance of breeding bird species. Two experienced observers visited the points along the Auriol Trail, and listened for 10 minutes independently at each point, recording all the birds heard and seen within 100 m.
 
 ```{r, echo=F}
 #| echo: false
@@ -270,7 +270,7 @@ kable(recs_plot)
 
 ## Data processing
 
-Data were transferred via SD cards to the University of Alberta Data Centre in Edmonton for redundant data storage under [WildTrax](https://wildtrax.ca). A summary table of the recordings were collected can be found in [FIGURE]. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs). Data processing also took place in WildTrax, using the 1SPT method (species-individual per task or time to first detection) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates.
+Data from 2015 - 2024 were processed in WildTrax with the data between 2009 - 2014 having been acquired directly from legacy spreadsheets. Audio data were transferred to the University of Alberta Data Centre in Edmonton for redundant data storage under [WildTrax](https://wildtrax.ca). A summary table of the recordings were collected can be found in [FIGURE]. The recordings were standardized to ensure adherence to the naming convention of `LOCATION_DATETIME`, such as `AC-T1_20230625_053500.wav`. All recordings designated for processing were directly uploaded to WildTrax and can be downloaded from the platform's Recording tab, accessible under Manage \> Download list of recordings (see @fig-download-recs). Data processing also took place in WildTrax, using the 1SPT method (species-individual per task or time to first detection) with the goal to describe the acoustic community of species heard. The full acoustic community was analyzed including birds, mammals, amphibians, including a relative environment noise assessment (i.e. wind, rain and anthropogenic noise) To ensure balanced replication at prescribed burn locations, four randomly selected recordings were processed for 3-minutes during the morning hours of 5:00 AM - 7:59 AM ideally on four separate dates.
 
 ![Downloading a list of recordings from WildTrax](./assets/download-recs.png){#fig-download-recs}
 
@@ -322,7 +322,7 @@ kable(tmtt_tags)
 
 ## Analysis
 
-Analyses were conducted in R 4.4.2 'Pile of Leaves' and in RStudio. Analysis was repeated following @Petrikeev2019analysis under the four different scenarios. We generated linear models of the four different scenarios and computed power using the [`pwr`](https://cran.r-project.org/web/packages/pwr/pwr.pdf) package using the R^2 and F-squared values.
+Analyses were conducted in R 4.4.2 'Pile of Leaves' and in RStudio. Analysis was repeated following @Petrikeev2019analysis under the four different scenarios. Four medium-distance migrants were selected (Dark-eyed Junco (DEJU) *Junco hyemalis*, Yellow-rumped Warbler (YRWA) *Setophaga coronata*, Varied Thrush (VATH) *Ixoreus navieus*, Swainson's Thrush (SWTH) *Cathartus guttatus*) representing approximately `r round(prop_auriol*100, 2)` of the total detections of the Auriol Trail dataset. We generated linear models of the four different scenarios and computed power using the [`pwr`](https://cran.r-project.org/web/packages/pwr/pwr.pdf) package using *R*<sup>2</sup> and *F*<sup>2</sup> values. 
 
 * Scenario 1: Abundance of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush per location
 * Scenario 2: Annual count of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush 
@@ -365,8 +365,11 @@ common <- knpr_main |>
          !(grepl('Noise',species_common_name)),
          species_code != "40KMYO") |>
   arrange(species_code) |>
-  mutate(proportion = (round(n / sum(n),3))*100) |>
-  rename(count = "n")
+  mutate(proportion = (round(n / sum(n),4))*100) |>
+  rename(`Count of detections` = "n") |>
+  rename(`Proportion of total detections` = "proportion") |>
+  rename(`Species Common Name` = "species_common_name") |>
+  rename(`Species Code` = "species_code")
 
 kable(common)
 
@@ -416,7 +419,7 @@ knpr_main |>
   geom_density_ridges(alpha = 0.2) +
   scale_fill_viridis_d(option = "mako") +
   theme_bw() +
-  xlab("Day of Year") + 
+  xlab("Day of Year (Julian Date)") + 
   ylab("Species")
 
 ```
@@ -451,18 +454,19 @@ plot_all <- tot_all |>
   mutate(year = round(year,0))
 
 linear_model_plot_all <- lm(individual_order ~ year, data = plot_all)
-slope_plot_all <- coef(linear_model)[2]
-p_value_plot_all <- summary(linear_model)$coefficients[2, 4]
+slope_plot_all <- coef(linear_model_plot_all)[2]
+p_value_plot_all <- summary(linear_model_plot_all)$coefficients[2, 4]
 
 plot_all |>
   ggplot(aes(x = year, y = individual_order)) +
   geom_point(size = 2, color = "darkblue") +
-  geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  # Use numeric conversion for geom_smooth
-  scale_colour_viridis_d() +  # Keep years as factors and format without spaces
+  geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  
+  scale_colour_viridis_d() +  
   theme_bw() +
-  labs(x = "Year", y = "Mean number of individuals") +
+  labs(x = "Year", y = "Mean number of individuals per location") +
+  scale_x_continuous(breaks = unique(plot_all$year)) +
   annotate("text", x = 2009, y = max(plot_all$individual_order), 
-           label = paste("Slope: ", round(slope, 2), "\nP-value: ", round(p_value, 4)), 
+           label = paste("Slope: ", round(slope_plot_all,4), "\nP-value: ", round(p_value_plot_all, 4)), 
            size = 3, hjust = 0, vjust = 1)
 
 ```
@@ -498,7 +502,7 @@ spp_rich_location |>
   geom_smooth(method = "lm") +
   theme_bw() +
   scale_fill_viridis_c(option = "mako") +
-  xlab('Location') + ylab('Species richness')
+  xlab('Year') + ylab('Species richness per location')
 
 ```
 
@@ -532,7 +536,7 @@ plot_mdm <- tot_auriol_mdm |>
   wt_replace_tmtt(calc = "round") |>
   select(location, year, species_code, individual_order, individual_count) |>
   group_by(location, year, species_code) |>
-  summarise(individual_order = max(individual_order)) |>
+  summarise(individual_order = mean(individual_order)) |>
   ungroup() |>
   mutate(year = round(year,0))
 
@@ -540,10 +544,12 @@ plot_mdm |>
   ggplot(aes(x = year, y = individual_order, colour = species_code)) +
   geom_point() +
   geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  # Use numeric conversion for geom_smooth
-  scale_colour_viridis_d(option = "mako") +  # Keep years as factors and format without spaces
+  scale_colour_viridis_d(option = "mako") +  # Viridis color palette for clarity
   theme_bw() +
-  facet_wrap(~species_code) +
-  labs(x = "Year", y = "Mean number of individuals")
+  facet_wrap(~species_code) +  # Free y-scale for better readability
+  scale_x_continuous(breaks = unique(plot_mdm$year)) +
+  labs(x = "Year", y = "Mean number of individuals per location") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
 
 ```
 
@@ -560,22 +566,34 @@ plot_mdm |>
 #| cap-location: bottom
 #| code-fold: true
 
-count_annual_mdm <- plot_mdm |>
+count_annual_mdm <- tot_auriol_mdm |>
+  mutate(year = year(recording_date_time)) |>
+  wt_replace_tmtt(calc = "round") |>
+  select(location, year, species_code, individual_order, individual_count) |>
+  group_by(location, year, species_code) |>
+  summarise(individual_order = max(individual_order)) |>
+  ungroup() |>
+  mutate(year = round(year,0)) |>
   group_by(year) |>
   summarise(sum_year = sum(individual_order)) |>
   ungroup()
+
+linear_model_count_annual_mdm <- lm(sum_year ~ year, data = count_annual_mdm)
+slope_count_annual_mdm <- coef(linear_model_count_annual_mdm)[2]
+p_value_count_annual_mdm <- summary(linear_model_count_annual_mdm)$coefficients[2, 4]
 
 ggplot(count_annual_mdm, aes(x = year, y = sum_year)) +
   geom_smooth(method = "lm") +
   geom_point(size = 2, color = "darkblue") +
   scale_fill_viridis_d(option = "mako") +
-  labs(
-    x = "Location",
-    y = "Sum of Individuals",
-    fill = "Year"
-  ) +
+  labs(x = "Location", y = "Count of medium-distance migrants", fill = "Year") +
+  scale_x_continuous(breaks = unique(count_annual_mdm$year)) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  ylim(0, 120) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  annotate("text", x = 2021, y = max(count_annual_mdm$sum_year), 
+           label = paste("Slope: ", round(slope_count_annual_mdm, 2), "\nP-value: ", round(p_value_count_annual_mdm, 4)), 
+           size = 3, hjust = 0, vjust = 1)
 
 ```
 
@@ -592,24 +610,29 @@ ggplot(count_annual_mdm, aes(x = year, y = sum_year)) +
 #| cap-location: bottom
 #| code-fold: true
 
-mean_abundance <- plot_mdm |>
+mean_abundance_mdm <- plot_mdm |>
   group_by(location, year) |>
-  summarise(mean_abundance = mean(individual_order, na.rm = TRUE), .groups = "drop")
-
-mean_abundance_year <- mean_abundance |>
+  summarise(mean_abundance = mean(individual_order, na.rm = TRUE), .groups = "drop") |>
+  ungroup() |>
   group_by(year) |>
-  summarise(mean_abundance_year = mean(mean_abundance, na.rm = TRUE), .groups = "drop")
+  summarise(mean_abundance_year = mean(mean_abundance, na.rm = TRUE), .groups = "drop") |>
+  ungroup()
 
-ggplot(mean_abundance_year, aes(x = year, y = mean_abundance_year)) +
+linear_model_mean_abundance_mdm <- lm(mean_abundance_year ~ year, data = mean_abundance_mdm)
+slope_mean_abundance_mdm <- coef(linear_model_mean_abundance_mdm)[2]
+p_value_mean_abundance_mdm <- summary(linear_model_mean_abundance_mdm)$coefficients[2, 4]
+
+ggplot(mean_abundance_mdm, aes(x = year, y = mean_abundance_year)) +
   geom_smooth(method = "lm") +
   geom_point(size = 2, color = "darkblue") +
-  labs(
-    x = "Year",
-    y = "Mean Abundance per Station"
-  ) +
+  labs(x = "Year", y = "Mean abundance per year of medium-distance migrants") +
+  scale_x_continuous(breaks = unique(mean_abundance_mdm$year)) +  # Use the correct x-axis variable
   theme_bw() +
-  ylim(0, 4) +
-  scale_x_continuous(breaks = seq(min(mean_abundance_year$year), max(mean_abundance_year$year), 1))
+  ylim(0.5, 2.5) +
+  annotate("text", x = 2009, y = 2.25, 
+           label = paste("Slope: ", round(slope_mean_abundance_mdm, 2), "\nP-value: ", round(p_value_mean_abundance_mdm, 4)), 
+           size = 3, hjust = 0, vjust = 1)
+  
 
 ```
 
@@ -654,7 +677,7 @@ shannon <- shannon_d |>
   geom_boxplot() +
   geom_point(alpha = 0.6, colour = "grey") +
   labs(x = "Year",
-       y = "Shannon Diversity Index") +
+       y = "Shannon diversity index per location") +
   theme_bw() +
   guides(fill = guide_legend(title = "Year")) +
   scale_fill_viridis_d(alpha = 0.8, option = "mako")
@@ -990,7 +1013,7 @@ power_4 <- pwr.f2.test(u = length(coef(model_scenario_4)) - 1,
 data_2009_2013 <- filter(kmp_scenario_1, year %in% c(2009:2013))
 data_2014_2019 <- filter(kmp_scenario_1, year %in% c(2014:2019))
 data_2020_2024 <- filter(kmp_scenario_1, year %in% c(2020:2024))
-t_test_result <- t.test(data_2009_2013$sum, data_2014_2019$sum)
+t_test_result1 <- t.test(data_2009_2013$sum, data_2014_2019$sum)
 t_test_result2 <- t.test(data_2014_2019$sum, data_2020_2024$sum)
 t_test_result3 <- t.test(data_2009_2013$sum, data_2020_2024$sum)
 
@@ -1014,7 +1037,7 @@ kable(power_analyze)
 
 ## Pre-burn monitoring for prescribed fire
 
-In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(common)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (control, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection. A two-sample t-test was conducted to compare mean species richness between different treatments, using the Treatment variable as the grouping factor. The result provides insights into whether there is a statistically significant difference in species richness between the treatments. As demonstrated in @fig-prescribed-burns there was no significant difference in species richness between controls and burns.
+In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(common)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (controll, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection. A Welch two-sample *t*-test was conducted to compare mean species richness between different treatments, using the Treatment variable as the grouping factor. The result provides insights into whether there is a statistically significant difference in species richness between the treatments. As demonstrated in @fig-prescribed-burns there was no significant difference in species richness between controls and burns.
 
 ```{r}
 #| warning: false
@@ -1049,10 +1072,7 @@ richness_data <- burn_data %>%
   summarize(species_richness = n_distinct(species_code), .groups = "drop")
 
 # Perform t-test for species richness between treatments
-t_test_result <- t.test(
-  species_richness ~ Treatment,
-  data = richness_data
-)
+t_test_result <- t.test(species_richness ~ Treatment, data = richness_data)
 
 # Boxplot for species richness by treatment
 ggplot(richness_data, aes(x = Treatment, y = species_richness, fill = Treatment)) +
