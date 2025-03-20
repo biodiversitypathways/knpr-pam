@@ -31,7 +31,7 @@ github: https://github.com/biodiversitypathways/knpr-pam
 ```{r}
 #| label: Load packages and authenticate to WildTrax
 #| include: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| warning: false
 #| message: false
@@ -53,33 +53,6 @@ wt_auth()
 load('knpr.RData')
 #save.image('knpr.RData')
 #cirrus_knpr_recs  <- readRDS('./assets/knprcirrus.RDS')
-```
-
-```{r}
-#| label: Download data from WildTrax
-#| warning: false
-#| message: false
-#| echo: false
-#| eval: false
-#| include: true
-
-knpr_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
-  filter(grepl('Kluane', project)) |>
-  select(project_id) |>
-  pull()
-
-knpr_main <-
-  map_dfr(
-    .x = knpr_projects,
-    .f = ~ wildrtrax::wt_download_report(
-      project_id = .x,
-      sensor_id = "ARU",
-      weather_cols = T,
-      reports = "main"
-    )
-  )
-
-knpr_main <- bind_rows(knpr_main, old_standardized)
 ```
 
 # Abstract
@@ -113,20 +86,49 @@ The objectives of this report are to:
 
 ## Ecological integrity monitoring
 
-Forest bird monitoring commenced in 2009. Acoustic monitoring surveys were conducted at Auriol Trail and Quill Creek to assess avian activity during the core breeding season in May and June to align with the Alaska Landbird Monitoring Strategy protocol (@handel2004alaska). Surveys were conducted in the white spruce (*Picea glauca*) dominated forests along the Auriol Trail. Since 2013 the acoustic surveys are carried out biennially, while Quill Creek was surveyed in 2019 and 2022 only. Twelve survey points were spaced 200 m apart. These surveys involved a standardized 10-minute recording at each site, enabling consistent data collection for comparisons across years and locations. The recordings were analyzed to capture the presence and abundance of breeding bird species. Two experienced observers visited the points along the Auriol Trail, and listened for 10 minutes independently at each point, recording all the birds heard and seen within 100 m.
+Forest bird monitoring commenced in 2009. Acoustic monitoring surveys were conducted at Auriol Trail and Quill Creek to assess avian activity during the core breeding season in May and June to align with the Alaska Landbird Monitoring Strategy protocol (@handel2004alaska). Surveys were conducted in the white spruce (*Picea glauca*) dominated forests along the Auriol Trail. Along Auriol Trail, from 2009 to 2014 surveys were conducted annually, proceeding by biennial surveys in 2015, 2017, 2019 and returning to annual surveys in 2020. Quill Creek was surveyed in 2019 and 2022 only; due to the lack of repetition in these surveys, only Auriol Trail was included in the proceeding EI measures. Each transect consisted of twelve survey points spaced approximately 200 m apart. These surveys involved a standardized 10-minute recording at each site, enabling consistent data collection for comparisons across years and locations, with each location sufficiently spaced to ensure independence for most species. The recordings were analyzed to capture the presence and abundance of breeding bird species. Two experienced observers visited the points along the Auriol Trail, and listened for 10 minutes independently at each point, recording all the birds heard and seen within 100 m.
+
+```{r}
+#| label: Download data from WildTrax
+#| warning: false
+#| message: false
+#| echo: true
+#| eval: false
+#| include: true
+#| code-fold: true
+
+knpr_projects <- wildrtrax::wt_get_download_summary(sensor = 'ARU') |>
+  filter(grepl('Kluane', project)) |>
+  select(project_id) |>
+  pull()
+
+knpr_main <-
+  map_dfr(
+    .x = knpr_projects,
+    .f = ~ wildrtrax::wt_download_report(
+      project_id = .x,
+      sensor_id = "ARU",
+      weather_cols = T,
+      reports = "main"
+    )
+  )
+
+knpr_main <- bind_rows(knpr_main, old_standardized)
+```
 
 ```{r, echo=F}
-#| echo: false
+#| echo: true
 #| eval: true
 #| warning: false
 #| message: false
 #| include: true
+#| code-fold: true
 #| fig-align: center
 #| fig-cap: Locations from Kluane National Park Reserve ARU Monitoring Program
 #| label: fig-aru-monitoring-locations
 
 knpr_locs <- knpr_main |>
-  mutate(year = lubridate::year(recording_date_time)) |>
+  mutate(year = year(recording_date_time)) |>
   select(location, latitude, longitude, year) |>
   distinct() |>
   drop_na() |>
@@ -193,15 +195,18 @@ Data were collected during spring and summer of 2023-2024. A total of 10 locatio
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
 #| label: tbl-loc-summary
 #| collapse: true
+#| code-fold: true
 #| tbl-cap: Locations surveyed across years. Ones indicated a deployment in that year for that location. Note the absence of AC-C1, AC-T3, JR-BAT in 2023 which failed to collect data.
 
-kable(locs_summary, caption = "Location summary for ARUs deployed in Kluane National Park")
+kable(locs_summary, caption = "Location summary for ARUs deployed in Kluane National Park") |>
+  kable_styling(fixed_thead = TRUE) |>
+  scroll_box(width = "100%", height = "400px")
 
 ```
 
@@ -220,12 +225,11 @@ all_recs <- wt_get_recordings('KNPR') |>
   distinct() |>
   drop_na() |>
   unnest() |>
-  mutate(recording_date_time = lubridate::ymd_hms(recording_date_time),
-         julian = lubridate::yday(recording_date_time),
+  mutate(recording_date_time = ymd_hms(recording_date_time),
+         julian = yday(recording_date_time),
          hour = hour(recording_date_time),
          year = year(recording_date_time),
-         month= month(recording_date_time, label = T)) |>
-  filter(!grepl('BAT', location))
+         month= month(recording_date_time, label = T))
 
 count_recs <- nrow(all_recs)
 
@@ -236,21 +240,25 @@ average_deployment <- all_recs |>
   summarise(mean = round(mean(count), 2),
             sd = round(sd(count), 2))
 
-recs_plot <- all_recs |>
-  filter(!location %in% c("AC-BAT","JR-BAT","AC-T3","AC-C1")) |>
+all_recs_plot <- all_recs |>
   rename("Location" = location) |>
   rename("Day of Year" = julian) |>
+  mutate(type = case_when(
+    grepl("BAT", Location) ~ "Bat monitoring",              
+    grepl("^AC-T|^JR-T|^AC-C|^JR-C", Location) ~ "Pre-burn monitoring",     
+    TRUE ~ "Ecological integrity"
+  )) |>
   group_by(Location, `Day of Year`) |>
   add_tally() |>
-  ungroup()
-  # filter(!`Day of Year` < 150) |>
-  # ggplot(aes(x = recording_date_time, y = n, colour = Location)) +
-  # geom_point(size = 2) +
-  # theme_bw() +
-  # scale_colour_viridis_d() +
-  # ylab('Count of recordings per day of year') +
-  # xlab('Date')
-  #scale_x_discrete(guide = guide_axis(check.overlap = TRUE))
+  ungroup() |>
+  ggplot(aes(x = `Day of Year`, fill = type)) +
+  geom_density() +
+  labs(x = "Day of Year",
+       y = "Proportion of total Recordings",
+       color = "Year") +
+  theme_bw() +
+  xlim(140, 200) +
+  scale_fill_viridis_d(option = "mako", alpha = 0.7)
   
 ```
 
@@ -261,10 +269,10 @@ recs_plot <- all_recs |>
 #| message: false
 #| include: true
 #| results: hide
-#| label: recs-plot
-#| tbl-cap: Recordings collected
+#| label: fig-recs-plot
+#| fig-cap: Proportion of total recordings collected across programs relative to day of year (julian date)
 
-kable(recs_plot)
+all_recs_plot
 
 ```
 
@@ -274,14 +282,15 @@ Data from 2015 - 2024 were processed in WildTrax with the data between 2009 - 20
 
 ![Downloading a list of recordings from WildTrax](./assets/download-recs.png){#fig-download-recs}
 
-Tags were made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round((nrow(tmtt_tags)/nrow(knpr_main))*100,4)`% of the total tags were TMTT but were subsequently converted to numeric using `wildrtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(2) |> pull()`%) to ensure accuracy of detections (see @tbl-verified). Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
+Tags were made using count-removal (see @farnsworth2002removal, @time-removal) where tags are only made at the time of first detection of each individual heard on the recordings. In case a species was overly abundant a TMTT ('too many to tag') flag was used (see @tbl-tmtt). `r round((nrow(tmtt_tags)/nrow(knpr_main))*100,4)`% of the total tags were TMTT but were subsequently converted to numeric using `wildrtrax::wt_replace_tmtt`. We also verified that all tags that were created were checked by a second observer (n = `r verified_tags |> select(Proportion) |> slice(2) |> pull()`%) to ensure accuracy of detections (see @tbl-verified). Data from 2009 - 2014 were not uploading to WildTrax or verified since the audio was not found. Amphibian abundance was estimated at the time of first detection using the [North American Amphibian Monitoring Program](https://www.usgs.gov/centers/eesc/science/north-american-amphibian-monitoring-program) with abundance of species being estimated on the scale of "calling intensity index" (CI) of 1 - 3. Vocalizing mammals such as Red Squirrel, were also noted if heard on the recordings. After the data are processed in WildTrax, the [wildrtrax](https://abbiodiversity.github.io/wildrtrax/) package is use to download the data into a standard format prepared for analysis. The `wt_download_report` function downloads the data directly to a R framework for easy manipulation (see [wildrtrax APIs](https://abbiodiversity.github.io/wildrtrax/articles/apis.html)).
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| message: false
 #| eval: true
 #| include: true
+#| code-fold: true
 #| label: tbl-verified
 #| tbl-cap: Proportion of tags verified
 
@@ -304,10 +313,11 @@ kable(verified_tags)
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| message: false
 #| eval: true
 #| include: true
+#| code-fold: true
 #| label: tbl-tmtt
 #| tbl-cap: TMTT tags
 
@@ -322,12 +332,14 @@ kable(tmtt_tags)
 
 ## Analysis
 
-Analyses were conducted in R 4.4.2 'Pile of Leaves' and in RStudio. Analysis was repeated following @Petrikeev2019analysis under the four different scenarios. Four medium-distance migrants were selected (Dark-eyed Junco (DEJU) *Junco hyemalis*, Yellow-rumped Warbler (YRWA) *Setophaga coronata*, Varied Thrush (VATH) *Ixoreus navieus*, Swainson's Thrush (SWTH) *Cathartus guttatus*) representing approximately `r round(prop_auriol*100, 2)` of the total detections of the Auriol Trail dataset. We generated linear models of the four different scenarios and computed power using the [`pwr`](https://cran.r-project.org/web/packages/pwr/pwr.pdf) package using *R*<sup>2</sup> and *F*<sup>2</sup> values. 
+Analyses were conducted in R 4.4.2 'Pile of Leaves' and in RStudio. Analysis was repeated following @Petrikeev2019analysis under the four different scenarios. Four medium-distance migrants were selected (Dark-eyed Junco (DEJU) *Junco hyemalis*, Yellow-rumped Warbler (YRWA) *Setophaga coronata*, Varied Thrush (VATH) *Ixoreus navieus*, Swainson's Thrush (SWTH) *Cathartus guttatus*) representing approximately `r round(prop_auriol*100, 2)`% of the total detections of the Auriol Trail dataset. We generated linear models of each of the four different scenarios to determine whether there was a significant change in each metric over the period between 2009 - 2013, 2014-2019 and 2020-2024, and computed power using the [`pwr`](https://cran.r-project.org/web/packages/pwr/pwr.pdf) package using *R*<sup>2</sup> and *F*<sup>2</sup> values.
 
-* Scenario 1: Abundance of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush per location
-* Scenario 2: Annual count of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush 
-* Scenario 3: Abundance of all species per location
-* Scenario 4: Annual count of all species
+* Scenario 1: Has the abundance of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush per location remained within 1 standard deviation of the base metric?
+* Scenario 2: Has the annual count of Dark-eyed Junco, Yellow-rumped Warbler, Varied Thrush and Swainson's Thrush remained within 1 standard deviation of the base metric?
+* Scenario 3: Has the abundance of all species per location remained within 1 standard deviation of the base metric?
+* Scenario 4: Has the annual count of all species remained within 1 standard deviation of the base metric?
+
+To determine whether there was a significant difference in species richness between control and pre-burn monitoring sites, a Welch two-sample *t*-test was conducted to compare mean species richness between different treatments, using the Treatment variable as the grouping factor. 
 
 ## Bat Methods
 
@@ -337,11 +349,11 @@ All recordings assigned a species by Kaleidoscope or Sonobat were further review
 
 # Results
 
-Species detected can be found at @tbl-bird-guilds, with seasonal detection activity of common species summarized by @fig-spp-activity. 
+A list of detected species and their proportions within the total data set can be found at @tbl-bird-guilds, with the seasonal detection activity of common species summarized in @fig-spp-activity.
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -371,13 +383,15 @@ common <- knpr_main |>
   rename(`Species Common Name` = "species_common_name") |>
   rename(`Species Code` = "species_code")
 
-kable(common)
+kable(common) |>
+  kable_styling(fixed_thead = TRUE) |>
+  scroll_box(width = "100%", height = "400px")
 
 ```
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -391,7 +405,7 @@ kable(common)
 knpr_main |>
   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
   select(location, recording_date_time, species_common_name, species_code, individual_count) |>
-  mutate(julian = lubridate::yday(recording_date_time),
+  mutate(julian = yday(recording_date_time),
          month= month(recording_date_time),
          year = factor(year(recording_date_time))) |>
   inner_join(guilds |> select(species_common_name, habitat_nesting)) |>
@@ -416,7 +430,7 @@ knpr_main |>
   mutate(recording_date_time = as.POSIXct(recording_date_time)) |>
   mutate(species_code = factor(species_code, levels = sort(unique(species_code)))) |>
   ggplot(aes(x = julian, y = species_code, fill = `Nesting habitat`)) + 
-  geom_density_ridges(alpha = 0.2) +
+  geom_density_ridges(alpha = 0.2, scale = 2.5, rel_min_height = 0.01) +
   scale_fill_viridis_d(option = "mako") +
   theme_bw() +
   xlab("Day of Year (Julian Date)") + 
@@ -426,12 +440,12 @@ knpr_main |>
 
 ## Ecological integrity trends along Auriol Trail
 
-The trend of mean abundance of individuals can be found at @fig-spp-mean-abundance-all. Species richness trends can be seen at @fig-spp-rich-locs. Abundance of medium-distance migrants by year are at @fig-relative-abundance-auriol. Annual count on Auriol Trail @fig-annual-auriol-count. Mean abundance per location per year on Auril Trail at @fig-mean-auriol-abundance. Mean Shannon diversity remained relative stable across years along Auriol Trail as seen in @fig-shannon with woodpeckers (Piciformes) and landfowl (Galliformes) removed to follow methods in @Petrikeev2019analysis.
+The trend in the mean abundance of individuals per location for all species over the years is illustrated in @fig-spp-mean-abundance-all, showing no significant decline across the observed years. Species richness per location trends can be seen at @fig-spp-rich-locs. Mean abundance trends of medium-distance migrants are at @fig-relative-abundance-auriol. Annual count of medium-distance migrants is found at @fig-annual-auriol-count with a significant decrease found, however their mean abundance per year at @fig-mean-auriol-abundance was not found to be significantly changing. Mean Shannon diversity remained relative stable across years but showed increased variance over years as seen in @fig-shannon with woodpeckers (Piciformes) and landfowl (Galliformes) removed to follow methods in @Petrikeev2019analysis.
 
 ```{r}
 #| warning: false
 #| message: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| include: true
 #| fig-align: center
@@ -474,7 +488,7 @@ plot_all |>
 ```{r}
 #| warning: false
 #| message: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| include: true
 #| fig-align: center
@@ -486,7 +500,7 @@ plot_all |>
 spp_rich_location <- knpr_main |>
   as_tibble() |>
   wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
-  mutate(year = lubridate::year(recording_date_time)) |>
+  mutate(year = year(recording_date_time)) |>
   select(location, year, species_code) |>
   distinct() |>
   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |>
@@ -508,7 +522,7 @@ spp_rich_location |>
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -555,7 +569,7 @@ plot_mdm |>
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -599,7 +613,7 @@ ggplot(count_annual_mdm, aes(x = year, y = sum_year)) +
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -638,13 +652,13 @@ ggplot(mean_abundance_mdm, aes(x = year, y = mean_abundance_year)) +
 
 ```{r}
 #| warning: false
-#| echo: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
 #| results: hide
 #| fig-align: center
-#| fig-cap: Shannon Diversity Index over years on Auriol Trail
+#| fig-cap: Shannon diversity index over years on Auriol Trail
 #| label: fig-shannon
 #| cap-location: bottom
 #| code-fold: true
@@ -666,7 +680,7 @@ shannon_d <- knpr_main |>
 
 shannon <- shannon_d |>
   pivot_longer(cols = -(location:species_common_name), names_to = "species", values_to = "count") |>
-  group_by(location, year = lubridate::year(recording_date_time), species) |>
+  group_by(location, year = year(recording_date_time), species) |>
   summarise(total_count = sum(count)) |>
   ungroup() |>
   filter(!total_count == 0) |>
@@ -692,7 +706,6 @@ shannon
 #| message: false
 #| include: false
 #| label: tbl-old
-#| code-fold: true
 
 lm_results <- old_standardized |> 
   filter(recording_date_time >= "2009-01-01" & recording_date_time <= "2013-12-31") |>
@@ -840,110 +853,95 @@ forest_bird_abundance <- tibble(
 #| tbl-cap: Repeated measures from Petrikeev 2019. 
 #| label: fig-repeated
 #| cap-location: bottom
-#| code-fold: true
 
 # Preprocess data
-# Scenario 1 - Abundance of 4 spp. per location
-kmp_scenario_1 <- knpr_main |>
-  filter(Site == "Auriol Trail") |>
-  mutate(year = lubridate::year(recording_date_time)) |>
+scenario_prep <- knpr_main |>
+    filter(Site == "Auriol Trail") |>
+  mutate(year = year(recording_date_time)) |>
   select(location, year, recording_date_time, species_code, individual_order, individual_count) |>
   filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
          species_code != "NONE", 
          species_code != "NOISE",
-         species_code != "40KMYO",
-         species_code %in% mdm) |>
-  group_by(location, year, recording_date_time, species_code) |>
-  summarise(individual_order = max(individual_order), .groups = 'drop') |>
-  group_by(location, year) |>
-  summarise(sum = sum(individual_order), .groups = 'drop') |>
-  mutate(spl = case_when(year %in% c(2009:2013) ~ "First",
-                         year %in% c(2014:2019) ~ "Second",
-                         year %in% c(2020:2024) ~ "Third",
+         species_code != "40KMYO") |>
+  mutate(spl = case_when(year %in% c(2009:2013) ~ "2009 - 2013",
+                         year %in% c(2014:2019) ~ "2014 - 2019",
+                         year %in% c(2020:2024) ~ "2020 - 2024",
                          TRUE ~ NA_character_))
+
+# Scenario 1 - Abundance of 4 spp. per location
+kmp_scenario_1 <- scenario_prep |>
+  filter(species_code %in% mdm) |>
+  group_by(spl, location, year, recording_date_time, species_code) |>
+  summarise(individual_order = max(individual_order)) |>
+  ungroup() |>
+  group_by(spl, location, year) |>
+  summarise(sum = sum(individual_order)) |>
+  ungroup() |>
+  group_by(spl) |>
+  mutate(mean_period = mean(sum),
+         sd_period = sd(sum, na.rm = TRUE),
+         sample_size_period = n(),
+         T2 = mean_period - sd_period,
+         T1 = mean_period - (2 * sd_period)) |>
+  ungroup()
 
 # Scenario 2 - Annual count of 4 spp. 
-kmp_scenario_2 <- knpr_main |>
-  filter(Site == "Auriol Trail") |>
-  mutate(year = lubridate::year(recording_date_time)) |>
-  filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
-         species_code != "NONE", 
-         species_code != "NOISE",
-         species_code != "40KMYO",
-         species_code %in% mdm) |>
-  group_by(location, year, recording_date_time, species_code) |>
-  summarise(individual_order = max(individual_order), .groups = 'drop') |>
-  group_by(year) |>
-  summarise(count = sum(individual_order), .groups = 'drop') |>
-  mutate(spl = case_when(year %in% c(2009:2013) ~ "First",
-                         year %in% c(2014:2019) ~ "Second",
-                         year %in% c(2020:2024) ~ "Third",
-                         TRUE ~ NA_character_))
+kmp_scenario_2 <- scenario_prep |>
+  filter(species_code %in% mdm) |>
+  group_by(spl, location, year, recording_date_time, species_code) |>
+  summarise(individual_order = max(individual_order)) |>
+  ungroup() |>
+  group_by(spl, year) |>
+  summarise(count = sum(individual_order)) |>
+  ungroup() |>
+  group_by(spl) |>
+  mutate(mean_period = mean(count),
+         sd_period = sd(count, na.rm = TRUE),
+         sample_size_period = n(),
+         T2 = mean_period - sd_period,
+         T1 = mean_period - (2 * sd_period)) |>
+  ungroup()
 
 # Scenario 3 - Abundance of all spp. per location
-kmp_scenario_3 <- knpr_main |>
-  filter(Site == "Auriol Trail") |>
-  mutate(year = lubridate::year(recording_date_time)) |>
-  select(location, year, recording_date_time, species_code, individual_order, individual_count) |>
-  filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
-         species_code != "NONE", 
-         species_code != "NOISE",
-         species_code != "40KMYO",
-         !species_code %in% c("CORA","YEWA","WISN")) |>
-  group_by(location, year, recording_date_time, species_code) |>
-  summarise(individual_order = max(individual_order), .groups = 'drop') |>
-  group_by(location, year) |>
-  summarise(sum = sum(individual_order), .groups = 'drop') |>
-  mutate(spl = case_when(year %in% c(2009:2013) ~ "First",
-                         year %in% c(2014:2019) ~ "Second",
-                         year %in% c(2020:2024) ~ "Third",
-                         TRUE ~ NA_character_))
+kmp_scenario_3 <- scenario_prep |>
+  filter(!species_code %in% c("CORA","YEWA","WISN")) |>
+  group_by(spl, location, year, recording_date_time, species_code) |>
+  summarise(individual_order = max(individual_order)) |>
+  ungroup() |>
+  group_by(spl, location, year) |>
+  summarise(sum = sum(individual_order)) |>
+  ungroup() |>
+  group_by(spl) |>
+  mutate(mean_period = mean(sum),
+         sd_period = sd(sum, na.rm = TRUE),
+         sample_size_period = n(),
+         T2 = mean_period - sd_period,
+         T1 = mean_period - (2 * sd_period)) |>
+  ungroup()
+  
 
 # Scenario 4 - Annual count of all spp
-kmp_scenario_4 <- knpr_main |>
-  filter(Site == "Auriol Trail") |>
-  mutate(year = lubridate::year(recording_date_time)) |>
-  filter(!grepl('^UN|DOGG|HIGHF|UBAT|UCRS|MYOLUC', species_code), 
-         species_code != "NONE", 
-         species_code != "NOISE",
-         species_code != "40KMYO",
-         !species_code %in% c("CORA","YEWA","WISN")) |>
-  group_by(location, year, recording_date_time, species_code) |>
-  summarise(individual_order = max(individual_order), .groups = 'drop') |>
-  group_by(year) |>
-  summarise(count = sum(individual_order), .groups = 'drop') |>
-  mutate(spl = case_when(year %in% c(2009:2013) ~ "First",
-                         year %in% c(2014:2019) ~ "Second",
-                         year %in% c(2020:2024) ~ "Third",
-                         TRUE ~ NA_character_))
-
-
-  # group_by(spl) |>
-  # summarise(mean = mean(sum),
-  #           sd = sd(sum), .groups = 'drop') |>
-  # mutate(T2 = mean - sd,    # Mean minus 1 standard deviation (for ~68%)
-  #        T1 = mean - (2 * sd))
+kmp_scenario_4 <- scenario_prep |>
+  filter(!species_code %in% c("CORA","YEWA","WISN")) |>
+  group_by(spl, location, year, recording_date_time, species_code) |>
+  summarise(individual_order = max(individual_order)) |>
+  ungroup() |>
+  group_by(spl, year) |>
+  summarise(count = sum(individual_order)) |>
+  ungroup() |>
+  group_by(spl) |>
+  mutate(mean_period = mean(count),
+         sd_period = sd(count, na.rm = TRUE),
+         sample_size_period = n(),
+         T2 = mean_period - sd_period,
+         T1 = mean_period - (2 * sd_period)) |>
+  ungroup()
 
 # Build Models for Scenarios 1-4
-model_scenario_1 <- lm(sum ~ year + location, data = kmp_scenario_1)
-model_scenario_2 <- lm(count ~ year, data = kmp_scenario_2)
-model_scenario_3 <- lm(sum ~ year + location, data = kmp_scenario_3)
-model_scenario_4 <- lm(count ~ year, data = kmp_scenario_4)
-
-first_second_ttest <- t.test(sum ~ spl, data = filter(kmp_scenario_1, spl %in% c("First", "Second")))
-second_third_ttest <- t.test(sum ~ spl, data = filter(kmp_scenario_1, spl %in% c("Second", "Third")))
-
-mean_first <- 10.21667
-mean_second <- 12.30556
-sd_first <- sd(filter(kmp_scenario_1, spl == "First")$sum)
-sd_second <- sd(filter(kmp_scenario_1, spl == "Second")$sum)
-n_first <- nrow(filter(kmp_scenario_1, spl == "First"))
-n_second <- nrow(filter(kmp_scenario_1, spl == "Second"))
-
-pooled_sd <- sqrt(((n_first - 1) * sd_first^2 + (n_second - 1) * sd_second^2) / (n_first + n_second - 2))
-effect_size <- (mean_second - mean_first) / pooled_sd
-power_analysis <- pwr.t.test(d = effect_size, n = min(n_first, n_second), sig.level = 0.05, type = "two.sample")
-
+model_scenario_1 <- lm(sum ~ spl + location, data = kmp_scenario_1)
+model_scenario_2 <- lm(count ~ spl, data = kmp_scenario_2)
+model_scenario_3 <- lm(sum ~ spl + location, data = kmp_scenario_3)
+model_scenario_4 <- lm(count ~ spl, data = kmp_scenario_4)
 
 # Calculate Mean, SD, T1, T2 for Scenarios 1, 2, 3, 4
 ks1 <- kmp_scenario_1 %>%
@@ -955,8 +953,8 @@ ks1 <- kmp_scenario_1 %>%
 ks2 <- kmp_scenario_2 %>%
   summarise(mean_val = mean(count),
             sd_val = sd(count),
-            T2 = 0.9 * mean_val,
-            T1 = 0.8 * mean_val)
+            T2 = mean_val - sd_val,
+            T1 = mean_val - (2 * sd_val))
 
 ks3 <- kmp_scenario_3 %>%
   summarise(mean_val = mean(sum),
@@ -967,8 +965,8 @@ ks3 <- kmp_scenario_3 %>%
 ks4 <- kmp_scenario_4 %>%
   summarise(mean_val = mean(count),
             sd_val = sd(count),
-            T2 = 0.9 * mean_val,
-            T1 = 0.8 * mean_val)
+            T2 = mean_val - sd_val,
+            T1 = mean_val - (2 * sd_val))
 
 # P-values for Models
 pmodel1 <- summary(model_scenario_1)$coefficients[, 4]
@@ -979,69 +977,247 @@ pmodel4 <- summary(model_scenario_4)$coefficients[, 4]
 # Statistical Power Calculation
 rsq_1 <- summary(model_scenario_1)$r.squared
 f_squared_1 <- rsq_1 / (1 - rsq_1)
-n_1 <- nrow(kmp_scenario_1)
+n_1 <- nrow(kmp_scenario_1 |> select(spl, location, sum) |> distinct())
 power_1 <- pwr.f2.test(u = length(coef(model_scenario_1)) - 1,  
                        v = n_1 - length(coef(model_scenario_1)),  
                        f2 = f_squared_1,  
-                       sig.level = 0.2)
+                       sig.level = 0.8)
 
 rsq_2 <- summary(model_scenario_2)$r.squared
 f_squared_2 <- rsq_2 / (1 - rsq_2)
-n_2 <- nrow(kmp_scenario_2)
+n_2 <- nrow(kmp_scenario_2 |> select(spl, count) |> distinct())
 power_2 <- pwr.f2.test(u = length(coef(model_scenario_2)) - 1,  
                        v = n_2 - length(coef(model_scenario_2)),  
                        f2 = f_squared_2,  
-                       sig.level = 0.2)
+                       sig.level = 0.8)
 
 rsq_3 <- summary(model_scenario_3)$r.squared
 f_squared_3 <- rsq_3 / (1 - rsq_3)
-n_3 <- nrow(kmp_scenario_3)
+n_3 <- nrow(kmp_scenario_3 |> select(spl, location, sum) |> distinct())
 power_3 <- pwr.f2.test(u = length(coef(model_scenario_3)) - 1,  
                        v = n_3 - length(coef(model_scenario_3)),  
                        f2 = f_squared_3,  
-                       sig.level = 0.2)
+                       sig.level = 0.8)
 
 rsq_4 <- summary(model_scenario_4)$r.squared
 f_squared_4 <- rsq_4 / (1 - rsq_4)
-n_4 <- nrow(kmp_scenario_4)
+n_4 <- nrow(kmp_scenario_4 |> select(spl, count) |> distinct())
 power_4 <- pwr.f2.test(u = length(coef(model_scenario_4)) - 1,  
                        v = n_4 - length(coef(model_scenario_4)),  
                        f2 = f_squared_4,  
-                       sig.level = 0.2)
+                       sig.level = 0.8)
 
 # Pooled T-test for Julian Date Effect
-data_2009_2013 <- filter(kmp_scenario_1, year %in% c(2009:2013))
-data_2014_2019 <- filter(kmp_scenario_1, year %in% c(2014:2019))
-data_2020_2024 <- filter(kmp_scenario_1, year %in% c(2020:2024))
-t_test_result1 <- t.test(data_2009_2013$sum, data_2014_2019$sum)
-t_test_result2 <- t.test(data_2014_2019$sum, data_2020_2024$sum)
-t_test_result3 <- t.test(data_2009_2013$sum, data_2020_2024$sum)
+kmp_scenarios <- list(kmp_scenario_1, kmp_scenario_2, kmp_scenario_3, kmp_scenario_4)
 
-power_analyze <- data.frame(
+# Define time periods
+time_periods <- list(
+  "2009-2013" = 2009:2013,
+  "2014-2019" = 2014:2019,
+  "2020-2024" = 2020:2024
+)
+
+perform_t_tests <- function(data, periods) {
+  # Filter data by time periods
+  filtered_data <- map(periods, ~ filter(data, year %in% .x))
+  
+  # Check for NULL or empty filtered data
+  if (any(map_lgl(filtered_data, ~ nrow(.x) == 0 || is.null(.x$sum)))) {
+    return(tibble(
+      Comparison = c("2009-2013 vs 2014-2019", "2014-2019 vs 2020-2024", "2009-2013 vs 2020-2024"),
+      p_value = NA,
+      mean_diff = NA
+    ))
+  }
+  
+  # Perform t-tests
+  results <- tibble(
+    Comparison = c("2009-2013 vs 2014-2019", "2014-2019 vs 2020-2024", "2009-2013 vs 2020-2024"),
+    T_Test = list(
+      t.test(filtered_data[["2009-2013"]]$sum, filtered_data[["2014-2019"]]$sum),
+      t.test(filtered_data[["2014-2019"]]$sum, filtered_data[["2020-2024"]]$sum),
+      t.test(filtered_data[["2009-2013"]]$sum, filtered_data[["2020-2024"]]$sum)
+    )) %>%
+    mutate(
+      p_value = map_dbl(T_Test, ~ .x$p.value),
+      mean_diff = map_dbl(T_Test, ~ .x$estimate[1] - .x$estimate[2])
+    ) %>%
+    select(-T_Test)  # Drop the raw test objects if not needed
+  
+  return(results)
+}
+
+power_analyze <- tibble(
   Scenario = c("Abundance of 4 spp.", "Annual count of 4 spp.", "Abundance of all spp.", "Annual count all spp."),
-  Mean_abundance = c(ks1$mean_val, ks2$mean_val, ks3$mean_val, ks4$mean_val),
-  SD = c(ks1$sd_val, ks2$sd_val, ks3$sd_val, ks4$sd_val),
+  `Mean abundance baseline (2009 - 2013)` = c(kmp_scenario_1 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull()),
+  SD = c(kmp_scenario_1 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2009 - 2013") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull()),
+  T2 = c(kmp_scenario_1 |> filter(spl == "2009 - 2013") |> select(T2) |> distinct(),
+         kmp_scenario_2 |> filter(spl == "2009 - 2013") |> select(T2) |> distinct(),
+         kmp_scenario_3 |> filter(spl == "2009 - 2013") |> select(T2) |> distinct(),
+         kmp_scenario_4 |> filter(spl == "2009 - 2013") |> select(T2) |> distinct()),
+  T1 = c(kmp_scenario_1 |> filter(spl == "2009 - 2013") |> select(T1) |> distinct(),
+         kmp_scenario_2 |> filter(spl == "2009 - 2013") |> select(T1) |> distinct(),
+         kmp_scenario_3 |> filter(spl == "2009 - 2013") |> select(T1) |> distinct(),
+         kmp_scenario_4 |> filter(spl == "2009 - 2013") |> select(T1) |> distinct()),
+  `Mean abundance second period (2014 - 2019)` = c(kmp_scenario_1 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull()),
+  `SD (2014 - 2019)` = c(kmp_scenario_1 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2014 - 2019") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull()),
+  `Mean abundance third period (2020 - 2024)` = c(kmp_scenario_1 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(mean_period) |> 
+                       distinct() |> 
+                       pull()),
+  `SD (2020 - 2024)` = c(kmp_scenario_1 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_2 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_3 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull(), 
+                     kmp_scenario_4 |> 
+                       filter(spl == "2020 - 2024") |> 
+                       select(sd_period) |> 
+                       distinct() |> 
+                       pull()),
   R_Squared = c(rsq_1, rsq_2, rsq_3, rsq_4),
   F_Squared = c(f_squared_1, f_squared_2, f_squared_3, f_squared_4),
   Sample_Size_n = c(n_1, n_2, n_3, n_4),
   Power = c(power_1$power, power_2$power, power_3$power, power_4$power)) |>
-  mutate(T2 = Mean_abundance - SD,
-         T1 = Mean_abundance - (2 * SD)) |>
-  relocate(c(T2, T1), .after = SD) |>
+  unnest() |>
   mutate(across(where(is.numeric), \(x) round(x, digits = 2)))
 
 kable(power_analyze)
 
 ```
 
-
-## Pre-burn monitoring for prescribed fire
-
-In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(common)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (controll, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection. A Welch two-sample *t*-test was conducted to compare mean species richness between different treatments, using the Treatment variable as the grouping factor. The result provides insights into whether there is a statistically significant difference in species richness between the treatments. As demonstrated in @fig-prescribed-burns there was no significant difference in species richness between controls and burns.
-
 ```{r}
 #| warning: false
 #| echo: false
+#| eval: true
+#| message: false
+#| include: true
+#| fig-align: center
+#| tbl-cap: Comparison table of four scenarios and the mean difference
+#| label: fig-comparison
+#| cap-location: bottom
+
+results %>%
+  unnest_longer(T_Test_Results) |>
+  unnest_wider(T_Test_Results) |>
+  mutate(across(where(is.numeric), ~ format(round(.x, digits = 2), scientific = FALSE))) |>
+  mutate(Scenario = case_when(Scenario == "Scenario_1" ~ "Abundance of 4 spp.",
+                              Scenario == "Scenario_2" ~ "Annual count of 4 spp.",
+                              Scenario == "Scenario_3" ~ "Abundance of all spp.",
+                              Scenario == "Scenario_4" ~ "Annual count all spp.")) |>
+  kable()
+  
+```
+
+## Pre-burn monitoring for prescribed fire
+
+In 2023, two locations (`AC-C1, AC-T3`) failed to complete their intended recording schedules. These failures were likely caused by low batteries, SD card formatting issues, or outdated firmware (see @sec-discussion). In 2024, all locations successfully recorded their intended schedules. A total of `r nrow(common)` species were identified. @fig-prescribed-burns illustrates the relationship between species richness grouped by controls and treatments at each location, showing that species richness was equal across sites (Alder Creek, Jarvis River) and treatments combined across sites (controll, treatments). Data from 2023 and 2024 at both Alder Creek and Jarvis sites is collected prior to burning. Both the control and treatment plots are locations not yet treated with prescribed fire at the time of data collection. 
+
+```{r}
+#| warning: false
+#| echo: true
 #| eval: true
 #| message: false
 #| include: true
@@ -1056,16 +1232,14 @@ burn_data <- knpr_main |>
   wt_replace_tmtt(calc = "round") |>
   mutate(year = year(recording_date_time)) |>
   select(location, year, recording_date_time, species_code, individual_order, individual_count) |>
-  mutate(Site = case_when(grepl('AC-*',location) ~ "Alder Creek",
-                          grepl('JR-*',location) ~ "Jarvis River",
-                          grepl('BAT',location) ~ "Bat Monitoring",
-                          grepl('^Q',location) ~ "Quill Creek",
-                          grepl('^A[0-9]+',location) ~ "Auriol Trail",
-                          TRUE ~ NA_character_),
-         Treatment = case_when(str_detect(location, '-T') ~ "Prescribed Burn",
+  mutate(Treatment = case_when(str_detect(location, '-T') ~ "Prescribed Burn",
                                str_detect(location, '-C') ~ "Control",
                                grepl('BAT',location) ~ "Bat Monitoring",
-                               TRUE ~ "Ecological Integrity"))
+                               TRUE ~ "Ecological Integrity"),
+          Site = case_when(grepl('AC-*',location) ~ "Alder Creek",
+                          grepl('JR-*',location) ~ "Jarvis River",
+                          grepl('BAT',location) ~ "Bat Monitoring",
+                          TRUE ~ NA_character_))
 
 richness_data <- burn_data %>%
   group_by(year, Site, Treatment) %>%
@@ -1082,7 +1256,7 @@ ggplot(richness_data, aes(x = Treatment, y = species_richness, fill = Treatment)
   theme_bw()+
   annotate("text", x = 1.5, y = max(richness_data$species_richness),
            label = paste0("p = ", signif(t_test_result$p.value, 3)),
-           size = 5, color = "black") +
+           size = 3, color = "black") +
   scale_fill_viridis_d(option = "mako", alpha = 0.7)
 
 ```
