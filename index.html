@@ -253,7 +253,7 @@ Note
 <li>Describe the data management and processing procedures for the acoustic data collected;</li>
 <li>Utilize traditional human tagging to detect and count avian species heard on recordings;</li>
 <li>Utilize standardized automated processing techniques to evaluate species detected via ultrasonic recordings;</li>
-<li>Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time;</li>
+<li>Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time to inform ecological integrity measures;</li>
 <li>Offer recommendations for ongoing monitoring approaches to contribute to the assessment of ecological integrity in forest ecosystems and prescribed burn management in the park;</li>
 <li>Facilitate data publication to the public, resource managers, academic institutions, and any other relevant agencies</li>
 </ul>
@@ -1736,10 +1736,10 @@ Figure&nbsp;6: Species richness along Auriol Trail by year
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plot_mdm <span class="sc">|&gt;</span></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> individual_order, <span class="at">colour =</span> species_code)) <span class="sc">+</span></span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(year))), <span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span>  <span class="co"># Use numeric conversion for geom_smooth</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">"mako"</span>) <span class="sc">+</span>  <span class="co"># Viridis color palette for clarity</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(year))), <span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span>  </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">"mako"</span>) <span class="sc">+</span> </span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species_code) <span class="sc">+</span>  <span class="co"># Free y-scale for better readability</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species_code) <span class="sc">+</span>  </span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">unique</span>(plot_mdm<span class="sc">$</span>year)) <span class="sc">+</span></span>
 <span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean number of individuals per location"</span>) <span class="sc">+</span></span>
 <span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1996,13 +1996,19 @@ Figure&nbsp;10: Shannon diversity index over years on Auriol Trail
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div id="fig-comparison" class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Comparison table of four scenarios and the mean difference</caption>
+<caption>Comparison table of four scenarios</caption>
+<colgroup>
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 11%">
+<col style="width: 22%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Scenario</th>
 <th style="text-align: left;">Comparison</th>
-<th style="text-align: left;">p_value</th>
-<th style="text-align: left;">mean_diff</th>
+<th style="text-align: left;">p value</th>
+<th style="text-align: left;">Mean difference</th>
 </tr>
 </thead>
 <tbody>
