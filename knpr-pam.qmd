@@ -78,7 +78,7 @@ The objectives of this report are to:
 -   Describe the data management and processing procedures for the acoustic data collected;
 -   Utilize traditional human tagging to detect and count avian species heard on recordings;
 -   Utilize standardized automated processing techniques to evaluate species detected via ultrasonic recordings;
--   Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time;
+-   Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time to inform ecological integrity measures;
 -   Offer recommendations for ongoing monitoring approaches to contribute to the assessment of ecological integrity in forest ecosystems and prescribed burn management in the park;
 -   Facilitate data publication to the public, resource managers, academic institutions, and any other relevant agencies
 
@@ -557,10 +557,10 @@ plot_mdm <- tot_auriol_mdm |>
 plot_mdm |>
   ggplot(aes(x = year, y = individual_order, colour = species_code)) +
   geom_point() +
-  geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  # Use numeric conversion for geom_smooth
-  scale_colour_viridis_d(option = "mako") +  # Viridis color palette for clarity
+  geom_smooth(aes(x = as.numeric(as.character(year))), method = "lm") +  
+  scale_colour_viridis_d(option = "mako") + 
   theme_bw() +
-  facet_wrap(~species_code) +  # Free y-scale for better readability
+  facet_wrap(~species_code) +  
   scale_x_continuous(breaks = unique(plot_mdm$year)) +
   labs(x = "Year", y = "Mean number of individuals per location") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
@@ -1195,18 +1195,22 @@ kable(power_analyze)
 #| message: false
 #| include: true
 #| fig-align: center
-#| tbl-cap: Comparison table of four scenarios and the mean difference
+#| tbl-cap: Comparison table of four scenarios 
 #| label: fig-comparison
 #| cap-location: bottom
 
-results %>%
+results |>
   unnest_longer(T_Test_Results) |>
   unnest_wider(T_Test_Results) |>
   mutate(across(where(is.numeric), ~ format(round(.x, digits = 2), scientific = FALSE))) |>
-  mutate(Scenario = case_when(Scenario == "Scenario_1" ~ "Abundance of 4 spp.",
-                              Scenario == "Scenario_2" ~ "Annual count of 4 spp.",
-                              Scenario == "Scenario_3" ~ "Abundance of all spp.",
-                              Scenario == "Scenario_4" ~ "Annual count all spp.")) |>
+  mutate(Scenario = case_when(
+    Scenario == "Scenario_1" ~ "Abundance of 4 spp.",
+    Scenario == "Scenario_2" ~ "Annual count of 4 spp.",
+    Scenario == "Scenario_3" ~ "Abundance of all spp.",
+    Scenario == "Scenario_4" ~ "Annual count all spp."
+  )) |>
+  rename(`p value` = "p_value") |>
+  rename(`Mean difference` = "mean_diff") |>
   kable()
   
 ```

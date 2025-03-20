@@ -253,7 +253,7 @@ Note
 <li>Describe the data management and processing procedures for the acoustic data collected;</li>
 <li>Utilize traditional human tagging to detect and count avian species heard on recordings;</li>
 <li>Utilize standardized automated processing techniques to evaluate species detected via ultrasonic recordings;</li>
-<li>Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time;</li>
+<li>Define straightforward methods for evaluating abundance, species richness and species diversity and trends over time to inform ecological integrity measures;</li>
 <li>Offer recommendations for ongoing monitoring approaches to contribute to the assessment of ecological integrity in forest ecosystems and prescribed burn management in the park;</li>
 <li>Facilitate data publication to the public, resource managers, academic institutions, and any other relevant agencies</li>
 </ul>
@@ -1612,7 +1612,7 @@ Table&nbsp;4: Common forest bird species detected
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-activity" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-activity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-activity-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1660,7 +1660,7 @@ Figure&nbsp;4: Seasonal detection activity of most commonly detected forest spec
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-spp-mean-abundance-all" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-mean-abundance-all" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-mean-abundance-all-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-mean-abundance-all-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1697,7 +1697,7 @@ Figure&nbsp;5: Mean number of individuals for all forest species detected
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'Year'</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">'Species richness per location'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-spp-rich-locs" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spp-rich-locs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-spp-rich-locs-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1736,16 +1736,16 @@ Figure&nbsp;6: Species richness along Auriol Trail by year
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plot_mdm <span class="sc">|&gt;</span></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> individual_order, <span class="at">colour =</span> species_code)) <span class="sc">+</span></span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(year))), <span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span>  <span class="co"># Use numeric conversion for geom_smooth</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">"mako"</span>) <span class="sc">+</span>  <span class="co"># Viridis color palette for clarity</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(year))), <span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span>  </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">"mako"</span>) <span class="sc">+</span> </span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species_code) <span class="sc">+</span>  <span class="co"># Free y-scale for better readability</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>species_code) <span class="sc">+</span>  </span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">unique</span>(plot_mdm<span class="sc">$</span>year)) <span class="sc">+</span></span>
 <span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean number of individuals per location"</span>) <span class="sc">+</span></span>
 <span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-relative-abundance-auriol" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-relative-abundance-auriol" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-relative-abundance-auriol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-relative-abundance-auriol-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1790,7 +1790,7 @@ Figure&nbsp;7: Abundance of medium-distance migrants along Auriol Trail by year
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-annual-auriol-count" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-annual-auriol-count" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-annual-auriol-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-annual-auriol-count-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1829,7 +1829,7 @@ Figure&nbsp;8: Annual count of medium-distance migrants along Auriol Trail
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-mean-auriol-abundance" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-mean-auriol-abundance" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mean-auriol-abundance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-mean-auriol-abundance-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1880,7 +1880,7 @@ Figure&nbsp;9: Trend in mean abundance of medium-distance migrants along on Auri
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>shannon</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-shannon" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" data-cap-location="bottom">
+<div id="fig-shannon" class="quarto-float quarto-figure quarto-figure-center anchored" data-cap-location="bottom" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shannon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="knpr-pam_files/figure-html/fig-shannon-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
@@ -1996,13 +1996,19 @@ Figure&nbsp;10: Shannon diversity index over years on Auriol Trail
 <div class="cell" data-layout-align="center" data-cap-location="bottom">
 <div id="fig-comparison" class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Comparison table of four scenarios and the mean difference</caption>
+<caption>Comparison table of four scenarios</caption>
+<colgroup>
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 11%">
+<col style="width: 22%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Scenario</th>
 <th style="text-align: left;">Comparison</th>
-<th style="text-align: left;">p_value</th>
-<th style="text-align: left;">mean_diff</th>
+<th style="text-align: left;">p value</th>
+<th style="text-align: left;">Mean difference</th>
 </tr>
 </thead>
 <tbody>
