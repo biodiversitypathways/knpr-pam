@@ -403,7 +403,7 @@ kable(common) |>
 #| code-fold: true
 
 knpr_main |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
   select(location, recording_date_time, species_common_name, species_code, individual_count) |>
   mutate(julian = yday(recording_date_time),
          month= month(recording_date_time),
@@ -456,7 +456,7 @@ The trend in the mean abundance of individuals per location for all species over
 
 tot_all <- knpr_main |>
   inner_join(locs_summary |> select(Location, Site), by = c("location" = "Location")) |> 
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T)
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F)
 
 plot_all <- tot_all |>
   mutate(year = year(recording_date_time)) |>
@@ -499,7 +499,7 @@ plot_all |>
 
 spp_rich_location <- knpr_main |>
   as_tibble() |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
   mutate(year = year(recording_date_time)) |>
   select(location, year, species_code) |>
   distinct() |>
@@ -538,7 +538,7 @@ mdm <- c("SWTH","DEJU","VATH", "YRWA")
 
 tot_auriol <- knpr_main |>
   filter(Site == "Auriol Trail") |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T)
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F)
 
 tot_auriol_mdm <- tot_auriol |>
   filter(species_code %in% mdm)
@@ -664,8 +664,7 @@ ggplot(mean_abundance_mdm, aes(x = year, y = mean_abundance_year)) +
 #| code-fold: true
 
 shannon_d <- knpr_main |> 
-  as_tibble() |>
-  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = T) |>
+  wt_tidy_species(remove = c("mammal","amphibian","abiotic","insect","unknown"), zerofill = F) |>
   inner_join(wt_get_species() |> select(species_code, species_class, species_order), by = "species_code") |>
   filter(Site == "Auriol Trail",
          !species_order %in% c("Piciformes","Galliformes")) |>
@@ -675,8 +674,7 @@ shannon_d <- knpr_main |>
   group_by(location, recording_date_time, species_code, species_common_name) |>
   summarise(count = max(individual_order)) |>
   ungroup() |>
-  pivot_wider(names_from = species_code, values_from = count, values_fill = 0) |>
-  as.data.frame()
+  pivot_wider(names_from = species_code, values_from = count, values_fill = 0)
 
 shannon <- shannon_d |>
   pivot_longer(cols = -(location:species_common_name), names_to = "species", values_to = "count") |>
